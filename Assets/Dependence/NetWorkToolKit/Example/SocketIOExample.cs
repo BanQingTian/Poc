@@ -42,7 +42,7 @@ public class SocketIOExample : MonoBehaviour
     {
         "47.254.87.239",
         "192.168.71.140",
-        "localhost",
+        "127.0.0.1",
         "192.168.71.69",
         "80.187.128.42"
     };
@@ -73,6 +73,7 @@ public class SocketIOExample : MonoBehaviour
         {
             //test :192.168.71.140
             client.ConnectToServer(ServerList[(int)serverType], "2567", (result, obj) =>
+            //client.ConnectToServer("192.168.68.61", "32773", (result, obj) =>
              {
                  if (result == ColyseusClient.ColyseusClientResult.Success)
                  {

@@ -23,6 +23,10 @@
     "PORT": "2567",
     "MONGO_URI": "mongodb://root:nreal123456@192.168.69.60:27017/admin"
   },
+  "env_cz":{
+    "PORT": "2567",
+    "MONGO_URI": "mongodb://127.0.0.1:27017/admin"
+  },
   "env_foreign": {
     "PORT": "2567",
     "MONGO_URI": "mongodb://root:q4UF9LexAFAdyw85@127.0.0.1:27017/admin"

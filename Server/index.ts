@@ -17,6 +17,9 @@ if (process.env.NODE_ENV == 'prod') {
 } else if (process.env.NODE_ENV == 'test') {
   process.env.MONGO_URI = pjson.env_test.MONGO_URI;
   PORT = Number(pjson.env_test.PORT || 2567)
+}else if (process.env.NODE_ENV == 'cz') {
+    process.env.MONGO_URI = pjson.env_cz.MONGO_URI;
+    PORT = Number(pjson.env_test.PORT || 2567)
 } else if (process.env.NODE_ENV == 'foreign') {
   process.env.MONGO_URI = pjson.env_foreign.MONGO_URI;
   PORT = Number(pjson.env_foreign.PORT || 2567)
