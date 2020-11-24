@@ -54,6 +54,14 @@ namespace NetWorkToolkit
             entityInfo.rotation = transform.rotation.ToNet();
         }
 
+        // is room creater
+        public bool IsRoomOwner()
+        {
+            if (entityInfo == null && ColyseusClient.instance.GetCurrentRoom() != null)
+                return true;
+            return false;
+        }
+
         private bool IsOwner()
         {
             if (entityInfo.owner.Equals(ColyseusClient.instance.SessionID))
