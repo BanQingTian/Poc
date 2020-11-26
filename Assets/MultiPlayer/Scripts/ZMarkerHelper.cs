@@ -3,14 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using NRKernal.NRExamples;
 using NRKernal;
+using UnityEngine.Events;
 
-public class MarkerHelper : MonoBehaviour
+public class ZMarkerHelper : MonoBehaviour
 {
+    public static ZMarkerHelper Instance;
+
     // 是否完成识别过
-    public static bool OpenScan = true;
+    public bool OpenScan = false;
 
     // 记录识别的marker的pose
-    public static Pose MapPose = Pose.identity;
+    public Pose MapPose = Pose.identity;
 
     // 识别到maker的模型
     public TrackingImageVisualizer TrackingImageVisualizerPrefab;
@@ -29,6 +32,12 @@ public class MarkerHelper : MonoBehaviour
     //private GameObject nrInput;
     private GameObject nrCameraParent;
 
+    public UnityAction ScanSuccessEvent;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     private void Update()
     {
@@ -44,10 +53,21 @@ public class MarkerHelper : MonoBehaviour
             // go to next phase
             // UI - wait for other people
 
+            ScanSuccessEvent?.Invoke();
         }
     }
 
-
+    public void ResetScanStatus()
+    {
+        OpenScan = false;
+        find = false;
+        scanCount = 0;
+        MapPose = Pose.identity;
+        WorldInMakerMatrix = Matrix4x4.identity;
+        m_Visualizers = new Dictionary<int, TrackingImageVisualizer>();
+        ScanSuccessEvent = null;
+        SwitchImageTrackingMode(true);
+    }
 
 
     private bool CheckingScan()
@@ -109,7 +129,7 @@ public class MarkerHelper : MonoBehaviour
         return false;
     }
 
-    public void SwitchImageTrackingMode(bool on)
+    private void SwitchImageTrackingMode(bool on)
     {
         var config = NRSessionManager.Instance.NRSessionBehaviour.SessionConfig;
         config.ImageTrackingMode = on ? TrackableImageFindingMode.ENABLE : TrackableImageFindingMode.DISABLE;
@@ -117,7 +137,7 @@ public class MarkerHelper : MonoBehaviour
     }
 
     // reset player pose to marker coordinate system
-    public void ResetPlayerPoseToMakerCoordinateSystem(GameObject player)
+    private void ResetPlayerPoseToMakerCoordinateSystem(GameObject player)
     {
         player.transform.position = ZUtils.GetPositionFromTMatrix(WorldInMakerMatrix);
         player.transform.rotation = ZUtils.GetRotationFromTMatrix(WorldInMakerMatrix);

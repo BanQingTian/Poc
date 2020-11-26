@@ -41,7 +41,7 @@ public class MessageManager
     public Action ConnectSuccessEvent;
     public Action ConnectFaildEvent;
 
-    public void InitializeMessage(Action connectEvent = null)
+    public void InitializeMessage(Action connectSuccessEvent = null)
     {
         if (m_Initialize) return;
 
@@ -55,7 +55,7 @@ public class MessageManager
         client.AddListener(MsgId.UpdateRoomInfo, OnUpdateRoomInfoResp);
 
 
-        ConnectSuccessEvent += connectEvent;
+        ConnectSuccessEvent += connectSuccessEvent;
 
         m_Initialize = true;
     }
@@ -231,7 +231,12 @@ public class MessageManager
         if (result == ColyseusClientResult.Success)
         {
             Debug.Log("[OnConnectResp success]");
-           
+            
+            if(ZGlobal.ClientMode == ZClientMode.Master)
+            {
+                GameManager.Instance.CreateRoom();
+            }
+
         }
         else
         {
@@ -259,11 +264,10 @@ public class MessageManager
 
         if (result == ColyseusClientResult.Success)
         {
-            SendDeviceInfo();
+            GameManager.Instance.OpenScan();
         }
         else
         {
-            SendRefreshRoomList();
         }
     }
 
@@ -287,8 +291,8 @@ public class MessageManager
         Debug.Log("[Server Response] OnCreateARoomResp --- " + obj);
         if (result == ColyseusClientResult.Success)
         {
-            //SendDeviceInfo();
-            //GameManager.Instance.JoinRoomSuccess((Room<RoomState>)obj);
+            if(ZGlobal.ClientMode == ZClientMode.Master)
+            GameManager.Instance.OpenScan();
         }
         else
         {
@@ -305,9 +309,11 @@ public class MessageManager
         Debug.Log("[Server Response] OnCreateANetObjectResp --- " + ((Entity)obj).extraInfo);
 
         Entity entity = obj as Entity;
-        //GameObject go = GameObject.Instantiate<GameObject>(GameManager.Instance.PlayerPrefab);
-        //var netobject = go.GetComponent<NetObjectEntity>();
-        //netobject.Init(entity);
+        var go = GameObject.Instantiate<PlayerNetObj>(GameManager.Instance.PlayerPrefab);
+
+        go.Init(entity);
+
+        GameManager.Instance.AddPlayerData(entity.owner, go);
 
         //GameManager.Instance.AddPlayer(entity.owner, go.GetComponent<PlayerNetObjectEntity>());
     }
@@ -335,12 +341,28 @@ public class MessageManager
 
         if (result == ColyseusClientResult.Success)
         {
-            // GameManager.Instance.UpdateRoomUI(rooms);
+            // obj is List<CustomRoomAvailable>
+            var roomsAvailable = obj as List<CustomRoomAvailable>;
+            Debug.Log("OnGetRoomListResp :" + roomsAvailable.Count);
+
+            if(roomsAvailable.Count > 0)
+            {
+                var roomState = JsonUtility.FromJson<RoomState>(roomsAvailable[0].metadata.roomInfo);
+                if(roomState.state == 0)
+                {
+                    SendJoinRoomByIdMsg(roomState.roomName);
+                }
+            }
         }
         else
         {
             Debug.LogError("[Server Response] OnUpdateRoomInfoResp Faild !!!");
         }
+    }
+
+    private void OnGetRoomListResp(object obj)
+    {
+        
     }
 
     private void OnCommandResp(object obj)
