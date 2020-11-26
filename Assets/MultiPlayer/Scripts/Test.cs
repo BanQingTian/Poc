@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NRKernal;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TriLib;
@@ -92,6 +93,74 @@ public class Solution
             }
         }
         return ret;
+    }
+
+
+    private Vector2 _lastTouchPos = Vector2.zero;
+    private Vector2 initTouchPos;
+    // swipe change weapon
+    private void SwipeTouch()
+    {
+        if (_lastTouchPos != NRInput.GetTouch())
+        {
+            if (NRInput.GetTouch() != Vector2.zero && _lastTouchPos == Vector2.zero)    //手指触碰touchPad
+            {
+                initTouchPos = NRInput.GetTouch();
+            }
+            if (NRInput.GetTouch() == Vector2.zero && _lastTouchPos != Vector2.zero)    //手指离开touchPad
+            {
+                Vector2 delPos = _lastTouchPos - initTouchPos;
+                if (Mathf.Abs(delPos.x) >= Mathf.Abs(delPos.y))     //左右滑动
+                {
+                    if (Mathf.Abs(delPos.x) > 0.3)
+                    {
+                        if (delPos.x > 0) // right
+                        {
+
+                        }
+                        else
+                        {
+
+                        }
+                    }
+                }
+                else     //上下滑动
+                {
+                    if (Mathf.Abs(delPos.y) > 0.5)
+                    {
+                        if (delPos.y > 0) // up
+                        {
+
+                        }
+                        else
+                        {
+
+                        }
+                    }
+                }
+            }
+            _lastTouchPos = NRInput.GetTouch();
+        }
+    }
+
+
+    Vector2 lastPos = new Vector2();
+    public virtual void MouseMove()
+    {
+        Vector2 curPos = NRInput.GetTouch();
+        if (curPos.x != 0 || curPos.y != 0)
+        {
+            Vector2 moved = lastPos == Vector2.zero ? Vector2.zero : curPos - lastPos;
+
+            //move.x  左右移动的位置 
+            // todo something
+
+            lastPos = curPos;
+        }
+        else
+        {
+            lastPos = curPos;
+        }
     }
 
 }

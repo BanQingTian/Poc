@@ -7,13 +7,15 @@ using NRKernal;
 public class PlayerNetObj : NetObjectEntity
 {
     public GameObject WeaponTarget;
-
     public Transform ShootPoint;
+    public GameObject Bullet;
 
     private float ShootIntervalTime = 0.4f;
 
     private GameObject nrCamera;
     private GameObject ownerGO;
+
+
 
     [SerializeField]
     public struct ExtroInfo
@@ -72,17 +74,29 @@ public class PlayerNetObj : NetObjectEntity
     #endregion
 
     float attackTimer = 0;
-    private void Shoot_HaveInterval()
+    private void Send_Shoot_HaveInterval_Msg()
     {
         if(attackTimer > ShootIntervalTime)
         {
             if (NRInput.GetButtonDown(ControllerButton.TRIGGER))
             {
                 attackTimer = 0;
-                MessageManager.Instance.SendFireMsg(entityInfo.owner, ShootPoint.position, ShootPoint.rotation, 0);
+                MessageManager.Instance.SendFireMsg(entityInfo.owner, 0);
+                Debug.Log("Send_Shoot_HaveInterval_Msg");
             }
         }
         attackTimer += Time.fixedDeltaTime;
+    }
+
+    public void Shoot()
+    {
+        var b = PoolManager.Instance.Get(Bullet);
+        b.SetActive(true);
+        b.GetComponent<Bullet>().ResetBullet();
+        b.transform.position = Bullet.transform.position;
+        b.transform.rotation = Bullet.transform.rotation;
+        b.transform.localScale = Bullet.transform.lossyScale;
+        b.GetComponent<Rigidbody>().AddForce(b.transform.forward * 500);
     }
 
 
@@ -107,7 +121,7 @@ public class PlayerNetObj : NetObjectEntity
         // 游戏开始方可设计
         if (GameManager.Instance.BeginGame)
         {
-            Shoot_HaveInterval();
+            Send_Shoot_HaveInterval_Msg();
         }
     }
 

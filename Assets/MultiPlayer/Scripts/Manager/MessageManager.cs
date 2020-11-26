@@ -110,12 +110,12 @@ public class MessageManager
         client.SendMsg(MsgId.EndGame, Target.Server, null);
     }
 
-    public void SendFireMsg(string playerid, Vector3 pos, Quaternion qua, int type)
+    public void SendFireMsg(string playerid/*, Vector3 pos, Quaternion qua*/, int type)
     {
         CommondInfo commond = new CommondInfo()
         {
             func = S2CFuncName.Fire,
-            param = string.Format("{0},{1},{2},{3}", playerid, ZUtils.Vector2String(pos), ZUtils.Quaternion2String(qua), type),
+            param = string.Format("{0},{1}", playerid,/* ZUtils.Vector2String(pos), ZUtils.Quaternion2String(qua),*/ type),
         };
         client.SendMsg(MsgId.Commond, Target.All, commond);
     }
@@ -357,6 +357,10 @@ public class MessageManager
                     SendJoinRoomByIdMsg(roomState.roomID);
                 }
             }
+            else
+            {
+                SendRefreshRoomList();
+            }
         }
         else
         {
@@ -369,7 +373,7 @@ public class MessageManager
         Debug.Log("[Server Response] OnCommandResp --- " + obj);
 
         CommondInfo commond = obj as CommondInfo;
-        // GameManager.Instance.S2CFuncTable[commond.func](commond.param);
+        GameManager.Instance.S2CFuncTable[commond.func](commond.param);
     }
     #endregion
 

@@ -20,6 +20,18 @@ public class PlayerMe
         }
     }
     
+    public PlayerNetObj GetPlayerNetObj(string playerid )
+    {
+        if (PlayerDict.ContainsKey(playerid))
+        {
+            return PlayerDict[playerid];
+        }
+        else
+        {
+            Debug.LogError("ZLOG  ----  Dont contain playerid");
+            return null;
+        }
+    }
 
     public void AddPlayer(string playerid, PlayerNetObj pno)
     {
