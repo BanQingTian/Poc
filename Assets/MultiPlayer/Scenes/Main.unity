@@ -736,7 +736,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fdb705a5bbbb8e4384e8681a08f7019, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ClientMode: 0
+  ClientMode: 1
   m_ServiceMode: 0
 --- !u!114 &1695143759
 MonoBehaviour:

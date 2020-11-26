@@ -236,6 +236,10 @@ public class MessageManager
             {
                 GameManager.Instance.CreateRoom();
             }
+            else if(ZGlobal.ClientMode == ZClientMode.Visiter)
+            {
+                MessageManager.Instance.SendRefreshRoomList();
+            }
 
         }
         else
@@ -292,7 +296,7 @@ public class MessageManager
         if (result == ColyseusClientResult.Success)
         {
             if(ZGlobal.ClientMode == ZClientMode.Master)
-            GameManager.Instance.OpenScan();
+                GameManager.Instance.OpenScan();
         }
         else
         {
@@ -323,7 +327,7 @@ public class MessageManager
         // obj is NetObjectEntity
         Debug.Log("[Server Response] OnDestroyANetObjectResp --- " + obj);
 
-        //GameManager.Instance.RemovePlayer(((NetObjectEntity)obj).entityInfo.owner);
+        GameManager.Instance.RemovePlayerData(((NetObjectEntity)obj).entityInfo.owner);
 
         //GameManager.Instance.ReadyShowPlayUI();
     }
@@ -350,7 +354,7 @@ public class MessageManager
                 var roomState = JsonUtility.FromJson<RoomState>(roomsAvailable[0].metadata.roomInfo);
                 if(roomState.state == 0)
                 {
-                    SendJoinRoomByIdMsg(roomState.roomName);
+                    SendJoinRoomByIdMsg(roomState.roomID);
                 }
             }
         }
@@ -358,11 +362,6 @@ public class MessageManager
         {
             Debug.LogError("[Server Response] OnUpdateRoomInfoResp Faild !!!");
         }
-    }
-
-    private void OnGetRoomListResp(object obj)
-    {
-        
     }
 
     private void OnCommandResp(object obj)

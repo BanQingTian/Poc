@@ -58,8 +58,7 @@ public class GameManager : MonoBehaviour
     {
         if(ZGlobal.ClientMode == ZClientMode.Visiter)
         {
-            // 在房间刷新的回调中 
-            MessageManager.Instance.SendRefreshRoomList();
+            
 
         }
     }
