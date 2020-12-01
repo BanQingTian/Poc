@@ -59,7 +59,7 @@ public class ZMarkerHelper : MonoBehaviour
 
     public void ResetScanStatus()
     {
-        OpenScan = false;
+        OpenScan = true;
         find = false;
         scanCount = 0;
         MapPose = Pose.identity;

@@ -7,8 +7,6 @@ using UnityEngine;
 
 public class Test : MonoBehaviour
 {
-    private UnityEngine.UI.Button LoadBtn;
-    // Start is called before the first frame update
     void Start()
     {
         //try
@@ -20,11 +18,37 @@ public class Test : MonoBehaviour
         //{
         //    Debug.LogError(e);
         //}
+
+        laser = NRInput.AnchorsHelper.GetAnchor(ControllerAnchorEnum.RightLaserAnchor);
+        
+    }
+
+    Transform laser;
+    Vector2 lastPos = new Vector2();
+    public virtual void MouseMove()
+    {
+        Vector2 curPos = NRInput.GetTouch();
+        if (curPos.x != 0 || curPos.y != 0)
+        {
+            Vector2 moved = lastPos == Vector2.zero ? Vector2.zero : curPos - lastPos;
+
+            //move.x  左右移动的位置 
+            // todo something
+            Vector3 v = laser.rotation.eulerAngles;
+            laser.rotation = Quaternion.Euler(v.x,v.y+moved.x*14,v.z);
+
+            lastPos = curPos;
+        }
+        else
+        {
+            lastPos = curPos;
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
+        MouseMove();
     }
 
     public void run()
@@ -81,9 +105,9 @@ public class Solution
             return ret;
         for (int i = 0; i < nums.Length; i++)
         {
-            for (int j = i+1; j < nums.Length; j++)
+            for (int j = i + 1; j < nums.Length; j++)
             {
-                if(nums[i]+nums[j] == target)
+                if (nums[i] + nums[j] == target)
                 {
                     ret[0] = i;
                     ret[1] = j;
@@ -144,23 +168,6 @@ public class Solution
     }
 
 
-    Vector2 lastPos = new Vector2();
-    public virtual void MouseMove()
-    {
-        Vector2 curPos = NRInput.GetTouch();
-        if (curPos.x != 0 || curPos.y != 0)
-        {
-            Vector2 moved = lastPos == Vector2.zero ? Vector2.zero : curPos - lastPos;
 
-            //move.x  左右移动的位置 
-            // todo something
-
-            lastPos = curPos;
-        }
-        else
-        {
-            lastPos = curPos;
-        }
-    }
 
 }

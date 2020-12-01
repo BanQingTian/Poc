@@ -84,9 +84,15 @@ public class GameManager : MonoBehaviour
     // 扫秒成功 开始等待房间创建
     public void OnScanSuccess()
     {
-        if(ZGlobal.ClientMode == ZClientMode.Visiter)
+
+        ShowHint(HintType.WaitingOthers);
+
+        if (ZGlobal.ClientMode == ZClientMode.Visiter)
         {
-            
+
+        }
+        else
+        {
 
         }
     }
@@ -102,7 +108,6 @@ public class GameManager : MonoBehaviour
     {
         ShowHint(HintType.ScanMarker);
         m_MarkerHelper.ResetScanStatus();
-        m_MarkerHelper.OpenScan = true;
         m_MarkerHelper.ScanSuccessEvent = OnScanSuccess;
     }
 
