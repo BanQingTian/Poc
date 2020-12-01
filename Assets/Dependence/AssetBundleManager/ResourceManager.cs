@@ -19,7 +19,8 @@ public class ResourceManager : Singleton<ResourceManager>
             yield break;
         m_Inited = true;
         m_Respository = new AssetBundleRepository();
-        m_Respository.AddSearchPath(Application.persistentDataPath);
+        m_Respository.AddSearchPath(ZPathHelper.GetPersistentDataPath());
+        m_Respository.AddSearchPath(ZPathHelper.GetABResPath());
 
         AssetBundleManager.ActiveVariants = new string[] { "boys", "girls" };
         AssetBundleManager.BaseDownloadingURL = "http://127.0.0.1:8080/Windows/";

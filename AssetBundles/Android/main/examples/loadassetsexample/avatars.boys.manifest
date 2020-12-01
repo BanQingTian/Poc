@@ -1,0 +1,19 @@
+ManifestFileVersion: 0
+CRC: 3619402100
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: c57db3dcf525010e4225992a4b40d3f0
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: ea5a42e0fd8ea905efa7aa926a3b8944
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+Assets:
+- Assets/Dependence/AssetBundleManager/LoadAssetsExample/Bundles/Avatars/boys/avatar_01.jpg
+- Assets/Dependence/AssetBundleManager/LoadAssetsExample/Bundles/Avatars/boys/avatar_02.jpg
+Dependencies: []

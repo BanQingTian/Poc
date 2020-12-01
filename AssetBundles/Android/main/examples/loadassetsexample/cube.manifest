@@ -1,0 +1,33 @@
+ManifestFileVersion: 0
+CRC: 1879458548
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: abe26c4b60a4474f9fc1134ac8e89296
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 61eab76d03a5b9749b6033ba24619b3d
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 65
+  Script: {instanceID: 0}
+Assets:
+- Assets/Dependence/AssetBundleManager/LoadAssetsExample/Bundles/Cube/Cube.prefab
+Dependencies:
+- E:/Program/LGU_MultiGame_Poc/AssetBundles/Android/main/examples/loadassetsexample/birds

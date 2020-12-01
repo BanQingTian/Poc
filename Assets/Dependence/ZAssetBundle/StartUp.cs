@@ -1,27 +1,55 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class StartUp : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        ZCoroutiner.SetCoroutiner(this);
-        ZABManager.instance.Init();
+    public Button LoadBtn;
+    public Text LoadTip;
 
-        //GameObject prefab = ZABManager.instance.LoadAsset<GameObject>("test/cube", "cube11");
-        ZABManager.instance.LoadAssetAsync<GameObject>("test/cube", "cube11", (GameObject go) => 
+
+    IEnumerator Start()
+    {
+        //Debug.Log(Application.persistentDataPath);
+
+        //ZCoroutiner.SetCoroutiner(this);
+        //ZABManager.instance.Init();
+
+        ////GameObject prefab = ZABManager.instance.LoadAsset<GameObject>("test/cube", "cube11");
+        //ZABManager.instance.LoadAssetAsync<GameObject>("test/cube", "cube11", (GameObject go) => 
+        //{
+        //    Debug.Log("finish");
+        //    Instantiate(go);
+        //});
+        //Debug.Log("aaaaaa");
+
+        yield return ResourceManager.Instance.Initialize();
+
+        LoadBtn.onClick.AddListener(LoadScene);
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.D))
         {
-            Debug.Log("finish");
-            Instantiate(go);
-        });
-        Debug.Log("aaaaaa");
+            var go = GameObject.Find("Reflection Probe");
+            if (go != null)
+            {
+                Debug.Log(go.name);
+            }
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void LoadScene()
     {
-        
+        Debug.Log("loading");
+        LoadTip.text = "Loading...";
+        ResourceManager.LoadLevelAsync("test/cube", "LGS", true, () => 
+        {
+            Debug.Log("Finish");
+            LoadTip.text = "Finish!!";
+        });
     }
+
 }

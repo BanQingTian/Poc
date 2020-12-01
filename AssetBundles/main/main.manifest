@@ -1,0 +1,23 @@
+ManifestFileVersion: 0
+CRC: 3542352807
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: test/cube
+      Dependencies: {}
+    Info_1:
+      Name: examples/loadassetsexample/birds
+      Dependencies: {}
+    Info_2:
+      Name: examples/loadassetsexample/light
+      Dependencies: {}
+    Info_3:
+      Name: examples/loadassetsexample/avatars.boys
+      Dependencies: {}
+    Info_4:
+      Name: examples/loadassetsexample/avatars.girls
+      Dependencies: {}
+    Info_5:
+      Name: examples/loadassetsexample/cube
+      Dependencies:
+        Dependency_0: examples/loadassetsexample/birds
