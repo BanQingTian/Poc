@@ -61,23 +61,50 @@ public class GameManager : MonoBehaviour
     public void AddPlayerData(string playerid , PlayerNetObj obj)
     {
         m_PlayerMe.AddPlayer(playerid, obj);
+        // update UI
+        // todo
     }
     public void RemovePlayerData(string playerid)
     {
         m_PlayerMe.RemovePlayer(playerid);
+        // update UI
+        // todo
     }
     public void ClearPlayerData()
     {
         m_PlayerMe.ClearPlayerData();
+        // update UI
+        // todo
     }
 
     #endregion
 
     public void CreateRoom()
     {
-        if(ZGlobal.ClientMode == ZClientMode.Master)
+        if(ZGlobal.ClientMode == ZClientMode.Curator)
         {
             MessageManager.Instance.SendCreateRoomMsg();
+        }
+    }
+
+    public void VisitSearchRoom()
+    {
+        ShowHint(HintType.WaitingCurator);
+        ZCoroutiner.StartCoroutine(CorSearchRoom());
+        //MessageManager.Instance.SendRefreshRoomList();
+    }
+    public bool VisitorFindRoom = false;
+    private IEnumerator CorSearchRoom()
+    {
+
+        while (!VisitorFindRoom)
+        {
+            yield return new WaitForSeconds(1f);
+            if (VisitorFindRoom)
+                yield break;
+
+            Debug.Log("------ Search Room ------");
+            MessageManager.Instance.SendRefreshRoomList();
         }
     }
 
@@ -87,7 +114,7 @@ public class GameManager : MonoBehaviour
 
         ShowHint(HintType.WaitingOthers);
 
-        if (ZGlobal.ClientMode == ZClientMode.Visiter)
+        if (ZGlobal.ClientMode == ZClientMode.Visitor)
         {
 
         }

@@ -4,15 +4,17 @@ using UnityEngine;
 
 public class HintData 
 {
-    private string ConnectingNetwork = "Connecting to the network...";
+    private const string ConnectingNetwork = "Connecting to the network...";
 
-    private string ScanMarker = "Please scan the marker on the table";
+    private const string ScanMarker = "Please scan the marker on the table.";
 
-    private string WaitingOthers = "Waiting for other people";
+    private const string WaitingOthers = "Waiting for other people.";
 
-    private string Welcome = "Welcome to holeman's world!";
+    private const string Welcome = "Welcome to holeman's world!";
 
-    private string Course1 = "Touch the smartphone controller button \n many times and give me the Power";
+    private const string Course1 = "Touch the smartphone controller button \n many times and give me the Power.";
+
+    private const string WaitingCurator = "Waiting for the curator.";
 
     public string GetData(HintType t)
     {
@@ -24,6 +26,9 @@ public class HintData
                 break;
             case HintType.ScanMarker:
                 ret = ScanMarker;
+                break;
+            case HintType.WaitingCurator:
+                ret = WaitingCurator;
                 break;
             case HintType.WaitingOthers:
                 ret = WaitingOthers;
@@ -45,6 +50,7 @@ public enum HintType
 {
     ConnectNetwork,
     ScanMarker,
+    WaitingCurator,
     WaitingOthers,
     Welcome,
     Course1

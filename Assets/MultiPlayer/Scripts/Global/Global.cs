@@ -4,15 +4,15 @@ using UnityEngine;
 
 public static class ZGlobal
 {
-    public static ZClientMode ClientMode = ZClientMode.Visiter;
+    public static ZClientMode ClientMode = ZClientMode.Visitor;
 
     public static ZServiceMode ServiceMode = ZServiceMode.TEST;
 }
 
 public enum ZClientMode
 {
-    Master,
-    Visiter,
+    Curator,
+    Visitor,
 }
 
 public enum ZServiceMode

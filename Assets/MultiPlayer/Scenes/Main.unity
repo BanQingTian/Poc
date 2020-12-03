@@ -167,6 +167,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114189359072911506, guid: ad152f08ed7eb6e4abd93376a0203e38,
+        type: 3}
+      propertyPath: m_EmulateVirtualDisplayInEditor
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ad152f08ed7eb6e4abd93376a0203e38, type: 3}
 --- !u!1001 &326770745
@@ -222,6 +227,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4275651716754104, guid: 665d8158924bd2648a94fb3f87691bbb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114176646661500702, guid: 665d8158924bd2648a94fb3f87691bbb,
+        type: 3}
+      propertyPath: UseRelative
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -753,6 +763,7 @@ MonoBehaviour:
   PlayerPrefab: {fileID: 2318769667353950577, guid: 4237a4295bc5171429571032ca2c9984,
     type: 3}
   BeginGame: 0
+  VisitorFindRoom: 0
 --- !u!114 &1695143760
 MonoBehaviour:
   m_ObjectHideFlags: 0

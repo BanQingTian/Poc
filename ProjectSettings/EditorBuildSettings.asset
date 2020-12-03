@@ -12,6 +12,6 @@ EditorBuildSettings:
     path: Assets/Model_test.unity
     guid: 4d505fd1a546f7f4e9a94bddf4533617
   - enabled: 1
-    path: Assets/Dependence/ZAssetBundle/Example.unity
+    path: Assets/Example.unity
     guid: 58154632a0ee4f64b9821ca8c64967c6
   m_configObjects: {}

@@ -5,7 +5,7 @@ using UnityEngine;
 public class ZMain : MonoBehaviour
 {
     [Space(20)]
-    public ZClientMode ClientMode = ZClientMode.Visiter;
+    public ZClientMode ClientMode = ZClientMode.Visitor;
     [Space(20)]
     public ZServiceMode m_ServiceMode = ZServiceMode.TEST;
 
@@ -16,10 +16,9 @@ public class ZMain : MonoBehaviour
         "",
     };
 
-    IEnumerator Start()
+    void Start()
     {
         ZGlobal.ClientMode = ClientMode;
-        yield return null;
         Init();
         GameManager.Instance.ShowHint(HintType.ConnectNetwork);
         ConnectServer(m_ServiceMode);
@@ -28,10 +27,16 @@ public class ZMain : MonoBehaviour
 
     private void Init()
     {
+        DontDestroyOnLoad(this);
+
         InitGameManager();
         InitMessageManager();
+        InitGameCoroutiner();
     }
-
+    private void InitGameCoroutiner()
+    {
+        ZCoroutiner.SetCoroutiner(this);
+    }
     private void InitGameManager()
     {
         GameManager.Instance.Initialized();

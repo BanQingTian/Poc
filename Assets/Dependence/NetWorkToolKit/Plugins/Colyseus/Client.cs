@@ -128,7 +128,7 @@ namespace Colyseus
 
             var req = new UnityWebRequest();
             req.method = "GET";
-            req.url = uriBuilder.Uri.ToString();
+            req.url = uriBuilder.Uri.ToString().Replace(":80","");
 
             req.SetRequestHeader("Accept", "application/json");
 
@@ -226,7 +226,7 @@ namespace Colyseus
             var req = new UnityWebRequest();
             req.method = "POST";
 
-            req.url = uriBuilder.Uri.ToString();
+            req.url = uriBuilder.Uri.ToString().Replace(":80", "");
 
             // Send JSON options on request body
             var jsonBodyStream = new MemoryStream();

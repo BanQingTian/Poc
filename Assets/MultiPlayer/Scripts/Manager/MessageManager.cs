@@ -166,23 +166,6 @@ public class MessageManager
       
 
         Debug.LogError("[CZ] send score -->" + win);
-
-        //var scoreInfo = new ScoreInfo();
-        //scoreInfo.scores = new ScoreItem[GameManager.Instance.AddScoreDic.Count];
-        //scoreInfo.result = win;
-
-        //var clientList = GameManager.Instance.AddScoreDic.Keys.ToList();
-        //var scoreList = GameManager.Instance.AddScoreDic.Values.ToList();
-
-        //for (int i = 0; i < scoreInfo.scores.Length; i++)
-        //{
-        //    scoreInfo.scores[i] = new ScoreItem()
-        //    {
-        //        clientID = clientList[i],
-        //        score = scoreList[i]
-        //    };
-        //}
-        //client.SendMsg(MsgId.UploadScores, Target.Server, scoreInfo);
     }
 
 
@@ -232,13 +215,13 @@ public class MessageManager
         {
             Debug.Log("[OnConnectResp success]");
             
-            if(ZGlobal.ClientMode == ZClientMode.Master)
+            if(ZGlobal.ClientMode == ZClientMode.Curator)
             {
                 GameManager.Instance.CreateRoom();
             }
-            else if(ZGlobal.ClientMode == ZClientMode.Visiter)
+            else if(ZGlobal.ClientMode == ZClientMode.Visitor)
             {
-                MessageManager.Instance.SendRefreshRoomList();
+                GameManager.Instance.VisitSearchRoom();
             }
 
         }
@@ -295,7 +278,7 @@ public class MessageManager
         Debug.Log("[Server Response] OnCreateARoomResp --- " + obj);
         if (result == ColyseusClientResult.Success)
         {
-            if(ZGlobal.ClientMode == ZClientMode.Master)
+            if(ZGlobal.ClientMode == ZClientMode.Curator)
                 GameManager.Instance.OpenScan();
         }
         else
@@ -334,7 +317,7 @@ public class MessageManager
 
     private void OnUpdateRoomInfoResp(object obj)
     {
-
+        Debug.Log("[Server Response] OnUpdateRoomInfoResp --- " + obj);
     }
 
     private void OnUpdateRoomInfoResp(ColyseusClientResult result, object obj)
@@ -355,12 +338,8 @@ public class MessageManager
                 if(roomState.state == 0)
                 {
                     SendJoinRoomByIdMsg(roomState.roomID);
+                    GameManager.Instance.VisitorFindRoom = true;
                 }
-            }
-            else
-            {
-                //ZCoroutiner.StartCoroutine()
-                SendRefreshRoomList();
             }
         }
         else
