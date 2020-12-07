@@ -49,15 +49,15 @@ namespace NREAL.HOME.TAKEPICTURE
 
         private void OnEnable()
         {
-            //EventCenter.Instance.AddEventListener(Constant.Event_TakePictureModule_SnapShot, TakingPhoto);
+            EventCenter.Instance.AddEventListener(Constant.Event__Capture__, TakingPhoto);
         }
 
         private void OnDisable()
         {
-            //EventCenter.Instance.RemoveEventListener(Constant.Event_TakePictureModule_SnapShot, TakingPhoto);
+            EventCenter.Instance.RemoveEventListener(Constant.Event__Capture__, TakingPhoto);
         }
 
-        private void TakingPhoto()
+        private void TakingPhoto(object sender, EventCenter.Args args)
         {
             Debug.Log("TakePhoto: take photo event triggered");
             if (!m_IsPlaying)

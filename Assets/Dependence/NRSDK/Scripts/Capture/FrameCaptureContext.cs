@@ -157,7 +157,7 @@ namespace NRKernal.Record
             m_FrameProvider?.Release();
             m_Blender?.Dispose();
             m_Encoder?.Release();
-            GameObject.Destroy(m_CaptureBehaviour);
+            GameObject.Destroy(m_CaptureBehaviour.gameObject);
             m_IsInit = false;
         }
     }

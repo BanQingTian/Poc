@@ -214,14 +214,14 @@ public class MessageManager
         if (result == ColyseusClientResult.Success)
         {
             Debug.Log("[OnConnectResp success]");
-            
-            if(ZGlobal.ClientMode == ZClientMode.Curator)
+
+            if (ZGlobal.ClientMode == ZClientMode.Curator)
             {
                 GameManager.Instance.CreateRoom();
             }
             else if(ZGlobal.ClientMode == ZClientMode.Visitor)
             {
-                GameManager.Instance.VisitSearchRoom();
+                GameManager.Instance.VisitModeSearchRoom();
             }
 
         }
@@ -252,6 +252,7 @@ public class MessageManager
         if (result == ColyseusClientResult.Success)
         {
             GameManager.Instance.OpenScan();
+            GameManager.Instance.JoinRoom = true;
         }
         else
         {
@@ -279,7 +280,10 @@ public class MessageManager
         if (result == ColyseusClientResult.Success)
         {
             if(ZGlobal.ClientMode == ZClientMode.Curator)
+            {
                 GameManager.Instance.OpenScan();
+                GameManager.Instance.JoinRoom = true;
+            }
         }
         else
         {
@@ -338,7 +342,7 @@ public class MessageManager
                 if(roomState.state == 0)
                 {
                     SendJoinRoomByIdMsg(roomState.roomID);
-                    GameManager.Instance.VisitorFindRoom = true;
+                    GameManager.Instance.JoinRoom = true;
                 }
             }
         }

@@ -51,3 +51,11 @@ public class ZMain : MonoBehaviour
         MessageManager.Instance.SendConnectServerMsg(ip, "2567");
     }
 }
+
+
+
+public static class Constant
+{
+    public const string Event__Capture__ = "event_capture";
+
+}

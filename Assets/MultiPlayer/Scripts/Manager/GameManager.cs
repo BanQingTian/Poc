@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
 
     public PlayerNetObj PlayerPrefab;
 
+    public bool JoinRoom = false;
     public bool BeginGame = false;
 
     private HintData m_HintData;
@@ -87,23 +88,48 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void VisitSearchRoom()
+    public void GameModeCheck()
+    {
+        ZCoroutiner.StartCoroutine(CorGameModeCheck());
+    }
+    private IEnumerator CorGameModeCheck()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(1f);
+
+            if (!JoinRoom)
+            {
+                if (ZGlobal.ClientMode == ZClientMode.Curator)
+                {
+                    CreateRoom();
+                    yield break;
+                }
+            }
+        }
+    }
+
+    public void VisitModeSearchRoom()
     {
         ShowHint(HintType.WaitingCurator);
         ZCoroutiner.StartCoroutine(CorSearchRoom());
-        //MessageManager.Instance.SendRefreshRoomList();
     }
-    public bool VisitorFindRoom = false;
+
     private IEnumerator CorSearchRoom()
     {
-
-        while (!VisitorFindRoom)
+        while (!JoinRoom)
         {
+            Debug.Log("watingaskfdj;alfj;af;l;sf");
             yield return new WaitForSeconds(1f);
-            if (VisitorFindRoom)
+            if (JoinRoom)
                 yield break;
 
             Debug.Log("------ Search Room ------");
+            if(ZGlobal.ClientMode == ZClientMode.Curator)
+            {
+                CreateRoom();
+                yield break;
+            }
             MessageManager.Instance.SendRefreshRoomList();
         }
     }
