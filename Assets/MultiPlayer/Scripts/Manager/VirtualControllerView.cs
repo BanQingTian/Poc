@@ -20,7 +20,6 @@ public class VirtualControllerView : MonoBehaviour
         ModelsBtn.onClick.AddListener(ModelsBtnClk);
         CaptureBtn.onClick.AddListener(CaptureBtnClk);
         ModelRotateBtn.onClick.AddListener(ModelsBtnClk);
-        Debug.Log("aaa") ;
     }
     private void Start()
     {
@@ -41,7 +40,6 @@ public class VirtualControllerView : MonoBehaviour
         ModelsBtn.onClick.RemoveListener(ModelsBtnClk);
         CaptureBtn.onClick.RemoveListener(CaptureBtnClk);
         ModelRotateBtn.onClick.RemoveListener(ModelsBtnClk);
-        Debug.Log("aaa");
     }
     #endregion
 

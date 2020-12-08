@@ -62,50 +62,28 @@ public class GameManager : MonoBehaviour
     public void AddPlayerData(string playerid , PlayerNetObj obj)
     {
         m_PlayerMe.AddPlayer(playerid, obj);
-        // update UI
-        // todo
+        RefreshPlayerStatusUI();
     }
     public void RemovePlayerData(string playerid)
     {
         m_PlayerMe.RemovePlayer(playerid);
-        // update UI
-        // todo
+        RefreshPlayerStatusUI();
     }
     public void ClearPlayerData()
     {
         m_PlayerMe.ClearPlayerData();
-        // update UI
-        // todo
+        RefreshPlayerStatusUI();
     }
 
     #endregion
 
+    #region Net Logic
+
     public void CreateRoom()
     {
-        if(ZGlobal.ClientMode == ZClientMode.Curator)
+        if (ZGlobal.ClientMode == ZClientMode.Curator)
         {
             MessageManager.Instance.SendCreateRoomMsg();
-        }
-    }
-
-    public void GameModeCheck()
-    {
-        ZCoroutiner.StartCoroutine(CorGameModeCheck());
-    }
-    private IEnumerator CorGameModeCheck()
-    {
-        while (true)
-        {
-            yield return new WaitForSeconds(1f);
-
-            if (!JoinRoom)
-            {
-                if (ZGlobal.ClientMode == ZClientMode.Curator)
-                {
-                    CreateRoom();
-                    yield break;
-                }
-            }
         }
     }
 
@@ -125,7 +103,7 @@ public class GameManager : MonoBehaviour
                 yield break;
 
             Debug.Log("------ Search Room ------");
-            if(ZGlobal.ClientMode == ZClientMode.Curator)
+            if (ZGlobal.ClientMode == ZClientMode.Curator)
             {
                 CreateRoom();
                 yield break;
@@ -150,8 +128,17 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    #endregion
+
+
+
     #region UI 
-   
+
+    public void RefreshPlayerStatusUI()
+    {
+        UIManager.Instance.SetPlayerStatusUI(m_PlayerMe.PlayerCount);
+    }
+
     public void ShowHint(HintType t, bool show = true)
     {
         UIManager.Instance.SetHintLabel(m_HintData.GetData(t), show);
