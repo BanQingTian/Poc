@@ -19,7 +19,7 @@ public class VirtualControllerView : MonoBehaviour
         MiniGameBtn.onClick.AddListener(MiniBtnClk);
         ModelsBtn.onClick.AddListener(ModelsBtnClk);
         CaptureBtn.onClick.AddListener(CaptureBtnClk);
-        ModelRotateBtn.onClick.AddListener(ModelsBtnClk);
+        ModelRotateBtn.onClick.AddListener(ModelRotate);
     }
     private void Start()
     {
@@ -39,7 +39,7 @@ public class VirtualControllerView : MonoBehaviour
         MiniGameBtn.onClick.RemoveListener(MiniBtnClk);
         ModelsBtn.onClick.RemoveListener(ModelsBtnClk);
         CaptureBtn.onClick.RemoveListener(CaptureBtnClk);
-        ModelRotateBtn.onClick.RemoveListener(ModelsBtnClk);
+        ModelRotateBtn.onClick.RemoveListener(ModelRotate);
     }
     #endregion
 
@@ -105,11 +105,26 @@ public class VirtualControllerView : MonoBehaviour
     }
     private void MiniBtnClk()
     {
-        Debug.Log("mini btn clk");
+        if (ZGlobal.CurGameStatusMode == ZCurGameStatusMode.MINI_GAME_STATUS
+            || ZGlobal.CurGameStatusMode == ZCurGameStatusMode.MODELS_SHOW_STATUS)
+        {
+            return;
+        }
+
+        ZGlobal.CurGameStatusMode = ZCurGameStatusMode.MINI_GAME_STATUS;
+
+        EventCenter.Instance.DispatchEvent(Constant.Event__MiniGame__);
+
     }
     private void ModelsBtnClk()
     {
+        if (ZGlobal.CurGameStatusMode == ZCurGameStatusMode.MODELS_SHOW_STATUS)
+        {
+            return;
+        }
+        ZGlobal.CurGameStatusMode = ZCurGameStatusMode.MODELS_SHOW_STATUS;
 
+        EventCenter.Instance.DispatchEvent(Constant.Event__ModelShow__); 
     }
     private void CaptureBtnClk()
     {
@@ -117,7 +132,7 @@ public class VirtualControllerView : MonoBehaviour
     }
     private void ModelRotate()
     {
-
+        EventCenter.Instance.DispatchEvent(Constant.Event__Rotate__);
     }
 
 

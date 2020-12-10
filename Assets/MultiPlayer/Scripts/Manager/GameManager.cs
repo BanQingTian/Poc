@@ -16,6 +16,8 @@ public class GameManager : MonoBehaviour
     private ZMarkerHelper m_MarkerHelper;
     private PlayerMe m_PlayerMe;
 
+    private MinigameBehavior m_MinigameBehavior;
+
 
     public delegate void S2CFuncAction<T>(T info);
     public Dictionary<string, S2CFuncAction<string>> S2CFuncTable = new Dictionary<string, S2CFuncAction<string>>();
@@ -35,6 +37,9 @@ public class GameManager : MonoBehaviour
         m_HintData = new HintData();
         m_MarkerHelper = ZMarkerHelper.Instance;
         m_PlayerMe = new PlayerMe();
+
+        //m_MinigameBehavior = FindObjectOfType<MinigameBehavior>();
+        //m_MinigameBehavior.Init();
     }
 
 
@@ -97,7 +102,6 @@ public class GameManager : MonoBehaviour
     {
         while (!JoinRoom)
         {
-            Debug.Log("watingaskfdj;alfj;af;l;sf");
             yield return new WaitForSeconds(1f);
             if (JoinRoom)
                 yield break;

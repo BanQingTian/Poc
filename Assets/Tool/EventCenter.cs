@@ -114,6 +114,7 @@ public class EventCenter : MonoBehaviour
             eventHandlers.Remove(eventName);
             return;
         }
+
         for (int i = 0; i < handlers.GetInvocationList().GetLength(0); i++)
         {
             Handler eventHandler = (Handler)handlers.GetInvocationList()[i];

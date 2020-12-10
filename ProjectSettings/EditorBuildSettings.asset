@@ -6,12 +6,15 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 0
-    path: Assets/ttt.unity
-    guid: b1441965ce78c2a44afb8ad23d8011f8
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 0
-    path: Assets/Model_test.unity
-    guid: 4d505fd1a546f7f4e9a94bddf4533617
-  - enabled: 1
+    path: 
+    guid: 00000000000000000000000000000000
+  - enabled: 0
     path: Assets/Example.unity
     guid: 58154632a0ee4f64b9821ca8c64967c6
+  - enabled: 1
+    path: Assets/MultiPlayer/Scenes/Main.unity
+    guid: 26e50c1c0a91a874b90febb82877ab97
   m_configObjects: {}

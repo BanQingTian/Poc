@@ -51,15 +51,15 @@ gameServer.define("Nreal", NrealRoom);
 app.use("/", socialRoutes);
 
 //create a server object:
-http.createServer(function (req, res) {
-  var msg = new ConnectResult();
-  msg.result = true;
-  msg.version = pjson.version;
-  res.write(JSON.stringify(msg)); //write a response to the client
-  res.end(); //end the response
-}).listen(PORT + 1);
+// http.createServer(function (req, res) {
+//   var msg = new ConnectResult();
+//   msg.result = true;
+//   msg.version = pjson.version;
+//   res.write(JSON.stringify(msg)); //write a response to the client
+//   res.end(); //end the response
+// }).listen(PORT + 1);
 
 // Listen on specified PORT number
-logger.info(`Running on ws://localhost:${PORT}`);
-gameServer.listen(PORT);
+logger.info(`Running on ws://127.0.0.1:${PORT}`);
+gameServer.listen(PORT,"0.0.0.0");
 logger.info("Welcome to the Fairy Tower Game!")

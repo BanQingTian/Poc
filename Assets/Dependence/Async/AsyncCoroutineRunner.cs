@@ -61,7 +61,6 @@ namespace NREAL.AR.Utility
 
                 yield return null;
             }
-
         }
 
         private static void SetCoroutineState(string onceKey, TCoroutineState state)

@@ -10,6 +10,9 @@ public class PlayerNetObj : NetObjectEntity
     public Transform ShootPoint;
     public GameObject Bullet;
 
+    private int mScore;
+    public int Score { get; set; }
+
     private float ShootIntervalTime = 0.4f;
 
     private GameObject nrCamera;
@@ -51,7 +54,7 @@ public class PlayerNetObj : NetObjectEntity
         //WeaponTarget.transform.position = ei.controllerPosition;
         WeaponTarget.transform.rotation = ei.controlleRotation;
 
-        WeaponTarget.transform.position= Vector3.Lerp(WeaponTarget.transform.position, ei.controllerPosition, 0.5f);
+        WeaponTarget.transform.position = Vector3.Lerp(WeaponTarget.transform.position, ei.controllerPosition, 0.5f);
     }
 
     public override void DeSerializeData()
@@ -76,7 +79,7 @@ public class PlayerNetObj : NetObjectEntity
     float attackTimer = 0;
     private void Send_Shoot_HaveInterval_Msg()
     {
-        if(attackTimer > ShootIntervalTime)
+        if (attackTimer > ShootIntervalTime)
         {
             if (NRInput.GetButtonDown(ControllerButton.TRIGGER))
             {
@@ -104,7 +107,7 @@ public class PlayerNetObj : NetObjectEntity
 
     private void Update()
     {
-        if(entityInfo == null)
+        if (entityInfo == null)
         {
             return;
         }

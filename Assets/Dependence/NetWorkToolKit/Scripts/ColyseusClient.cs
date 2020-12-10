@@ -222,10 +222,10 @@ namespace NetWorkToolkit
             Debug.Log("Connect to server:" + endpoint);
             // Connect to the colyeus Server
             client = ColyseusManager.Instance.CreateClient(endpoint);
-            var result = await client.IsServerAvailable();
-            if (result.result)
+            //var result = await client.IsServerAvailable();
+            if (true)
             {
-                Debug.Log("Server is available version:" + result.version);
+                //Debug.Log("Server is available version:" + result.version);
                 callback?.Invoke(ColyseusClientResult.Success, null);
                 ClientUpdator.Instance.StopCoroutine(HeartBeat());
                 ClientUpdator.Instance.StartCoroutine(HeartBeat());

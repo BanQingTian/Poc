@@ -1,0 +1,777 @@
+fileFormatVersion: 2
+guid: 94d37631ad3c9c847acfdd257f2d9e3a
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: 01
+    100002: 02
+    100004: 03
+    100006: 04
+    100008: 05
+    100010: 05 1
+    100012: 07
+    100014: //RootNode
+    100016: arm
+    100018: Box002
+    100020: Box003
+    100022: Box005
+    100024: box01
+    100026: Box011
+    100028: Box012
+    100030: Box013
+    100032: Box014
+    100034: Box015
+    100036: Box016
+    100038: Box017
+    100040: Box018
+    100042: box02
+    100044: Box020
+    100046: Box021
+    100048: Box022
+    100050: Box023
+    100052: Box024
+    100054: Box025
+    100056: Box028
+    100058: Box029
+    100060: box03
+    100062: Box030
+    100064: Box039
+    100066: Box040
+    100068: Box041
+    100070: Box043
+    100072: Box044
+    100074: Box045
+    100076: Box046
+    100078: Box047
+    100080: Box048
+    100082: Box050
+    100084: Box051
+    100086: Box054
+    100088: Box055
+    100090: Cushion
+    100092: Cushion 1
+    100094: Cushion 2
+    100096: Cushion 3
+    100098: Cushion 4
+    100100: Cushion 5
+    100102: Cushion 6
+    100104: Cushion 7
+    100106: Cylinder002
+    100108: Cylinder003
+    100110: Cylinder004
+    100112: Cylinder011
+    100114: Cylinder012
+    100116: Cylinder014
+    100118: Cylinder017
+    100120: Cylinder019
+    100122: f01
+    100124: f01_1
+    100126: f02
+    100128: f02_1
+    100130: light_A_01
+    100132: model02
+    100134: Object004
+    100136: Object005
+    100138: Object011
+    100140: Object013
+    100142: Object014
+    100144: Object015
+    100146: Object016
+    100148: Object017
+    100150: Object018
+    100152: Object022
+    100154: Object023
+    100156: Object024
+    100158: Object027
+    100160: Object029
+    100162: Object033
+    100164: Object035
+    100166: Object036
+    100168: Object037
+    100170: Object038
+    100172: Object039
+    100174: Object040
+    100176: Object042
+    100178: Object043
+    100180: Object044
+    100182: Object045
+    100184: Object046
+    100186: Object047
+    100188: Object052
+    100190: Object055
+    100192: Object056
+    100194: Object063
+    100196: Object064
+    100198: Object065
+    100200: Object069
+    100202: Object070
+    100204: Object071
+    100206: Object072
+    100208: Object073
+    100210: Object080
+    100212: Object081
+    100214: Object082
+    100216: Object083
+    100218: Object084
+    100220: Object085
+    100222: Plane001
+    100224: Plane003
+    100226: plant
+    100228: plant 1
+    100230: plant 2
+    100232: plant 3
+    100234: plant 4
+    100236: plant 5
+    100238: Point001
+    100240: polySurface4_holeman002
+    100242: polySurface4_holeman003
+    100244: polySurface4_holeman1
+    100246: Shape001
+    100248: Shape002
+    100250: Shape005
+    100252: Shape007
+    100254: Shape008
+    100256: Shape009
+    100258: Shape010
+    100260: Shape011
+    100262: Shape012
+    100264: Sphere001
+    100266: uv
+    100268: vase01
+    100270: vase01 1
+    100272: vase01 2
+    400000: 01
+    400002: 02
+    400004: 03
+    400006: 04
+    400008: 05
+    400010: 05 1
+    400012: 07
+    400014: //RootNode
+    400016: arm
+    400018: Box002
+    400020: Box003
+    400022: Box005
+    400024: box01
+    400026: Box011
+    400028: Box012
+    400030: Box013
+    400032: Box014
+    400034: Box015
+    400036: Box016
+    400038: Box017
+    400040: Box018
+    400042: box02
+    400044: Box020
+    400046: Box021
+    400048: Box022
+    400050: Box023
+    400052: Box024
+    400054: Box025
+    400056: Box028
+    400058: Box029
+    400060: box03
+    400062: Box030
+    400064: Box039
+    400066: Box040
+    400068: Box041
+    400070: Box043
+    400072: Box044
+    400074: Box045
+    400076: Box046
+    400078: Box047
+    400080: Box048
+    400082: Box050
+    400084: Box051
+    400086: Box054
+    400088: Box055
+    400090: Cushion
+    400092: Cushion 1
+    400094: Cushion 2
+    400096: Cushion 3
+    400098: Cushion 4
+    400100: Cushion 5
+    400102: Cushion 6
+    400104: Cushion 7
+    400106: Cylinder002
+    400108: Cylinder003
+    400110: Cylinder004
+    400112: Cylinder011
+    400114: Cylinder012
+    400116: Cylinder014
+    400118: Cylinder017
+    400120: Cylinder019
+    400122: f01
+    400124: f01_1
+    400126: f02
+    400128: f02_1
+    400130: light_A_01
+    400132: model02
+    400134: Object004
+    400136: Object005
+    400138: Object011
+    400140: Object013
+    400142: Object014
+    400144: Object015
+    400146: Object016
+    400148: Object017
+    400150: Object018
+    400152: Object022
+    400154: Object023
+    400156: Object024
+    400158: Object027
+    400160: Object029
+    400162: Object033
+    400164: Object035
+    400166: Object036
+    400168: Object037
+    400170: Object038
+    400172: Object039
+    400174: Object040
+    400176: Object042
+    400178: Object043
+    400180: Object044
+    400182: Object045
+    400184: Object046
+    400186: Object047
+    400188: Object052
+    400190: Object055
+    400192: Object056
+    400194: Object063
+    400196: Object064
+    400198: Object065
+    400200: Object069
+    400202: Object070
+    400204: Object071
+    400206: Object072
+    400208: Object073
+    400210: Object080
+    400212: Object081
+    400214: Object082
+    400216: Object083
+    400218: Object084
+    400220: Object085
+    400222: Plane001
+    400224: Plane003
+    400226: plant
+    400228: plant 1
+    400230: plant 2
+    400232: plant 3
+    400234: plant 4
+    400236: plant 5
+    400238: Point001
+    400240: polySurface4_holeman002
+    400242: polySurface4_holeman003
+    400244: polySurface4_holeman1
+    400246: Shape001
+    400248: Shape002
+    400250: Shape005
+    400252: Shape007
+    400254: Shape008
+    400256: Shape009
+    400258: Shape010
+    400260: Shape011
+    400262: Shape012
+    400264: Sphere001
+    400266: uv
+    400268: vase01
+    400270: vase01 1
+    400272: vase01 2
+    2100000: 07 - Default
+    2100002: Mat
+    2100004: color02
+    2100006: color01
+    2100008: base01
+    2100010: steel black
+    2100012: display
+    2100014: steel white
+    2100016: Chrome01
+    2100018: glass
+    2100020: tile02
+    2100022: light
+    2100024: No Name
+    2100026: plant02
+    2100028: rubber
+    2100030: 'Material #25'
+    2100032: plant01
+    2300000: 01
+    2300002: 02
+    2300004: 03
+    2300006: 04
+    2300008: 05
+    2300010: 05 1
+    2300012: 07
+    2300014: Box002
+    2300016: Box003
+    2300018: Box005
+    2300020: box01
+    2300022: Box011
+    2300024: Box012
+    2300026: Box013
+    2300028: Box014
+    2300030: Box015
+    2300032: Box016
+    2300034: Box017
+    2300036: Box018
+    2300038: box02
+    2300040: Box020
+    2300042: Box021
+    2300044: Box022
+    2300046: Box023
+    2300048: Box024
+    2300050: Box025
+    2300052: Box028
+    2300054: Box029
+    2300056: box03
+    2300058: Box030
+    2300060: Box039
+    2300062: Box040
+    2300064: Box041
+    2300066: Box043
+    2300068: Box044
+    2300070: Box045
+    2300072: Box046
+    2300074: Box047
+    2300076: Box048
+    2300078: Box050
+    2300080: Box051
+    2300082: Box054
+    2300084: Box055
+    2300086: Cushion
+    2300088: Cushion 1
+    2300090: Cushion 2
+    2300092: Cushion 3
+    2300094: Cushion 4
+    2300096: Cushion 5
+    2300098: Cushion 6
+    2300100: Cushion 7
+    2300102: Cylinder002
+    2300104: Cylinder003
+    2300106: Cylinder004
+    2300108: Cylinder011
+    2300110: Cylinder012
+    2300112: Cylinder014
+    2300114: Cylinder017
+    2300116: Cylinder019
+    2300118: f01
+    2300120: f01_1
+    2300122: f02
+    2300124: f02_1
+    2300126: light_A_01
+    2300128: model02
+    2300130: Object004
+    2300132: Object005
+    2300134: Object011
+    2300136: Object013
+    2300138: Object014
+    2300140: Object015
+    2300142: Object016
+    2300144: Object017
+    2300146: Object018
+    2300148: Object022
+    2300150: Object023
+    2300152: Object024
+    2300154: Object027
+    2300156: Object029
+    2300158: Object033
+    2300160: Object035
+    2300162: Object036
+    2300164: Object037
+    2300166: Object038
+    2300168: Object039
+    2300170: Object040
+    2300172: Object042
+    2300174: Object044
+    2300176: Object045
+    2300178: Object046
+    2300180: Object047
+    2300182: Object052
+    2300184: Object055
+    2300186: Object056
+    2300188: Object063
+    2300190: Object065
+    2300192: Object069
+    2300194: Object070
+    2300196: Object071
+    2300198: Object072
+    2300200: Object073
+    2300202: Object080
+    2300204: Object081
+    2300206: Object082
+    2300208: Object083
+    2300210: Object084
+    2300212: Object085
+    2300214: Plane001
+    2300216: Plane003
+    2300218: plant
+    2300220: plant 1
+    2300222: plant 2
+    2300224: plant 3
+    2300226: plant 4
+    2300228: plant 5
+    2300230: polySurface4_holeman002
+    2300232: polySurface4_holeman003
+    2300234: polySurface4_holeman1
+    2300236: Shape001
+    2300238: Shape002
+    2300240: Shape005
+    2300242: Shape007
+    2300244: Shape008
+    2300246: Shape009
+    2300248: Shape010
+    2300250: Shape011
+    2300252: Shape012
+    2300254: Sphere001
+    2300256: vase01
+    2300258: vase01 1
+    2300260: vase01 2
+    3300000: 01
+    3300002: 02
+    3300004: 03
+    3300006: 04
+    3300008: 05
+    3300010: 05 1
+    3300012: 07
+    3300014: Box002
+    3300016: Box003
+    3300018: Box005
+    3300020: box01
+    3300022: Box011
+    3300024: Box012
+    3300026: Box013
+    3300028: Box014
+    3300030: Box015
+    3300032: Box016
+    3300034: Box017
+    3300036: Box018
+    3300038: box02
+    3300040: Box020
+    3300042: Box021
+    3300044: Box022
+    3300046: Box023
+    3300048: Box024
+    3300050: Box025
+    3300052: Box028
+    3300054: Box029
+    3300056: box03
+    3300058: Box030
+    3300060: Box039
+    3300062: Box040
+    3300064: Box041
+    3300066: Box043
+    3300068: Box044
+    3300070: Box045
+    3300072: Box046
+    3300074: Box047
+    3300076: Box048
+    3300078: Box050
+    3300080: Box051
+    3300082: Box054
+    3300084: Box055
+    3300086: Cushion
+    3300088: Cushion 1
+    3300090: Cushion 2
+    3300092: Cushion 3
+    3300094: Cushion 4
+    3300096: Cushion 5
+    3300098: Cushion 6
+    3300100: Cushion 7
+    3300102: Cylinder002
+    3300104: Cylinder003
+    3300106: Cylinder004
+    3300108: Cylinder011
+    3300110: Cylinder012
+    3300112: Cylinder014
+    3300114: Cylinder017
+    3300116: Cylinder019
+    3300118: f01
+    3300120: f01_1
+    3300122: f02
+    3300124: f02_1
+    3300126: light_A_01
+    3300128: model02
+    3300130: Object004
+    3300132: Object005
+    3300134: Object011
+    3300136: Object013
+    3300138: Object014
+    3300140: Object015
+    3300142: Object016
+    3300144: Object017
+    3300146: Object018
+    3300148: Object022
+    3300150: Object023
+    3300152: Object024
+    3300154: Object027
+    3300156: Object029
+    3300158: Object033
+    3300160: Object035
+    3300162: Object036
+    3300164: Object037
+    3300166: Object038
+    3300168: Object039
+    3300170: Object040
+    3300172: Object042
+    3300174: Object044
+    3300176: Object045
+    3300178: Object046
+    3300180: Object047
+    3300182: Object052
+    3300184: Object055
+    3300186: Object056
+    3300188: Object063
+    3300190: Object065
+    3300192: Object069
+    3300194: Object070
+    3300196: Object071
+    3300198: Object072
+    3300200: Object073
+    3300202: Object080
+    3300204: Object081
+    3300206: Object082
+    3300208: Object083
+    3300210: Object084
+    3300212: Object085
+    3300214: Plane001
+    3300216: Plane003
+    3300218: plant
+    3300220: plant 1
+    3300222: plant 2
+    3300224: plant 3
+    3300226: plant 4
+    3300228: plant 5
+    3300230: polySurface4_holeman002
+    3300232: polySurface4_holeman003
+    3300234: polySurface4_holeman1
+    3300236: Shape001
+    3300238: Shape002
+    3300240: Shape005
+    3300242: Shape007
+    3300244: Shape008
+    3300246: Shape009
+    3300248: Shape010
+    3300250: Shape011
+    3300252: Shape012
+    3300254: Sphere001
+    3300256: vase01
+    3300258: vase01 1
+    3300260: vase01 2
+    4300000: polySurface4_holeman1
+    4300002: polySurface4_holeman002
+    4300004: model02
+    4300006: Plane001
+    4300008: Box002
+    4300010: Cylinder002
+    4300012: Shape001
+    4300014: Object004
+    4300016: Box003
+    4300018: Shape002
+    4300020: Object005
+    4300022: Box005
+    4300024: Object011
+    4300026: Box011
+    4300028: Box012
+    4300030: Box013
+    4300032: Box014
+    4300034: Box015
+    4300036: Box016
+    4300038: Object013
+    4300040: Object014
+    4300042: Object015
+    4300044: Object016
+    4300046: Object017
+    4300048: Object018
+    4300050: Object022
+    4300052: Object023
+    4300054: Object024
+    4300056: Cylinder003
+    4300058: Cylinder004
+    4300060: Object027
+    4300062: Box040
+    4300064: Object029
+    4300066: Object033
+    4300068: Box017
+    4300070: 01
+    4300072: 02
+    4300074: 03
+    4300076: 04
+    4300078: 05
+    4300080: 05
+    4300082: 07
+    4300084: f01
+    4300086: f01_1
+    4300088: f02
+    4300090: f02_1
+    4300092: Box018
+    4300094: Object035
+    4300096: Object036
+    4300098: Object037
+    4300100: Object038
+    4300102: Shape005
+    4300104: Box020
+    4300106: Object039
+    4300108: Box021
+    4300110: Object040
+    4300112: Box023
+    4300114: Box024
+    4300116: Box025
+    4300118: Cylinder011
+    4300120: Box028
+    4300122: Box029
+    4300124: Box030
+    4300126: Object042
+    4300128: Plane003
+    4300130: vase01
+    4300132: Cylinder012
+    4300134: Object045
+    4300136: Object046
+    4300138: Object044
+    4300140: Object047
+    4300142: box03
+    4300144: box02
+    4300146: box01
+    4300148: Cylinder014
+    4300150: Box039
+    4300152: Box041
+    4300154: Object052
+    4300156: Object055
+    4300158: Box043
+    4300160: Object056
+    4300162: Cylinder017
+    4300164: Object063
+    4300166: Object065
+    4300168: Sphere001
+    4300170: Shape007
+    4300172: Box044
+    4300174: Object069
+    4300176: Object070
+    4300178: Object071
+    4300180: Object072
+    4300182: Object073
+    4300184: polySurface4_holeman003
+    4300186: Object080
+    4300188: Object081
+    4300190: Cylinder019
+    4300192: Box045
+    4300194: Box046
+    4300196: Box047
+    4300198: Box048
+    4300200: Shape008
+    4300202: Shape009
+    4300204: Shape010
+    4300206: Shape011
+    4300208: Box050
+    4300210: Box051
+    4300212: Object082
+    4300214: Object083
+    4300216: Shape012
+    4300218: Object084
+    4300220: Box054
+    4300222: Box055
+    4300224: Object085
+    4300226: Cushion
+    4300228: Cushion
+    4300230: Cushion
+    4300232: Cushion
+    4300234: Cushion
+    4300236: Cushion
+    4300238: Cushion
+    4300240: Cushion
+    4300242: light_A_01
+    4300244: plant
+    4300246: plant
+    4300248: plant
+    4300250: plant
+    4300252: plant
+    4300254: plant
+    4300256: Box022
+    4300258: vase01
+    4300260: vase01
+    7400000: Take 001
+    9500000: //RootNode
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 0.01
+    hasPreviousCalculatedGlobalScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

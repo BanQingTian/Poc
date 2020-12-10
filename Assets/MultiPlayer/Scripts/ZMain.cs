@@ -12,7 +12,7 @@ public class ZMain : MonoBehaviour
     private static List<string> IPAdress = new List<string>()
     {
         "127.0.0.1",
-        "191.168.69.112",
+        "191.168.68.187",
         "",
     };
 
@@ -57,5 +57,7 @@ public class ZMain : MonoBehaviour
 public static class Constant
 {
     public const string Event__Capture__ = "event_capture";
-
+    public const string Event__MiniGame__ = "event_minigame";
+    public const string Event__ModelShow__ = "event_modelshow";
+    public const string Event__Rotate__ = "event_rotate";
 }
