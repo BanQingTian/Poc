@@ -12,7 +12,7 @@ public class ZMain : MonoBehaviour
     private static List<string> IPAdress = new List<string>()
     {
         "127.0.0.1",
-        "191.168.68.187",
+        "multiplay.nreal.ai",
         "",
     };
 
@@ -48,6 +48,7 @@ public class ZMain : MonoBehaviour
     public void ConnectServer(ZServiceMode sm)
     {
         string ip = IPAdress[(int)sm];
+        Debug.Log("IP : " + ip);
         MessageManager.Instance.SendConnectServerMsg(ip, "2567");
     }
 }

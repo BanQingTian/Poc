@@ -215,25 +215,28 @@ namespace NetWorkToolkit
             return response;
         }
 
-        public async void ConnectToServer(string ip, string port, ColyseusClientResultEvent callback)
+        public async void ConnectToServer(string host, string port, ColyseusClientResultEvent callback)
         {
-            this.m_ServerIP = ip;
-            string endpoint = string.Format("ws://{0}:{1}", m_ServerIP, port);
+            //this.m_ServerIP = ip;
+            //string endpoint = string.Format("wss://{0}:{1}", m_ServerIP, port);
+
+            string endpoint = string.Format("{0}://{1}", NetWorkToolkit.Constant.DefaultScheme, host);
+
             Debug.Log("Connect to server:" + endpoint);
             // Connect to the colyeus Server
-            client = ColyseusManager.Instance.CreateClient(endpoint);
+            client = ColyseusManager.Instance.CreateClient(endpoint,"");
             //var result = await client.IsServerAvailable();
-            if (true)
+            //if (result.result)
             {
                 //Debug.Log("Server is available version:" + result.version);
                 callback?.Invoke(ColyseusClientResult.Success, null);
                 ClientUpdator.Instance.StopCoroutine(HeartBeat());
                 ClientUpdator.Instance.StartCoroutine(HeartBeat());
             }
-            else
-            {
-                callback?.Invoke(ColyseusClientResult.Failed, null);
-            }
+            //else
+            //{
+            //    callback?.Invoke(ColyseusClientResult.Failed, null);
+            //}
         }
 
         private ColyseusClientResultEvent onCreateRoom;

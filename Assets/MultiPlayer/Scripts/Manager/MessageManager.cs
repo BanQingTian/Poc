@@ -69,6 +69,8 @@ public class MessageManager
         //GlobalTip.AkunamoTataPlus("Server connection...");
         //serverIP = serverIP.Replace(" ", "");
         client.ConnectToServer(host, route, OnConnectResp);
+        //client.ConnectToServer("192.168.68.55", route, OnConnectResp);
+
     }
 
     public void SendLeaveRoomMsg()

@@ -41,7 +41,7 @@ namespace Colyseus
             }
         }
 
-        public Client CreateClient(string endpoint)
+        public Client CreateClient(string endpoint,string  route)
         {
 			Client = new Client(endpoint);
 			return Client;
