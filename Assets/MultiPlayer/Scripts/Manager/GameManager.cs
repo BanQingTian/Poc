@@ -65,10 +65,10 @@ public class GameManager : MonoBehaviour
                 {
                     SendPlayNextAnim();
                 }
-                if (ZGlobal.ClientMode == ZClientMode.Curator &&  m_MinigameBehavior.GetAnimPlayingName() == "End")
+                if (ZGlobal.ClientMode == ZClientMode.Curator && m_MinigameBehavior.GetAnimPlayingName() == "End")
                 {
                     // 动画播放完
-                    if (m_MinigameBehavior.MGModelAnimStatusInfo.normalizedTime >= 1) 
+                    if (m_MinigameBehavior.MGModelAnimStatusInfo.normalizedTime >= 1)
                     {
                         Debug.Log("~~~~SendPlayShowModels(ZCurAssetBundleStatus.S0103);");
                         SendPlayShowModels(ZCurAssetBundleStatus.S0103);
@@ -78,7 +78,7 @@ public class GameManager : MonoBehaviour
                 break;
 
             case ZCurGameStatusMode.MODELS_SHOW_STATUS:
-                
+
 
                 if (ZGlobal.ClientMode == ZClientMode.Curator && m_ShowModelBehavoir.GetAnimPlayingName() == "End")
                 {
@@ -116,8 +116,8 @@ public class GameManager : MonoBehaviour
 
 
 
-                   
-                   
+
+
                 }
 
                 break;
@@ -185,10 +185,14 @@ public class GameManager : MonoBehaviour
 
     public void S2C_PlayMiniGame(string param)
     {
+        ShowHint(HintType.WaitingOthers, false);
+        ChangeGameStatuTip(ZCurGameStatusMode.MINI_GAME_STATUS);
         LoadAssetBundle((ZCurAssetBundleStatus)int.Parse(param));
     }
     public void S2C_PlayShowModels(string param)
     {
+        ShowHint(HintType.WaitingOthers, false);
+        ChangeGameStatuTip(ZCurGameStatusMode.MODELS_SHOW_STATUS);
         LoadAssetBundle((ZCurAssetBundleStatus)int.Parse(param));
     }
 

@@ -58,7 +58,7 @@ namespace NetWorkToolkit
 
         private NetState currentState = NetState.Uninitialized;
 
-        private const int TimeOut = 2;
+        private const int TimeOut = 3;
 
         public static string localIP;
 

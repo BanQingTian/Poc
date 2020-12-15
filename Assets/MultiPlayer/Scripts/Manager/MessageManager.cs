@@ -348,7 +348,7 @@ public class MessageManager
 
     private void OnUpdateRoomInfoResp(object obj)
     {
-        Debug.Log("[Server Response] OnUpdateRoomInfoResp --- " + obj);
+        //Debug.Log("[Server Response] OnUpdateRoomInfoResp --- " + obj);
     }
 
     private void OnUpdateRoomInfoResp(ColyseusClientResult result, object obj)
