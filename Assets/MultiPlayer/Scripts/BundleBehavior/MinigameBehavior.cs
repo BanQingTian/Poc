@@ -3,14 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class MinigameBehavior : MonoBehaviour
+public class MinigameBehavior : BaseBehaviour
 {
     private static MinigameBehavior mb;
 
-    public GameObject MGModel = null;
-    public Animator MGModelAnim = null;
-    public AnimatorStateInfo MGModelAnimStatusInfo;
-
+    private const float waitTime = 3.5f; // 动画间隔时间
+    private float time = 0;
+    private void Update()
+    {
+        if(time < waitTime)
+        {
+            time += Time.deltaTime;
+        }
+    }
 
     public void Init()
     {
@@ -34,15 +39,26 @@ public class MinigameBehavior : MonoBehaviour
         Finish.Invoke(MGModel as T);
     }
 
-    private void Processing(GameObject go)
+    public void Processing(GameObject go)
     {
         MGModel = go;
         MGModelAnim = MGModel.GetComponent<Animator>();
         MGModelAnimStatusInfo = MGModelAnim.GetCurrentAnimatorStateInfo(0);
     }
 
+    float _freshTime = 0;
     public string GetAnimPlayingName()
     {
+        _freshTime += Time.deltaTime;
+        if(_freshTime > 1)
+        {
+            if (MGModelAnim != null)
+            {
+                MGModelAnimStatusInfo = MGModelAnim.GetCurrentAnimatorStateInfo(0);
+            }
+            _freshTime = 0;
+        }
+
         if ((
               MGModelAnimStatusInfo.IsName("Idle_01")
            || MGModelAnimStatusInfo.IsName("Idle_02")
@@ -53,14 +69,18 @@ public class MinigameBehavior : MonoBehaviour
            || MGModelAnimStatusInfo.IsName("Idle_07")
            ))
         {
+            Debug.Log("~~~~Idle");
+
             return "Idle";
         }
         else if (MGModelAnimStatusInfo.IsName("End"))
         {
+            Debug.Log("~~~~end");
             return "End";
         }
         else
         {
+            Debug.Log("~~~~Charge");
             return "Charge";
         }
 
@@ -68,13 +88,15 @@ public class MinigameBehavior : MonoBehaviour
     }
     public void PlayNextAnim()
     {
+        if (time < waitTime) return;
         switch (GetAnimPlayingName())
         {
             case "Idle":
                 MGModelAnim.SetTrigger("Next");
+                time = 0;
                 break;
             case "End":
-                GameManager.Instance.LoadAssetBundle(ZGlobal.CurABStatus++);
+                //GameManager.Instance.LoadAssetBundle(ZGlobal.CurABStatus++);
                 break;
             case "Charge":
                 break;

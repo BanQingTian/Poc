@@ -35,7 +35,7 @@ public class PlayerMe
         }
     }
 
-    public PlayerNetObj GetPlayerNetObj(string playerid )
+    public PlayerNetObj GetPlayerNetObj(string playerid)
     {
         if (PlayerDict.ContainsKey(playerid))
         {
@@ -83,7 +83,7 @@ public class PlayerMe
     public GameObject GetAssetBundleGO(string abName)
     {
         GameObject go;
-        if (AssetBundleGODict.TryGetValue(abName,out go))
+        if (AssetBundleGODict.TryGetValue(abName, out go))
         {
             go.SetActive(true);
             return go;
@@ -97,7 +97,7 @@ public class PlayerMe
         GameObject go;
         if (!AssetBundleGODict.TryGetValue(abName, out go))
         {
-            AssetBundleGODict.Add(abName, go);
+            AssetBundleGODict.Add(abName, g);
         }
         else
         {
@@ -114,6 +114,7 @@ public class PlayerMe
             {
                 GameObject.Destroy(go);
                 AssetBundleGODict.Remove(abName);
+                ResourceManager.UnLoadAssetBundle(abName);
             }
             else
             {

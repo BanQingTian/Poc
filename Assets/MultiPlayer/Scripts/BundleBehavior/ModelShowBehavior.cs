@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ModelShowBehavior : MonoBehaviour
+public class ModelShowBehavior : BaseBehaviour
 {
 
     protected bool Initialized = false;
 
-    protected GameObject CurModel = null;
     private bool isRotate = false;
 
     public void Init()
@@ -15,10 +14,20 @@ public class ModelShowBehavior : MonoBehaviour
         if (Initialized)
             return;
 
+        
+
+
+
         Initialized = true;
-
-
     }
+
+    public void Processing(GameObject go)
+    {
+        MGModel = go;
+        MGModelAnim = go.GetComponent<Animator>();
+        MGModelAnimStatusInfo = MGModelAnim.GetCurrentAnimatorStateInfo(0);
+    }
+
 
     private void OnEnable()
     {
@@ -34,14 +43,32 @@ public class ModelShowBehavior : MonoBehaviour
     {
         if (isRotate)
         {
-            CurModel.transform.Rotate(Vector3.up, 0.1f);
+            MGModel.transform.Rotate(Vector3.up, 0.1f);
         }
+    }
+
+    float _freshTime;
+    public string GetAnimPlayingName()
+    {
+        _freshTime += Time.deltaTime;
+        if (_freshTime > 1)
+        {
+            if (MGModelAnim != null)
+            {
+                MGModelAnimStatusInfo = MGModelAnim.GetCurrentAnimatorStateInfo(0);
+            }
+            _freshTime = 0;
+        }
+
+        if (MGModelAnimStatusInfo.IsName("End"))
+        {
+            return "End";
+        }
+        return "";
     }
 
     private void rotate(object sender, EventCenter.Args args)
     {
-        CurModel = GameObject.CreatePrimitive(PrimitiveType.Cube);
-
         isRotate = !isRotate;
     }
 }

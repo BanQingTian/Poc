@@ -87,12 +87,12 @@ public class MessageManager
         client.SendMsg(MsgId.Commond, Target.All, commond);
     }
 
-    public void SendPlayShowModels()
+    public void SendPlayShowModels(ZCurAssetBundleStatus abs)
     {
         CommondInfo commond = new CommondInfo()
         {
-            func = S2CFuncName.PlayMiniGame,
-            param = ((int)ZCurAssetBundleStatus.S0103).ToString(),
+            func = S2CFuncName.PlayShowModels,
+            param = ((int)abs).ToString(),
         };
         client.SendMsg(MsgId.Commond, Target.All, commond);
     }
@@ -178,7 +178,7 @@ public class MessageManager
         client.SendMsg(MsgId.Commond, Target.All, commond);
     }
 
-    public void SendAddScore(string belongid,int score)
+    public void SendAddScore(string belongid, int score)
     {
         CommondInfo commond = new CommondInfo()
         {
@@ -190,7 +190,7 @@ public class MessageManager
 
     public void SendScore(bool win)
     {
-      
+
 
         Debug.LogError("[CZ] send score -->" + win);
     }
@@ -246,7 +246,7 @@ public class MessageManager
             {
                 GameManager.Instance.CreateRoom();
             }
-            else if(ZGlobal.ClientMode == ZClientMode.Visitor)
+            else if (ZGlobal.ClientMode == ZClientMode.Visitor)
             {
                 GameManager.Instance.VisitModeSearchRoom();
             }
@@ -306,7 +306,7 @@ public class MessageManager
         Debug.Log("[Server Response] OnCreateARoomResp --- " + obj);
         if (result == ColyseusClientResult.Success)
         {
-            if(ZGlobal.ClientMode == ZClientMode.Curator)
+            if (ZGlobal.ClientMode == ZClientMode.Curator)
             {
                 GameManager.Instance.OpenScan();
                 GameManager.Instance.JoinRoom = true;
@@ -363,10 +363,10 @@ public class MessageManager
             var roomsAvailable = obj as List<CustomRoomAvailable>;
             //Debug.Log("OnGetRoomListResp :" + roomsAvailable.Count);
 
-            if(roomsAvailable.Count > 0)
+            if (roomsAvailable.Count > 0)
             {
                 var roomState = JsonUtility.FromJson<RoomState>(roomsAvailable[0].metadata.roomInfo);
-                if(roomState.state == 0)
+                if (roomState.state == 0)
                 {
                     SendJoinRoomByIdMsg(roomState.roomID);
                     GameManager.Instance.JoinRoom = true;
@@ -384,6 +384,7 @@ public class MessageManager
         Debug.Log("[Server Response] OnCommandResp --- " + obj);
 
         CommondInfo commond = obj as CommondInfo;
+        Debug.Log("~~~" + commond.func);
         GameManager.Instance.S2CFuncTable[commond.func](commond.param);
     }
     #endregion

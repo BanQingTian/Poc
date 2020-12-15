@@ -25,6 +25,9 @@ public class GameManager : MonoBehaviour
     public delegate void S2CFuncAction<T>(T info);
     public Dictionary<string, S2CFuncAction<string>> S2CFuncTable = new Dictionary<string, S2CFuncAction<string>>();
 
+    #region Unity_Internal
+
+
     private void Awake()
     {
         Instance = this;
@@ -39,6 +42,18 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+#if UNITY_EDITOR
+
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            Time.timeScale = 5;
+        }
+        if (Input.GetKeyUp(KeyCode.F))
+        {
+            Time.timeScale = 1;
+        }
+
+#endif
         switch (ZGlobal.CurGameStatusMode)
         {
             case ZCurGameStatusMode.WAITING_STATUS:
@@ -50,28 +65,69 @@ public class GameManager : MonoBehaviour
                 {
                     SendPlayNextAnim();
                 }
+                if (ZGlobal.ClientMode == ZClientMode.Curator &&  m_MinigameBehavior.GetAnimPlayingName() == "End")
+                {
+                    // 动画播放完
+                    if (m_MinigameBehavior.MGModelAnimStatusInfo.normalizedTime >= 1) 
+                    {
+                        Debug.Log("~~~~SendPlayShowModels(ZCurAssetBundleStatus.S0103);");
+                        SendPlayShowModels(ZCurAssetBundleStatus.S0103);
+                    }
+                }
+
                 break;
 
             case ZCurGameStatusMode.MODELS_SHOW_STATUS:
-                switch (ZGlobal.CurABStatus)
+                
+
+                if (ZGlobal.ClientMode == ZClientMode.Curator && m_ShowModelBehavoir.GetAnimPlayingName() == "End")
                 {
-                    case ZCurAssetBundleStatus.S0103:
-                        break;
-                    case ZCurAssetBundleStatus.S0104:
-                        break;
-                    case ZCurAssetBundleStatus.S0105:
-                        break;
-                    case ZCurAssetBundleStatus.S0106:
-                        break;
-                    default:
-                        Debug.LogError("Cur Game Status Mode != ZCurAssetBundleStatus ^%^$^$%#@@$%");
-                        break;
+                    switch (ZGlobal.CurABStatus)
+                    {
+                        case ZCurAssetBundleStatus.S0103:
+                            // 动画播放完
+                            if (m_ShowModelBehavoir.MGModelAnimStatusInfo.normalizedTime >= 1)
+                            {
+                                SendPlayShowModels(ZCurAssetBundleStatus.S0104);
+                            }
+                            break;
+                        case ZCurAssetBundleStatus.S0104:
+                            if (m_ShowModelBehavoir.MGModelAnimStatusInfo.normalizedTime >= 1)
+                            {
+                                SendPlayShowModels(ZCurAssetBundleStatus.S0105);
+                            }
+                            break;
+                        case ZCurAssetBundleStatus.S0105:
+                            if (m_ShowModelBehavoir.MGModelAnimStatusInfo.normalizedTime >= 1)
+                            {
+                                //SendPlayShowModels(ZCurAssetBundleStatus.S0106);
+                            }
+                            break;
+                        case ZCurAssetBundleStatus.S0106:
+
+                            Debug.Log("~~~~end!!!!!#*&^#&$&$        ");
+
+                            break;
+                        default:
+                            Debug.LogError("Cur Game Status Mode != ZCurAssetBundleStatus ^%^$^$%#@@$%");
+                            break;
+                    }
+
+
+
+
+                   
+                   
                 }
+
                 break;
             default:
                 break;
         }
     }
+
+
+    #endregion
 
     public void Initialized()
     {
@@ -152,9 +208,9 @@ public class GameManager : MonoBehaviour
         MessageManager.Instance.SendPlayMiniGame();
     }
 
-    public void SendPlayShowModels()
+    public void SendPlayShowModels(ZCurAssetBundleStatus abs)
     {
-        MessageManager.Instance.SendPlayShowModels();
+        MessageManager.Instance.SendPlayShowModels(abs);
     }
 
     public void CreateRoom()
@@ -211,10 +267,9 @@ public class GameManager : MonoBehaviour
     #region AssetBundle 
 
 
-
     public void LoadAssetBundle(ZCurAssetBundleStatus abs)
     {
-        var a = m_PlayerMe.GetAssetBundleGO(ZCurAssetBundleStatus.S0102.ToString());
+        var a = m_PlayerMe.GetAssetBundleGO(ZGlobal.CurABStatus.ToString());
         if (a != null && a.activeInHierarchy)
         {
             m_PlayerMe.RemoveAssetBundleGO(ZGlobal.CurABStatus.ToString(), true);
@@ -227,16 +282,18 @@ public class GameManager : MonoBehaviour
         {
             ResourceManager.LoadAssetAsync<GameObject>(string.Format("{0}", curABS.ToLower()), curABS, (GameObject prefab) =>
             {
-                ChangeABStatusTip(ZGlobal.CurABStatus);
+                ChangeABStatusTip(abs);
                 var go = GameObject.Instantiate(prefab);
 
                 if (ZGlobal.CurABStatus <= ZCurAssetBundleStatus.S0102)
                 {
                     go.transform.SetParent(m_MinigameBehavior.transform);
+                    m_MinigameBehavior.Processing(go);
                 }
                 else
                 {
                     go.transform.SetParent(m_ShowModelBehavoir.transform);
+                    m_ShowModelBehavoir.Processing(go);
                 }
 
                 go.transform.position = Vector3.zero;
@@ -267,6 +324,8 @@ public class GameManager : MonoBehaviour
 
     public void ChangeABStatusTip(ZCurAssetBundleStatus abs)
     {
+        Debug.Log("~~~~~ Cur ABS = " + abs.ToString());
+
         ZGlobal.CurABStatus = abs;
     }
 

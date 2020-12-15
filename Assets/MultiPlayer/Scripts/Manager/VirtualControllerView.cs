@@ -31,6 +31,12 @@ public class VirtualControllerView : MonoBehaviour
     private void Update()
     {
         pentaKill();
+#if UNITY_EDITOR
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            clkcount = 5;
+        }
+#endif
     }
 
     private void OnDisable()
@@ -126,8 +132,7 @@ public class VirtualControllerView : MonoBehaviour
         }
 
         GameManager.Instance.ChangeGameStatuTip(ZCurGameStatusMode.MODELS_SHOW_STATUS);
-
-        EventCenter.Instance.DispatchEvent(ZConstant.Event__ModelShow__);
+        GameManager.Instance.SendPlayShowModels(ZCurAssetBundleStatus.S0103);
     }
     private void CaptureBtnClk()
     {

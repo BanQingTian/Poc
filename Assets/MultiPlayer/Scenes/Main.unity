@@ -1914,6 +1914,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05df87345c99540408068e9f7ada4eba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MGModel: {fileID: 0}
+  MGModelAnim: {fileID: 0}
 --- !u!1 &1661758897 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5918630330031971362, guid: eec1e6887065122468ac58b5bbcdc099,
