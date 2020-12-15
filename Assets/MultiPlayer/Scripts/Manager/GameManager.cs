@@ -284,27 +284,27 @@ public class GameManager : MonoBehaviour
         var abgo = m_PlayerMe.GetAssetBundleGO(curABS);
         if (abgo == null)
         {
-            ResourceManager.LoadAssetAsync<GameObject>(string.Format("{0}", curABS.ToLower()), curABS, (GameObject prefab) =>
-            {
-                ChangeABStatusTip(abs);
-                var go = GameObject.Instantiate(prefab);
+            ResourceManager.LoadAssetAsync<GameObject>(string.Format("{0}/{1}", ZConstant.DefaultDir, curABS.ToLower()), curABS, (GameObject prefab) =>
+             {
+                 ChangeABStatusTip(abs);
+                 var go = GameObject.Instantiate(prefab);
 
-                if (ZGlobal.CurABStatus <= ZCurAssetBundleStatus.S0102)
-                {
-                    go.transform.SetParent(m_MinigameBehavior.transform);
-                    m_MinigameBehavior.Processing(go);
-                }
-                else
-                {
-                    go.transform.SetParent(m_ShowModelBehavoir.transform);
-                    m_ShowModelBehavoir.Processing(go);
-                }
+                 if (ZGlobal.CurABStatus <= ZCurAssetBundleStatus.S0102)
+                 {
+                     go.transform.SetParent(m_MinigameBehavior.transform);
+                     m_MinigameBehavior.Processing(go);
+                 }
+                 else
+                 {
+                     go.transform.SetParent(m_ShowModelBehavoir.transform);
+                     m_ShowModelBehavoir.Processing(go);
+                 }
 
-                go.transform.position = Vector3.zero;
-                go.transform.rotation = Quaternion.identity;
-                go.transform.localScale = Vector3.one;
-                m_PlayerMe.AddAssetBundleGO(curABS, go);
-            });
+                 go.transform.position = Vector3.zero;
+                 go.transform.rotation = Quaternion.identity;
+                 go.transform.localScale = Vector3.one;
+                 m_PlayerMe.AddAssetBundleGO(curABS, go);
+             });
         }
         else
         {

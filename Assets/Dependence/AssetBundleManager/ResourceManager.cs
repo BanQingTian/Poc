@@ -82,7 +82,7 @@ public class ResourceManager : Singleton<ResourceManager>
 
     public static void UnLoadAssetBundle(string abName)
     {
-        AssetBundleManager.UnloadAssetBundle(abName);
+        AssetBundleManager.UnloadAssetBundle(string.Format("{0}/{1}", ZConstant.DefaultDir, abName));
     }
 
     public static void LoadLevelAsync(string assetBundleName, string assetName, bool isAdditive, Action onFinish)

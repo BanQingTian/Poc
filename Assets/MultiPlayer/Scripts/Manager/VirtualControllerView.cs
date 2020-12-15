@@ -118,7 +118,6 @@ public class VirtualControllerView : MonoBehaviour
             return;
         }
 
-        GameManager.Instance.ChangeGameStatuTip(ZCurGameStatusMode.MINI_GAME_STATUS);
         GameManager.Instance.SendPlayMiniGame();
     }
     private void ModelsBtnClk()

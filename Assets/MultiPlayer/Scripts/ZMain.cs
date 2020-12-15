@@ -63,6 +63,8 @@ public static class ZConstant
     public const string Event__ModelShow__ = "event_modelshow";
     public const string Event__Rotate__ = "event_rotate";
 
+    public const string DefaultDir = "lgu";
+
     public static string DefaultScheme = "ws";
     public static string ReplaceScheme = "http";
 }
