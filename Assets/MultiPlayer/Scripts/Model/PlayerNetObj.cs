@@ -124,7 +124,7 @@ public class PlayerNetObj : NetObjectEntity
         // 游戏开始方可设计
         if (GameManager.Instance.BeginGame)
         {
-            Send_Shoot_HaveInterval_Msg();
+            //Send_Shoot_HaveInterval_Msg();
         }
     }
 

@@ -21,6 +21,11 @@ public static class ZPathHelper
         return path;
     }
 
+    public static string GetStreammingAssetsPath()
+    {
+        return Application.streamingAssetsPath;
+    }
+
 
     public static string GetPersistentDataPath()
     {

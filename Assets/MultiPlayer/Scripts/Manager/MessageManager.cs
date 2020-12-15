@@ -18,6 +18,9 @@ public class S2CFuncName
     public static string GameOver = "GameOver";
     public static string AddScore = "AddScore";
 
+    public static string PlayMiniGame = "PlayMiniGame";
+    public static string PlayShowModels = "PlayShowModels";
+
     public static string Test = "test";
 }
 
@@ -72,6 +75,28 @@ public class MessageManager
         //client.ConnectToServer("192.168.68.55", route, OnConnectResp);
 
     }
+
+
+    public void SendPlayMiniGame()
+    {
+        CommondInfo commond = new CommondInfo()
+        {
+            func = S2CFuncName.PlayMiniGame,
+            param = ((int)ZCurAssetBundleStatus.S0102).ToString(),
+        };
+        client.SendMsg(MsgId.Commond, Target.All, commond);
+    }
+
+    public void SendPlayShowModels()
+    {
+        CommondInfo commond = new CommondInfo()
+        {
+            func = S2CFuncName.PlayMiniGame,
+            param = ((int)ZCurAssetBundleStatus.S0103).ToString(),
+        };
+        client.SendMsg(MsgId.Commond, Target.All, commond);
+    }
+
 
     public void SendLeaveRoomMsg()
     {
@@ -328,7 +353,7 @@ public class MessageManager
 
     private void OnUpdateRoomInfoResp(ColyseusClientResult result, object obj)
     {
-        Debug.Log("[Server Response] OnUpdateRoomInfoResp --- " + obj);
+        //Debug.Log("[Server Response] OnUpdateRoomInfoResp --- " + obj);
 
         var rooms = (List<CustomRoomAvailable>)obj;
 
@@ -336,7 +361,7 @@ public class MessageManager
         {
             // obj is List<CustomRoomAvailable>
             var roomsAvailable = obj as List<CustomRoomAvailable>;
-            Debug.Log("OnGetRoomListResp :" + roomsAvailable.Count);
+            //Debug.Log("OnGetRoomListResp :" + roomsAvailable.Count);
 
             if(roomsAvailable.Count > 0)
             {

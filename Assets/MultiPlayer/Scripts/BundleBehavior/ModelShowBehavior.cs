@@ -22,12 +22,12 @@ public class ModelShowBehavior : MonoBehaviour
 
     private void OnEnable()
     {
-        EventCenter.Instance.AddEventListener(Constant.Event__Rotate__, rotate);
+        EventCenter.Instance.AddEventListener(ZConstant.Event__Rotate__, rotate);
     }
 
     private void OnDisable()
     {
-        EventCenter.Instance.RemoveEventListener(Constant.Event__Rotate__, rotate);
+        EventCenter.Instance.RemoveEventListener(ZConstant.Event__Rotate__, rotate);
     }
 
     private void Update()

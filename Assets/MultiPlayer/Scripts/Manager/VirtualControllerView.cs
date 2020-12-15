@@ -101,38 +101,41 @@ public class VirtualControllerView : MonoBehaviour
     private void LogoBtnClk()
     {
         clkcount++;
-        Debug.Log("Penta_Clk : " + clkcount);
     }
     private void MiniBtnClk()
     {
+        GameManager.Instance.ShowHint(HintType.WaitingOthers, false);
+
         if (ZGlobal.CurGameStatusMode == ZCurGameStatusMode.MINI_GAME_STATUS
             || ZGlobal.CurGameStatusMode == ZCurGameStatusMode.MODELS_SHOW_STATUS)
         {
             return;
         }
 
-        ZGlobal.CurGameStatusMode = ZCurGameStatusMode.MINI_GAME_STATUS;
-
-        EventCenter.Instance.DispatchEvent(Constant.Event__MiniGame__);
-
+        GameManager.Instance.ChangeGameStatuTip(ZCurGameStatusMode.MINI_GAME_STATUS);
+        GameManager.Instance.SendPlayMiniGame();
     }
     private void ModelsBtnClk()
     {
+        GameManager.Instance.ShowHint(HintType.WaitingOthers, false);
+
+
         if (ZGlobal.CurGameStatusMode == ZCurGameStatusMode.MODELS_SHOW_STATUS)
         {
             return;
         }
-        ZGlobal.CurGameStatusMode = ZCurGameStatusMode.MODELS_SHOW_STATUS;
 
-        EventCenter.Instance.DispatchEvent(Constant.Event__ModelShow__); 
+        GameManager.Instance.ChangeGameStatuTip(ZCurGameStatusMode.MODELS_SHOW_STATUS);
+
+        EventCenter.Instance.DispatchEvent(ZConstant.Event__ModelShow__);
     }
     private void CaptureBtnClk()
     {
-        EventCenter.Instance.DispatchEvent(Constant.Event__Capture__);
+        EventCenter.Instance.DispatchEvent(ZConstant.Event__Capture__);
     }
     private void ModelRotate()
     {
-        EventCenter.Instance.DispatchEvent(Constant.Event__Rotate__);
+        EventCenter.Instance.DispatchEvent(ZConstant.Event__Rotate__);
     }
 
 

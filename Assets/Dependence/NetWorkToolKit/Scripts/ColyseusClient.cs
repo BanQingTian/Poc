@@ -109,7 +109,7 @@ namespace NetWorkToolkit
             if (!m_MsgListener.ContainsKey(id))
             {
                 Debug.Log("Msg listener was not exist!");
-                return; 
+                return;
             }
             m_MsgListener.Remove(id);
         }
@@ -218,13 +218,34 @@ namespace NetWorkToolkit
         public async void ConnectToServer(string host, string port, ColyseusClientResultEvent callback)
         {
             //this.m_ServerIP = ip;
-            //string endpoint = string.Format("wss://{0}:{1}", m_ServerIP, port);
+            string endpoint = null;
 
-            string endpoint = string.Format("{0}://{1}", NetWorkToolkit.Constant.DefaultScheme, host);
+            //string endpoint = string.Format("{0}://{1}", NetWorkToolkit.Constant.DefaultScheme, host);
+
+            switch (ZGlobal.ServiceMode)
+            {
+                case ZServiceMode.LOCAL_HTTP:
+                    m_ServerIP = host;
+                    ZConstant.DefaultScheme = "ws";
+                    ZConstant.ReplaceScheme = "http";
+                    endpoint = string.Format("ws://{0}:{1}", m_ServerIP, port);
+                    break;
+                case ZServiceMode.LOCAL_HTTPS:
+                    ZConstant.DefaultScheme = "wss";
+                    ZConstant.ReplaceScheme = "https";
+                    endpoint = string.Format("{0}://{1}", ZConstant.DefaultScheme, host);
+                    break;
+                case ZServiceMode.CLOUD:
+                    // TODO
+                    break;
+                default:
+                    break;
+            }
+
 
             Debug.Log("Connect to server:" + endpoint);
             // Connect to the colyeus Server
-            client = ColyseusManager.Instance.CreateClient(endpoint,"");
+            client = ColyseusManager.Instance.CreateClient(endpoint, "");
             //var result = await client.IsServerAvailable();
             //if (result.result)
             {

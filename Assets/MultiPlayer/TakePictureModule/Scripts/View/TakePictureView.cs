@@ -49,12 +49,12 @@ namespace NREAL.HOME.TAKEPICTURE
 
         private void OnEnable()
         {
-            EventCenter.Instance.AddEventListener(Constant.Event__Capture__, TakingPhoto);
+            EventCenter.Instance.AddEventListener(ZConstant.Event__Capture__, TakingPhoto);
         }
 
         private void OnDisable()
         {
-            EventCenter.Instance.RemoveEventListener(Constant.Event__Capture__, TakingPhoto);
+            EventCenter.Instance.RemoveEventListener(ZConstant.Event__Capture__, TakingPhoto);
         }
 
         private void TakingPhoto(object sender, EventCenter.Args args)

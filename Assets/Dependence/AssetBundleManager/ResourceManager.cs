@@ -19,6 +19,7 @@ public class ResourceManager : Singleton<ResourceManager>
             yield break;
         m_Inited = true;
         m_Respository = new AssetBundleRepository();
+        m_Respository.AddSearchPath(ZPathHelper.GetStreammingAssetsPath());
         m_Respository.AddSearchPath(ZPathHelper.GetPersistentDataPath());
         m_Respository.AddSearchPath(ZPathHelper.GetABResPath());
 
@@ -77,6 +78,11 @@ public class ResourceManager : Singleton<ResourceManager>
     public static AssetBundleLoadOperation LoadLevelAsync(string assetBundleName, string levelName, bool isAdditive)
     {
         return AssetBundleManager.LoadLevelAsync(AssetBundleUtility.AssetBundlesDefaultRootName, assetBundleName, levelName, isAdditive);
+    }
+
+    public static void UnLoadAssetBundle(string abName)
+    {
+        AssetBundleManager.UnloadAssetBundle(abName);
     }
 
     public static void LoadLevelAsync(string assetBundleName, string assetName, bool isAdditive, Action onFinish)

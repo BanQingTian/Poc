@@ -252,7 +252,7 @@ namespace Colyseus
 			req.method = method;
 
 			// FIXME: replacing "ws" with "http" is too hacky!
-			uriBuilder.Scheme = uriBuilder.Scheme.Replace(NetWorkToolkit.Constant.DefaultScheme, NetWorkToolkit.Constant.ReplaceScheme);
+			uriBuilder.Scheme = uriBuilder.Scheme.Replace(ZConstant.DefaultScheme, ZConstant.ReplaceScheme);
 
 			req.url = uriBuilder.Uri.ToString().Replace(":80","");
 

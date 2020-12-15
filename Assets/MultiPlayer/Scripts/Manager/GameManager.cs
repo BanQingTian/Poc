@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using NetWorkToolkit;
+using NRKernal;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -17,6 +19,7 @@ public class GameManager : MonoBehaviour
     private PlayerMe m_PlayerMe;
 
     private MinigameBehavior m_MinigameBehavior;
+    private ModelShowBehavior m_ShowModelBehavoir;
 
 
     public delegate void S2CFuncAction<T>(T info);
@@ -30,6 +33,44 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         S2CFuncTable.Add(S2CFuncName.Fire, S2C_Fire);
+        S2CFuncTable.Add(S2CFuncName.PlayMiniGame, S2C_PlayMiniGame);
+        S2CFuncTable.Add(S2CFuncName.PlayShowModels, S2C_PlayShowModels);
+    }
+
+    private void Update()
+    {
+        switch (ZGlobal.CurGameStatusMode)
+        {
+            case ZCurGameStatusMode.WAITING_STATUS:
+
+                break;
+
+            case ZCurGameStatusMode.MINI_GAME_STATUS:
+                if (NRInput.GetButtonDown(ControllerButton.TRIGGER))
+                {
+                    SendPlayNextAnim();
+                }
+                break;
+
+            case ZCurGameStatusMode.MODELS_SHOW_STATUS:
+                switch (ZGlobal.CurABStatus)
+                {
+                    case ZCurAssetBundleStatus.S0103:
+                        break;
+                    case ZCurAssetBundleStatus.S0104:
+                        break;
+                    case ZCurAssetBundleStatus.S0105:
+                        break;
+                    case ZCurAssetBundleStatus.S0106:
+                        break;
+                    default:
+                        Debug.LogError("Cur Game Status Mode != ZCurAssetBundleStatus ^%^$^$%#@@$%");
+                        break;
+                }
+                break;
+            default:
+                break;
+        }
     }
 
     public void Initialized()
@@ -38,33 +79,19 @@ public class GameManager : MonoBehaviour
         m_MarkerHelper = ZMarkerHelper.Instance;
         m_PlayerMe = new PlayerMe();
 
-        //m_MinigameBehavior = FindObjectOfType<MinigameBehavior>();
-        //m_MinigameBehavior.Init();
+        ShowHint(HintType.ConnectNetwork);
+
+        m_MinigameBehavior = FindObjectOfType<MinigameBehavior>();
+        m_MinigameBehavior.Init();
+
+        m_ShowModelBehavoir = FindObjectOfType<ModelShowBehavior>();
+        m_ShowModelBehavoir.Init();
     }
-
-
-    #region S2CFunc
-
-    public void S2C_Fire(string param)
-    {
-        var arr = param.Split(',');
-        string pid = arr[0];
-        int type = int.Parse(arr[1]);
-
-        Fire(pid, type);
-    }
-    private void Fire(string pid, int type)
-    {
-        var obj = m_PlayerMe.GetPlayerNetObj(pid);
-        obj.Shoot();
-    }
-
-    #endregion
 
 
     #region Data opera
 
-    public void AddPlayerData(string playerid , PlayerNetObj obj)
+    public void AddPlayerData(string playerid, PlayerNetObj obj)
     {
         m_PlayerMe.AddPlayer(playerid, obj);
         RefreshPlayerStatusUI();
@@ -82,7 +109,53 @@ public class GameManager : MonoBehaviour
 
     #endregion
 
-    #region Net Logic
+
+    #region S2CFunc
+
+    public void S2C_Fire(string param)
+    {
+        var arr = param.Split(',');
+        string pid = arr[0];
+        int type = int.Parse(arr[1]);
+
+        Fire(pid, type);
+    }
+    private void Fire(string pid, int type)
+    {
+        var obj = m_PlayerMe.GetPlayerNetObj(pid);
+        //obj.Shoot();
+        m_MinigameBehavior.PlayNextAnim();
+    }
+
+    public void S2C_PlayMiniGame(string param)
+    {
+        LoadAssetBundle((ZCurAssetBundleStatus)int.Parse(param));
+    }
+    public void S2C_PlayShowModels(string param)
+    {
+        LoadAssetBundle((ZCurAssetBundleStatus)int.Parse(param));
+    }
+
+    #endregion
+
+
+
+    #region Net Relate
+
+    public void SendPlayNextAnim()
+    {
+        MessageManager.Instance.SendFireMsg(m_PlayerMe.GetOwnerPlayerNetObj.entityInfo.owner, 0);
+    }
+
+    public void SendPlayMiniGame()
+    {
+        MessageManager.Instance.SendPlayMiniGame();
+    }
+
+    public void SendPlayShowModels()
+    {
+        MessageManager.Instance.SendPlayShowModels();
+    }
 
     public void CreateRoom()
     {
@@ -121,6 +194,7 @@ public class GameManager : MonoBehaviour
     {
 
         ShowHint(HintType.WaitingOthers);
+        LoadAssetBundle(ZGlobal.CurABStatus);
 
         if (ZGlobal.ClientMode == ZClientMode.Visitor)
         {
@@ -134,6 +208,69 @@ public class GameManager : MonoBehaviour
 
     #endregion
 
+    #region AssetBundle 
+
+
+
+    public void LoadAssetBundle(ZCurAssetBundleStatus abs)
+    {
+        var a = m_PlayerMe.GetAssetBundleGO(ZCurAssetBundleStatus.S0102.ToString());
+        if (a != null && a.activeInHierarchy)
+        {
+            m_PlayerMe.RemoveAssetBundleGO(ZGlobal.CurABStatus.ToString(), true);
+        }
+
+        string curABS = abs.ToString();
+
+        var abgo = m_PlayerMe.GetAssetBundleGO(curABS);
+        if (abgo == null)
+        {
+            ResourceManager.LoadAssetAsync<GameObject>(string.Format("{0}", curABS.ToLower()), curABS, (GameObject prefab) =>
+            {
+                ChangeABStatusTip(ZGlobal.CurABStatus);
+                var go = GameObject.Instantiate(prefab);
+
+                if (ZGlobal.CurABStatus <= ZCurAssetBundleStatus.S0102)
+                {
+                    go.transform.SetParent(m_MinigameBehavior.transform);
+                }
+                else
+                {
+                    go.transform.SetParent(m_ShowModelBehavoir.transform);
+                }
+
+                go.transform.position = Vector3.zero;
+                go.transform.rotation = Quaternion.identity;
+                go.transform.localScale = Vector3.one;
+                m_PlayerMe.AddAssetBundleGO(curABS, go);
+            });
+        }
+        else
+        {
+            abgo.SetActive(true);
+            // 重置动画
+            abgo.GetComponent<Animator>().Play(0);
+        }
+
+
+
+    }
+
+    #endregion
+
+    #region Status
+
+    public void ChangeGameStatuTip(ZCurGameStatusMode gs)
+    {
+        ZGlobal.CurGameStatusMode = gs;
+    }
+
+    public void ChangeABStatusTip(ZCurAssetBundleStatus abs)
+    {
+        ZGlobal.CurABStatus = abs;
+    }
+
+    #endregion
 
 
     #region UI 

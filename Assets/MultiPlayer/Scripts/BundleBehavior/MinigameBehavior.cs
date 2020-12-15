@@ -1,44 +1,91 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class MinigameBehavior : MonoBehaviour
 {
     private static MinigameBehavior mb;
-    public List<GameObject> ChargePoint = new List<GameObject>();
 
+    public GameObject MGModel = null;
+    public Animator MGModelAnim = null;
+    public AnimatorStateInfo MGModelAnimStatusInfo;
 
-
-    void Start()
-    {
-
-    }
-
-    void Update()
-    {
-        
-    }
 
     public void Init()
     {
-        InitResource();
+        StartCoroutine(InitCor());
     }
-
-    public void InitResource()
-    {
-        StartCoroutine(loadMinigameScene());
-
-    }
-    private IEnumerator loadMinigameScene()
+    public IEnumerator InitCor()
     {
         yield return ResourceManager.Instance.Initialize();
-
-        Debug.Log("loading");
-        ResourceManager.LoadLevelAsync("test/cube", "LGS", true, () =>
-        {
-            Debug.Log("Finish");
-            // init pose and 
-            
-        });
+        //InitResource<GameObject>(Processing);
     }
+
+    public void InitResource<T>(Action<T> Finish) where T : UnityEngine.Object
+    {
+        // load assetbundle
+        //ResourceManager.LoadAssetAsync<GameObject>("LGU_Models", "m1", (GameObject prefab) =>
+        //{
+        //    var go = GameObject.Instantiate(prefab);
+        //    Finish.Invoke(MGModel as T);
+        //});
+
+        Finish.Invoke(MGModel as T);
+    }
+
+    private void Processing(GameObject go)
+    {
+        MGModel = go;
+        MGModelAnim = MGModel.GetComponent<Animator>();
+        MGModelAnimStatusInfo = MGModelAnim.GetCurrentAnimatorStateInfo(0);
+    }
+
+    public string GetAnimPlayingName()
+    {
+        if ((
+              MGModelAnimStatusInfo.IsName("Idle_01")
+           || MGModelAnimStatusInfo.IsName("Idle_02")
+           || MGModelAnimStatusInfo.IsName("Idle_03")
+           || MGModelAnimStatusInfo.IsName("Idle_04")
+           || MGModelAnimStatusInfo.IsName("Idle_05")
+           || MGModelAnimStatusInfo.IsName("Idle_06")
+           || MGModelAnimStatusInfo.IsName("Idle_07")
+           ))
+        {
+            return "Idle";
+        }
+        else if (MGModelAnimStatusInfo.IsName("End"))
+        {
+            return "End";
+        }
+        else
+        {
+            return "Charge";
+        }
+
+
+    }
+    public void PlayNextAnim()
+    {
+        switch (GetAnimPlayingName())
+        {
+            case "Idle":
+                MGModelAnim.SetTrigger("Next");
+                break;
+            case "End":
+                GameManager.Instance.LoadAssetBundle(ZGlobal.CurABStatus++);
+                break;
+            case "Charge":
+                break;
+            default:
+                break;
+        }
+        
+    }
+
+
+    // Main
+
+
 }

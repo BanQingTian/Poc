@@ -7,15 +7,19 @@ public static class ZGlobal
     /// <summary>
     /// 客户端类型
     /// </summary>
-    public static ZClientMode ClientMode = ZClientMode.Visitor;
+    public static ZClientMode ClientMode = ZClientMode.Visitor; 
+    /// <summary>
+    /// service版本
+    /// </summary>
+    public static ZServiceMode ServiceMode = ZServiceMode.LOCAL_HTTP;
     /// <summary>
     /// 游戏模式
     /// </summary>
     public static ZCurGameStatusMode CurGameStatusMode = ZCurGameStatusMode.WAITING_STATUS;
     /// <summary>
-    /// service版本
+    /// Assetbudle 状体
     /// </summary>
-    public static ZServiceMode ServiceMode = ZServiceMode.TEST;
+    public static ZCurAssetBundleStatus CurABStatus = ZCurAssetBundleStatus.S0101;
 }
 
 public enum ZClientMode
@@ -23,6 +27,17 @@ public enum ZClientMode
     Curator,
     Visitor,
 }
+
+public enum ZCurAssetBundleStatus
+{
+    S0101 = 0,
+    S0102 = 1,
+    S0103 = 2,
+    S0104,
+    S0105,
+    S0106,
+}
+
 
 public enum ZCurGameStatusMode
 {
@@ -43,16 +58,16 @@ public enum ZCurGameStatusMode
 public enum ZServiceMode
 {
     /// <summary>
-    /// 测试模式
+    /// 本地http Server
     /// </summary>
-    TEST = 0,
+    LOCAL_HTTP = 0,
     /// <summary>
-    /// 本地Server
+    /// 本地https server
     /// </summary>
-    LOCAL = 1,
+    LOCAL_HTTPS = 1,
     /// <summary>
     /// 云端Server
     /// </summary>
-    CLOUD = 2    
+    CLOUD ,
 }
 

@@ -126,7 +126,7 @@ namespace Colyseus
         {
             var uriBuilder = new UriBuilder(Endpoint.Uri);
             uriBuilder.Path += "matchmake/" + roomName;
-            uriBuilder.Scheme = uriBuilder.Scheme.Replace(NetWorkToolkit.Constant.DefaultScheme, NetWorkToolkit.Constant.ReplaceScheme); // FIXME: replacing "ws" with "http" is too hacky!
+            uriBuilder.Scheme = uriBuilder.Scheme.Replace(ZConstant.DefaultScheme, ZConstant.ReplaceScheme); // FIXME: replacing "ws" with "http" is too hacky!
 
             var req = new UnityWebRequest();
             req.method = "GET";
@@ -151,7 +151,7 @@ namespace Colyseus
         {
             var uriBuilder = new UriBuilder(Endpoint.Uri);
             uriBuilder.Path += "/";
-            uriBuilder.Scheme = uriBuilder.Scheme.Replace(NetWorkToolkit.Constant.DefaultScheme, NetWorkToolkit.Constant.ReplaceScheme); // FIXME: replacing "ws" with "http" is too hacky!
+            uriBuilder.Scheme = uriBuilder.Scheme.Replace(ZConstant.DefaultScheme, ZConstant.ReplaceScheme); // FIXME: replacing "ws" with "http" is too hacky!
 
             var req = new UnityWebRequest();
             req.method = "GET";
@@ -223,7 +223,7 @@ namespace Colyseus
 
             var uriBuilder = new UriBuilder(Endpoint.Uri);
             uriBuilder.Path += "matchmake/" + method + "/" + roomName;
-            uriBuilder.Scheme = uriBuilder.Scheme.Replace(NetWorkToolkit.Constant.DefaultScheme, NetWorkToolkit.Constant.ReplaceScheme); // FIXME: replacing "ws" with "http" is too hacky!
+            uriBuilder.Scheme = uriBuilder.Scheme.Replace(ZConstant.DefaultScheme, ZConstant.ReplaceScheme); // FIXME: replacing "ws" with "http" is too hacky!
 
             var req = new UnityWebRequest();
             req.method = "POST";

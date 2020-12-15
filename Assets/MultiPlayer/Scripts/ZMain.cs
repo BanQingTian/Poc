@@ -7,20 +7,21 @@ public class ZMain : MonoBehaviour
     [Space(20)]
     public ZClientMode ClientMode = ZClientMode.Visitor;
     [Space(20)]
-    public ZServiceMode m_ServiceMode = ZServiceMode.TEST;
+    public ZServiceMode m_ServiceMode = ZServiceMode.LOCAL_HTTP;
 
-    private static List<string> IPAdress = new List<string>()
+    private static Dictionary<ZServiceMode, string> IPAddressDict = new Dictionary<ZServiceMode, string>()
     {
-        "127.0.0.1",
-        "multiplay.nreal.ai",
-        "",
+        {ZServiceMode.LOCAL_HTTP,"192.168.68.187" },
+        {ZServiceMode.LOCAL_HTTPS,"multiplay.nreal.ai" },
+        {ZServiceMode.CLOUD,"" }
     };
 
     void Start()
     {
         ZGlobal.ClientMode = ClientMode;
+        ZGlobal.ServiceMode = m_ServiceMode;
+
         Init();
-        GameManager.Instance.ShowHint(HintType.ConnectNetwork);
         ConnectServer(m_ServiceMode);
 
     }
@@ -47,18 +48,21 @@ public class ZMain : MonoBehaviour
     }
     public void ConnectServer(ZServiceMode sm)
     {
-        string ip = IPAdress[(int)sm];
-        Debug.Log("IP : " + ip);
+        string ip = IPAddressDict[sm];
+        Debug.Log("IP --- : " + ip);
         MessageManager.Instance.SendConnectServerMsg(ip, "2567");
     }
 }
 
 
 
-public static class Constant
+public static class ZConstant
 {
     public const string Event__Capture__ = "event_capture";
     public const string Event__MiniGame__ = "event_minigame";
     public const string Event__ModelShow__ = "event_modelshow";
     public const string Event__Rotate__ = "event_rotate";
+
+    public static string DefaultScheme = "ws";
+    public static string ReplaceScheme = "http";
 }
