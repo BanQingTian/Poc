@@ -14,6 +14,10 @@ public class GameManager : MonoBehaviour
     public bool JoinRoom = false;
     public bool BeginGame = false;
 
+    // 防止多次加载模型
+    private bool loading = false;
+
+
     private HintData m_HintData;
     private ZMarkerHelper m_MarkerHelper;
     private PlayerMe m_PlayerMe;
@@ -54,6 +58,7 @@ public class GameManager : MonoBehaviour
         }
 
 #endif
+
         switch (ZGlobal.CurGameStatusMode)
         {
             case ZCurGameStatusMode.WAITING_STATUS:
@@ -209,11 +214,21 @@ public class GameManager : MonoBehaviour
 
     public void SendPlayMiniGame()
     {
+        if (loading)
+            return;
+
+        loading = true;
+
         MessageManager.Instance.SendPlayMiniGame();
     }
 
     public void SendPlayShowModels(ZCurAssetBundleStatus abs)
     {
+        if (loading)
+            return;
+
+        loading = true;
+
         MessageManager.Instance.SendPlayShowModels(abs);
     }
 
@@ -270,7 +285,6 @@ public class GameManager : MonoBehaviour
 
     #region AssetBundle 
 
-
     public void LoadAssetBundle(ZCurAssetBundleStatus abs)
     {
         var a = m_PlayerMe.GetAssetBundleGO(ZGlobal.CurABStatus.ToString());
@@ -286,6 +300,7 @@ public class GameManager : MonoBehaviour
         {
             ResourceManager.LoadAssetAsync<GameObject>(string.Format("{0}/{1}", ZConstant.DefaultDir, curABS.ToLower()), curABS, (GameObject prefab) =>
              {
+                 loading = false;
                  ChangeABStatusTip(abs);
                  var go = GameObject.Instantiate(prefab);
 
@@ -300,6 +315,8 @@ public class GameManager : MonoBehaviour
                      m_ShowModelBehavoir.Processing(go);
                  }
 
+
+                 ReLoadShader(go);
                  go.transform.position = Vector3.zero;
                  go.transform.rotation = Quaternion.identity;
                  go.transform.localScale = Vector3.one;
@@ -315,6 +332,28 @@ public class GameManager : MonoBehaviour
 
 
 
+    }
+
+    private void ReLoadShader(GameObject obj)
+    {
+        Renderer[] meshSkinRenderer = obj.GetComponentsInChildren<Renderer>(true);
+        for (int i = 0; i < meshSkinRenderer.Length; i++)
+        {
+            //Debug.Log("NNNNNN----" + meshSkinRenderer[i].name);
+            //Debug.Log("NNNNNN++++" + meshSkinRenderer[i].material.shader.name);
+            //Debug.Log("NNNNNN++++" + meshSkinRenderer[i].materials.Length);
+
+            meshSkinRenderer[i].material.shader = Shader.Find(meshSkinRenderer[i].material.shader.name);
+
+            //if (meshSkinRenderer[i].materials.Length > 1)
+            //{
+            //    for (int j = 0; j < meshSkinRenderer[i].materials.Length; j++)
+            //    {
+            //        meshSkinRenderer[i].materials[j].shader = Shader.Find(meshSkinRenderer[i].materials[j].shader.name);
+
+            //    }
+            //}
+        }
     }
 
     #endregion

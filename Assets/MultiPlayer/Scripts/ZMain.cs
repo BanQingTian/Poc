@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using NRKernal;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -30,9 +31,14 @@ public class ZMain : MonoBehaviour
     {
         DontDestroyOnLoad(this);
 
+        InitNRInputModule();
         InitGameManager();
         InitMessageManager();
         InitGameCoroutiner();
+    }
+    private void InitNRInputModule()
+    {
+        NRInput.AnchorsHelper.GetAnchor(ControllerAnchorEnum.RightLaserAnchor).gameObject.SetActive(false);
     }
     private void InitGameCoroutiner()
     {

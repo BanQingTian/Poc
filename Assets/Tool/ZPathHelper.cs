@@ -65,6 +65,14 @@ public static class ZPathHelper
         {
             Directory.CreateDirectory(path);
         }
+#else
+        int i = Application.dataPath.LastIndexOf('/');
+        path = Directory.GetParent(Application.dataPath) + "/ABRes";
+
+        if (!Directory.Exists(path))
+        {
+            Directory.CreateDirectory(path);
+        }
 #endif
         return path;
     }

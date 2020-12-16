@@ -1,0 +1,35 @@
+ManifestFileVersion: 0
+CRC: 3917985687
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: examples/loadassetsexample/birds
+      Dependencies: {}
+    Info_1:
+      Name: examples/loadassetsexample/light
+      Dependencies: {}
+    Info_2:
+      Name: examples/loadassetsexample/avatars.boys
+      Dependencies: {}
+    Info_3:
+      Name: examples/loadassetsexample/avatars.girls
+      Dependencies: {}
+    Info_4:
+      Name: lgu/s0105
+      Dependencies: {}
+    Info_5:
+      Name: examples/loadassetsexample/cube
+      Dependencies:
+        Dependency_0: examples/loadassetsexample/birds
+    Info_6:
+      Name: lgu/s0103
+      Dependencies: {}
+    Info_7:
+      Name: lgu/s0104
+      Dependencies: {}
+    Info_8:
+      Name: lgu/s0102
+      Dependencies: {}
+    Info_9:
+      Name: lgu/s0101
+      Dependencies: {}
