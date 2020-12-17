@@ -54,7 +54,7 @@ public class PlayerNetObj : NetObjectEntity
         //WeaponTarget.transform.position = ei.controllerPosition;
         WeaponTarget.transform.rotation = ei.controlleRotation;
 
-        WeaponTarget.transform.position = Vector3.Lerp(WeaponTarget.transform.position, ei.controllerPosition, 0.5f);
+        WeaponTarget.transform.position = Vector3.Lerp(WeaponTarget.transform.position, ei.controllerPosition, 0.35f);
     }
 
     public override void DeSerializeData()
@@ -70,7 +70,7 @@ public class PlayerNetObj : NetObjectEntity
 
         //WeaponTarget.transform.position = ei.controllerPosition;
         WeaponTarget.transform.rotation = ei.controlleRotation;
-        WeaponTarget.transform.position = Vector3.Lerp(WeaponTarget.transform.position, ei.controllerPosition, 0.5f);
+        WeaponTarget.transform.position = Vector3.Lerp(WeaponTarget.transform.position, ei.controllerPosition, 0.35f);
         this.entityInfo.extraInfo = JsonUtility.ToJson(ei);
     }
 

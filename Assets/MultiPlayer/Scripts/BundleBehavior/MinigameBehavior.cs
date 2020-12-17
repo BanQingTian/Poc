@@ -69,18 +69,14 @@ public class MinigameBehavior : BaseBehaviour
            || MGModelAnimStatusInfo.IsName("Idle_07")
            ))
         {
-            Debug.Log("~~~~Idle");
-
             return "Idle";
         }
         else if (MGModelAnimStatusInfo.IsName("End"))
         {
-            Debug.Log("~~~~end");
             return "End";
         }
         else
         {
-            Debug.Log("~~~~Charge");
             return "Charge";
         }
 

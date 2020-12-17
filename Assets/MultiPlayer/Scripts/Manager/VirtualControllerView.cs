@@ -111,6 +111,7 @@ public class VirtualControllerView : MonoBehaviour
     private void MiniBtnClk()
     {
         GameManager.Instance.ShowHint(HintType.WaitingOthers, false);
+        GameManager.Instance.ShowPlayerCountUI(false);
 
         if (ZGlobal.CurGameStatusMode == ZCurGameStatusMode.MINI_GAME_STATUS
             || ZGlobal.CurGameStatusMode == ZCurGameStatusMode.MODELS_SHOW_STATUS)
@@ -123,7 +124,7 @@ public class VirtualControllerView : MonoBehaviour
     private void ModelsBtnClk()
     {
         GameManager.Instance.ShowHint(HintType.WaitingOthers, false);
-
+        GameManager.Instance.ShowPlayerCountUI(false);
 
         if (ZGlobal.CurGameStatusMode == ZCurGameStatusMode.MODELS_SHOW_STATUS)
         {

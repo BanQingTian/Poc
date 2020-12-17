@@ -4,7 +4,8 @@
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -12,9 +13,9 @@ MonoBehaviour:
   m_Name: NRKernalSessionConfig
   m_EditorClassIdentifier: 
   OptimizedRendering: 1
-  PlaneFindingMode: 3
+  PlaneFindingMode: 0
   ImageTrackingMode: 1
-  TrackingImageDatabase: {fileID: 11400000, guid: 0d7cc7aae05b5cf4baf8ca4a7089b3a4,
+  TrackingImageDatabase: {fileID: 11400000, guid: 983b6981bd75b1f459173bc17a7da025,
     type: 2}
   EnableNotification: 0
   ErrorTipsPrefab: {fileID: 0}

@@ -38,7 +38,9 @@ public class ZMain : MonoBehaviour
     }
     private void InitNRInputModule()
     {
-        NRInput.AnchorsHelper.GetAnchor(ControllerAnchorEnum.RightLaserAnchor).gameObject.SetActive(false);
+        //NRInput.ControllerVisualActive = false;
+        NRInput.ControllerVisualActive = false;
+        NRInput.LaserVisualActive = false;
     }
     private void InitGameCoroutiner()
     {
@@ -55,6 +57,7 @@ public class ZMain : MonoBehaviour
     public void ConnectServer(ZServiceMode sm)
     {
         string ip = IPAddressDict[sm];
+        ip = ZUtils.GetIPAdress(ip);
         Debug.Log("IP --- : " + ip);
         MessageManager.Instance.SendConnectServerMsg(ip, "2567");
     }

@@ -10,7 +10,7 @@ public class ZMarkerHelper : MonoBehaviour
     public static ZMarkerHelper Instance;
 
     // 是否完成识别过
-    public bool OpenScan = false;
+    public bool OpenScan = true;
 
     // 记录识别的marker的pose
     public Pose MapPose = Pose.identity;
@@ -41,13 +41,8 @@ public class ZMarkerHelper : MonoBehaviour
 
     private void Update()
     {
-        if (OpenScan && (find || CheckingScan())
-#if UNITY_EDITOR
-            || Input.GetKeyDown(KeyCode.R)
-#endif
-        )
+        if (OpenScan && (find || CheckingScan()))
         {
-
             OpenScan = false;
 
             // go to next phase
@@ -72,6 +67,25 @@ public class ZMarkerHelper : MonoBehaviour
 
     private bool CheckingScan()
     {
+
+#if UNITY_EDITOR
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            if (nrCamera == null)
+                nrCamera = GameObject.Find("NRCameraRig");
+
+            if (nrCameraParent == null)
+                nrCameraParent = new GameObject("NRCameraRigParent");
+            nrCameraParent.transform.position = nrCamera.transform.position;
+            nrCameraParent.transform.rotation = nrCamera.transform.rotation;
+            nrCamera.transform.SetParent(nrCameraParent.transform);
+
+            ResetToTarget(new Pose(new Vector3(0, -0.5f, 1), Quaternion.identity), nrCameraParent.transform);
+
+            return true;
+        }
+#elif UNITY_ANDROID
         List<NRTrackableImage> m_TempTrackingImages = new List<NRTrackableImage>();
         NRFrame.GetTrackables<NRTrackableImage>(m_TempTrackingImages, NRTrackableQueryFilter.All);
         foreach (var item in m_TempTrackingImages)
@@ -82,7 +96,7 @@ public class ZMarkerHelper : MonoBehaviour
 
             if (item.GetTrackingState() == TrackingState.Tracking)
             {
-                
+
 
                 if (visualizer == null)
                 {
@@ -95,9 +109,8 @@ public class ZMarkerHelper : MonoBehaviour
                 scanCount++;
                 if (scanCount > 64)
                 {
-                    WorldInMakerMatrix = Matrix4x4.Inverse(ZUtils.GetTMatrix(item.GetCenterPose().position, item.GetCenterPose().rotation));
-
-                    nrCamera = GameObject.Find("NRCameraRig");
+                    if (nrCamera == null)
+                        nrCamera = GameObject.Find("NRCameraRig");
 
                     if (nrCameraParent == null)
                         nrCameraParent = new GameObject("NRCameraRigParent");
@@ -105,7 +118,7 @@ public class ZMarkerHelper : MonoBehaviour
                     nrCameraParent.transform.rotation = nrCamera.transform.rotation;
                     nrCamera.transform.SetParent(nrCameraParent.transform);
 
-                    ResetPlayerPoseToMakerCoordinateSystem(nrCameraParent);
+                    ResetToTarget(item.GetCenterPose(), nrCameraParent.transform);
 
                     MapPose = new Pose(item.GetCenterPose().position, item.GetCenterPose().rotation);
                     m_Visualizers.Remove(item.GetDataBaseIndex());
@@ -120,12 +133,13 @@ public class ZMarkerHelper : MonoBehaviour
             }
             else if (item.GetTrackingState() == TrackingState.Stopped && visualizer != null)
             {
-                //FollowPanel.Instance.PleaseScanMarkerUI.text = "Please scan the marker";
-                //FollowPanel.Instance.PleaseScanMarkerUI.gameObject.SetActive(true);
                 m_Visualizers.Remove(item.GetDataBaseIndex());
                 Destroy(visualizer.gameObject);
             }
         }
+#endif
+
+
         return false;
     }
 
@@ -136,10 +150,20 @@ public class ZMarkerHelper : MonoBehaviour
         NRSessionManager.Instance.SetConfiguration(config);
     }
 
-    // reset player pose to marker coordinate system
-    private void ResetPlayerPoseToMakerCoordinateSystem(GameObject player)
+    private void ResetToTarget(Pose targetMarker, Transform camParent)
     {
-        player.transform.position = ZUtils.GetPositionFromTMatrix(WorldInMakerMatrix);
-        player.transform.rotation = ZUtils.GetRotationFromTMatrix(WorldInMakerMatrix);
+        var rootPose = GetAlignedPose(targetMarker.position, targetMarker.rotation);
+        camParent.position = rootPose.position;
+        camParent.rotation = rootPose.rotation;
     }
+
+    private Pose GetAlignedPose(Vector3 markerPosition, Quaternion markerRrotation)
+    {
+        var marker_in_world = ZUtils.GetTMatrix(markerPosition, markerRrotation);
+        var world_in_marker = Matrix4x4.Inverse(marker_in_world);
+        var alignedPos = ZUtils.GetPositionFromTMatrix(world_in_marker);
+        var alignedRot = ConversionUtility.GetRotationFromTMatrix(world_in_marker);
+        return new Pose(alignedPos, alignedRot);
+    }
+
 }

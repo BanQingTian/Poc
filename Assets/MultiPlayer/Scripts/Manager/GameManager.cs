@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
     private HintData m_HintData;
     private ZMarkerHelper m_MarkerHelper;
     private PlayerMe m_PlayerMe;
+    private UIManager m_UIPanel;
 
     private MinigameBehavior m_MinigameBehavior;
     private ModelShowBehavior m_ShowModelBehavoir;
@@ -59,6 +60,27 @@ public class GameManager : MonoBehaviour
 
 #endif
 
+        AnimatornProcessing();
+        //ControllerPoseUpdate();
+    }
+
+
+    #endregion
+
+    float _controllFreshTime = 0;
+    float _controllerFreshInterval = 1;
+    private void ControllerPoseUpdate()
+    {
+        _controllFreshTime += Time.deltaTime;
+        if (_controllFreshTime > _controllerFreshInterval)
+        {
+            NRInput.RecenterController();
+            _controllFreshTime = 0;
+        }
+    }
+
+    private void AnimatornProcessing()
+    {
         switch (ZGlobal.CurGameStatusMode)
         {
             case ZCurGameStatusMode.WAITING_STATUS:
@@ -117,12 +139,6 @@ public class GameManager : MonoBehaviour
                             Debug.LogError("Cur Game Status Mode != ZCurAssetBundleStatus ^%^$^$%#@@$%");
                             break;
                     }
-
-
-
-
-
-
                 }
 
                 break;
@@ -131,14 +147,12 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
-    #endregion
-
     public void Initialized()
     {
         m_HintData = new HintData();
         m_MarkerHelper = ZMarkerHelper.Instance;
         m_PlayerMe = new PlayerMe();
+        m_UIPanel = UIManager.Instance;
 
         ShowHint(HintType.ConnectNetwork);
 
@@ -269,6 +283,7 @@ public class GameManager : MonoBehaviour
     {
 
         ShowHint(HintType.WaitingOthers);
+        Debug.Log("[CZLOG] OnScanSuccess -> ready load waiting ab");
         LoadAssetBundle(ZGlobal.CurABStatus);
 
         if (ZGlobal.ClientMode == ZClientMode.Visitor)
@@ -339,20 +354,15 @@ public class GameManager : MonoBehaviour
         Renderer[] meshSkinRenderer = obj.GetComponentsInChildren<Renderer>(true);
         for (int i = 0; i < meshSkinRenderer.Length; i++)
         {
-            //Debug.Log("NNNNNN----" + meshSkinRenderer[i].name);
-            //Debug.Log("NNNNNN++++" + meshSkinRenderer[i].material.shader.name);
-            //Debug.Log("NNNNNN++++" + meshSkinRenderer[i].materials.Length);
-
             meshSkinRenderer[i].material.shader = Shader.Find(meshSkinRenderer[i].material.shader.name);
 
-            //if (meshSkinRenderer[i].materials.Length > 1)
-            //{
-            //    for (int j = 0; j < meshSkinRenderer[i].materials.Length; j++)
-            //    {
-            //        meshSkinRenderer[i].materials[j].shader = Shader.Find(meshSkinRenderer[i].materials[j].shader.name);
-
-            //    }
-            //}
+            if (meshSkinRenderer[i].materials.Length > 1)
+            {
+                for (int j = 0; j < meshSkinRenderer[i].materials.Length; j++)
+                {
+                    meshSkinRenderer[i].materials[j].shader = Shader.Find(meshSkinRenderer[i].materials[j].shader.name);
+                }
+            }
         }
     }
 
@@ -377,14 +387,19 @@ public class GameManager : MonoBehaviour
 
     #region UI 
 
+    public void ShowPlayerCountUI(bool show = true)
+    {
+        m_UIPanel.PlayerStatusParents.SetActive(show);
+    }
+
     public void RefreshPlayerStatusUI()
     {
-        UIManager.Instance.SetPlayerStatusUI(m_PlayerMe.PlayerCount);
+        m_UIPanel.SetPlayerStatusUI(m_PlayerMe.PlayerCount);
     }
 
     public void ShowHint(HintType t, bool show = true)
     {
-        UIManager.Instance.SetHintLabel(m_HintData.GetData(t), show);
+        m_UIPanel.SetHintLabel(m_HintData.GetData(t), show);
     }
 
     public void OpenScan()

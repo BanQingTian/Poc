@@ -11,7 +11,7 @@ Material:
   m_Shader: {fileID: 4800000, guid: 0b4002bddac1f2e4585ed70d2f0d218b, type: 3}
   m_ShaderKeywords: SKINNED_MESH
   m_LightmapFlags: 5
-  m_EnableInstancingVariants: 1
+  m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}

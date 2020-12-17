@@ -8,6 +8,19 @@ using Ping = UnityEngine.Ping;
 
 public static class ZUtils
 {
+    public static string GetIPAdress(string defaultAdress)
+    {
+        string path = Application.persistentDataPath + "/MP_IPAddress.txt";
+        if (System.IO.File.Exists(path))
+        {
+            return System.IO.File.ReadAllText(path);
+        }
+        else
+        {
+            return defaultAdress;
+        }
+    }
+
     public static string LoadDefaultServerConfig()
     {
         TextAsset txt = Resources.Load("Config/defaultServerConfig") as TextAsset;

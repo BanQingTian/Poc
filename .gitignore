@@ -3,6 +3,7 @@
 [Oo]bj/
 [Bb]uild*/
 [Nn]RResource
+[Tt]emp_res
 Assets/AssetStoreTools*
 Assets/WSATestCertificate.pfx
 Assets/WSATestCertificate.pfx.meta

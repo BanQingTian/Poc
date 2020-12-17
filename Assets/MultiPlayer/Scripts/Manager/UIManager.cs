@@ -9,6 +9,7 @@ public class UIManager : MonoBehaviour
 
     public TMPro.TextMeshProUGUI HintLabel;
 
+    public GameObject PlayerStatusParents;
     public Toggle[] PlayerStatus;
 
     private void Awake()
