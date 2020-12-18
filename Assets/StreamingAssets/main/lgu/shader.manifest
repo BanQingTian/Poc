@@ -1,0 +1,19 @@
+ManifestFileVersion: 0
+CRC: 4032199662
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: cf0520454c75b49dde03fb6b21f9400c
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 7e9ee104d6bb707fb2602b751e6f78b1
+HashAppended: 0
+ClassTypes:
+- Class: 48
+  Script: {instanceID: 0}
+Assets:
+- Assets/UPlus_PoC/Assets/Resources/Blend_CenterGlow.shader
+- Assets/UPlus_PoC/Assets/Resources/Add_CenterGlow.shader
+- Assets/UPlus_PoC/Assets/Resources/Standard2side.shader
+- Assets/UPlus_PoC/Assets/Resources/MatCap_TextureAdd.shader
+Dependencies: []

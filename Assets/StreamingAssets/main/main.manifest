@@ -1,0 +1,26 @@
+ManifestFileVersion: 0
+CRC: 124819810
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: lgu/s0105
+      Dependencies:
+        Dependency_0: lgu/shader
+    Info_1:
+      Name: lgu/s0103
+      Dependencies:
+        Dependency_0: lgu/shader
+    Info_2:
+      Name: lgu/s0104
+      Dependencies: {}
+    Info_3:
+      Name: lgu/s0102
+      Dependencies:
+        Dependency_0: lgu/shader
+    Info_4:
+      Name: lgu/s0101
+      Dependencies:
+        Dependency_0: lgu/shader
+    Info_5:
+      Name: lgu/shader
+      Dependencies: {}

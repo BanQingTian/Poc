@@ -384,7 +384,6 @@ public class MessageManager
         Debug.Log("[Server Response] OnCommandResp --- " + obj);
 
         CommondInfo commond = obj as CommondInfo;
-        Debug.Log("~~~" + commond.func);
         GameManager.Instance.S2CFuncTable[commond.func](commond.param);
     }
     #endregion

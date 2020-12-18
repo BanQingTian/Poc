@@ -61,21 +61,32 @@ public class GameManager : MonoBehaviour
 #endif
 
         AnimatornProcessing();
-        //ControllerPoseUpdate();
+        RecenterCOntroller();
     }
 
 
     #endregion
 
-    float _controllFreshTime = 0;
-    float _controllerFreshInterval = 1;
-    private void ControllerPoseUpdate()
+    float _hoverTime = 0;
+    float _hoverInterval = 1;
+    private void RecenterCOntroller()
     {
-        _controllFreshTime += Time.deltaTime;
-        if (_controllFreshTime > _controllerFreshInterval)
+        if (NRInput.GetButtonDown(ControllerButton.TRIGGER))
         {
-            NRInput.RecenterController();
-            _controllFreshTime = 0;
+            _hoverTime = 0;
+        }
+        if (NRInput.GetButton(ControllerButton.TRIGGER))
+        {
+            _hoverTime += Time.deltaTime;
+            if (_hoverTime >= _hoverInterval)
+            {
+                NRInput.RecenterController();
+                _hoverTime = 0;
+            }
+        }
+        if(NRInput.GetButtonUp(ControllerButton.TRIGGER))
+        {
+            _hoverTime = 0;
         }
     }
 
@@ -90,7 +101,7 @@ public class GameManager : MonoBehaviour
             case ZCurGameStatusMode.MINI_GAME_STATUS:
                 if (NRInput.GetButtonDown(ControllerButton.TRIGGER))
                 {
-                    SendPlayNextAnim();
+                    SendPlayNextAnim(0);
                 }
                 if (ZGlobal.ClientMode == ZClientMode.Curator && m_MinigameBehavior.GetAnimPlayingName() == "End")
                 {
@@ -106,7 +117,13 @@ public class GameManager : MonoBehaviour
 
             case ZCurGameStatusMode.MODELS_SHOW_STATUS:
 
-
+                if (m_ShowModelBehavoir.GetAnimPlayingName() != "End")
+                {
+                    if (NRInput.GetButtonDown(ControllerButton.TRIGGER))
+                    {
+                        SendPlayNextAnim(1);
+                    }
+                }
                 if (ZGlobal.ClientMode == ZClientMode.Curator && m_ShowModelBehavoir.GetAnimPlayingName() == "End")
                 {
                     switch (ZGlobal.CurABStatus)
@@ -127,7 +144,7 @@ public class GameManager : MonoBehaviour
                         case ZCurAssetBundleStatus.S0105:
                             if (m_ShowModelBehavoir.MGModelAnimStatusInfo.normalizedTime >= 1)
                             {
-                                //SendPlayShowModels(ZCurAssetBundleStatus.S0106);
+                                SendPlayShowModels(ZCurAssetBundleStatus.S0106);
                             }
                             break;
                         case ZCurAssetBundleStatus.S0106:
@@ -199,7 +216,10 @@ public class GameManager : MonoBehaviour
     {
         var obj = m_PlayerMe.GetPlayerNetObj(pid);
         //obj.Shoot();
-        m_MinigameBehavior.PlayNextAnim();
+        if (type == 0)
+            m_MinigameBehavior.PlayNextAnim();
+        else
+            m_ShowModelBehavoir.PlayNextAnim();
     }
 
     public void S2C_PlayMiniGame(string param)
@@ -221,9 +241,9 @@ public class GameManager : MonoBehaviour
 
     #region Net Relate
 
-    public void SendPlayNextAnim()
+    public void SendPlayNextAnim(int type)
     {
-        MessageManager.Instance.SendFireMsg(m_PlayerMe.GetOwnerPlayerNetObj.entityInfo.owner, 0);
+        MessageManager.Instance.SendFireMsg(m_PlayerMe.GetOwnerPlayerNetObj.entityInfo.owner, type);
     }
 
     public void SendPlayMiniGame()
@@ -300,16 +320,27 @@ public class GameManager : MonoBehaviour
 
     #region AssetBundle 
 
+    public void LoadAssetBundle_AllShader()
+    {
+        //ResourceManager.LoadAssetAsync("lgu/shader", "MatCap_TextureAdd", typeof(Shader));
+        //ResourceManager.LoadAssetAsync<ShaderVariantCollection>("lgu/shader", "AllShader", (ShaderVariantCollection svc) =>
+        //{
+        //    svc.WarmUp();
+        //    Debug.Log(svc.shaderCount);
+        //});
+    }
+
     public void LoadAssetBundle(ZCurAssetBundleStatus abs)
     {
+        // 删除上一个bundle的资源和数据
         var a = m_PlayerMe.GetAssetBundleGO(ZGlobal.CurABStatus.ToString());
         if (a != null && a.activeInHierarchy)
         {
             m_PlayerMe.RemoveAssetBundleGO(ZGlobal.CurABStatus.ToString(), true);
         }
 
+        // 加载新的bundle
         string curABS = abs.ToString();
-
         var abgo = m_PlayerMe.GetAssetBundleGO(curABS);
         if (abgo == null)
         {
@@ -330,8 +361,7 @@ public class GameManager : MonoBehaviour
                      m_ShowModelBehavoir.Processing(go);
                  }
 
-
-                 ReLoadShader(go);
+                 //ReLoadShader(go);
                  go.transform.position = Vector3.zero;
                  go.transform.rotation = Quaternion.identity;
                  go.transform.localScale = Vector3.one;
@@ -344,9 +374,6 @@ public class GameManager : MonoBehaviour
             // 重置动画
             abgo.GetComponent<Animator>().Play(0);
         }
-
-
-
     }
 
     private void ReLoadShader(GameObject obj)
@@ -355,6 +382,8 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < meshSkinRenderer.Length; i++)
         {
             meshSkinRenderer[i].material.shader = Shader.Find(meshSkinRenderer[i].material.shader.name);
+
+            Debug.Log("~~~~~~" + meshSkinRenderer[i].gameObject.name + " = " + meshSkinRenderer[i].material.shader.name);
 
             if (meshSkinRenderer[i].materials.Length > 1)
             {
@@ -377,7 +406,7 @@ public class GameManager : MonoBehaviour
 
     public void ChangeABStatusTip(ZCurAssetBundleStatus abs)
     {
-        Debug.Log("~~~~~ Cur ABS = " + abs.ToString());
+        Debug.Log("[CZLOG] Cur ABS = " + abs.ToString());
 
         ZGlobal.CurABStatus = abs;
     }

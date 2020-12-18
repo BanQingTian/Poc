@@ -7,7 +7,7 @@ public class MinigameBehavior : BaseBehaviour
 {
     private static MinigameBehavior mb;
 
-    private const float waitTime = 3.5f; // 动画间隔时间
+    private const float waitTime = 3f; // 动画间隔时间
     private float time = 0;
     private void Update()
     {
@@ -25,6 +25,7 @@ public class MinigameBehavior : BaseBehaviour
     {
         yield return ResourceManager.Instance.Initialize();
         //InitResource<GameObject>(Processing);
+        GameManager.Instance.LoadAssetBundle_AllShader();
     }
 
     public void InitResource<T>(Action<T> Finish) where T : UnityEngine.Object

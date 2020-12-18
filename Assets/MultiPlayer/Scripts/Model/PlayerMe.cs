@@ -88,7 +88,7 @@ public class PlayerMe
             go.SetActive(true);
             return go;
         }
-        Debug.Log("{CZLOG] GetAssetBundleGameObject Failed !!!");
+        Debug.Log("[CZLOG] GetAssetBundleGameObject Failed !!!");
         return null;
     }
 

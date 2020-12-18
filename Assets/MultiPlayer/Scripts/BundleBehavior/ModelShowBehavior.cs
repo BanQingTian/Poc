@@ -9,6 +9,10 @@ public class ModelShowBehavior : BaseBehaviour
 
     private bool isRotate = false;
 
+    private const float waitTime = 3f; // 动画间隔时间
+    private float time = 0;
+
+
     public void Init()
     {
         if (Initialized)
@@ -45,6 +49,11 @@ public class ModelShowBehavior : BaseBehaviour
         {
             MGModel.transform.Rotate(Vector3.up, 0.1f);
         }
+
+        if (time < waitTime)
+        {
+            time += Time.deltaTime;
+        }
     }
 
     float _freshTime;
@@ -65,6 +74,28 @@ public class ModelShowBehavior : BaseBehaviour
             return "End";
         }
         return "";
+    }
+
+    public void PlayNextAnim()
+    {
+        if (time < waitTime) return;
+
+
+        switch (GetAnimPlayingName())
+        {
+            case "Idle":
+                MGModelAnim.SetTrigger("Next");
+                time = 0;
+                break;
+            case "End":
+                //GameManager.Instance.LoadAssetBundle(ZGlobal.CurABStatus++);
+                break;
+            case "Charge":
+                break;
+            default:
+                break;
+        }
+
     }
 
     private void rotate(object sender, EventCenter.Args args)

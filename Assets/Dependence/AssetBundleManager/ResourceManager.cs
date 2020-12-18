@@ -20,7 +20,6 @@ public class ResourceManager : Singleton<ResourceManager>
         m_Inited = true;
         m_Respository = new AssetBundleRepository();
         m_Respository.AddSearchPath(ZPathHelper.GetABResPath());
-        //m_Respository.AddSearchPath(ZPathHelper.GetStreammingAssetsPath());
         m_Respository.AddSearchPath(ZPathHelper.GetPersistentDataPath());
 
         AssetBundleManager.ActiveVariants = new string[] { "boys", "girls" };

@@ -23,7 +23,17 @@ public static class ZPathHelper
 
     public static string GetStreammingAssetsPath()
     {
-        return Application.streamingAssetsPath;
+        string path =
+#if UNITY_ANDROID && !UNITY_EDITOR
+        Application.streamingAssetsPath + "/";
+#elif UNITY_IPHONE && !UNITY_EDITOR
+        Application.dataPath + "/Raw/";
+#elif UNITY_STANDALONE_WIN || UNITY_EDITOR
+        Application.streamingAssetsPath + "/";
+#else
+        string.Empty;
+#endif
+        return path;
     }
 
 

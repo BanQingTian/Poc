@@ -6,8 +6,10 @@ using UnityEngine.UI;
 public class StartUp : MonoBehaviour
 {
     public Button LoadBtn;
-    public Text LoadTip;
+    public Button LoadBtn2;
+    public Button LoadBtn3;
 
+    private Shader shader;
 
     IEnumerator Start()
     {
@@ -27,74 +29,76 @@ public class StartUp : MonoBehaviour
         yield return ResourceManager.Instance.Initialize();
 
         LoadBtn.onClick.AddListener(LoadScene);
+        LoadBtn2.onClick.AddListener(LoadScene2);
+        LoadBtn3.onClick.AddListener(LoadScene3);
+
+
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.D))
+
+    }
+
+    public void LoadScene3()
+    {
+        ResourceManager.LoadAssetAsync("lgu/shader", "allshader", (ShaderVariantCollection prefab) =>
         {
-            var go = GameObject.Find("Reflection Probe");
-            if (go != null)
-            {
-                Debug.Log(go.name);
-            }
-        }
+            prefab.WarmUp();
+            Debug.Log("warmup success");
+        });
+
+    }
+
+    public void LoadScene2()
+    {
+
+        ResourceManager.LoadAssetAsync("lgu/shader", "MatCap_TextureAdd", (Shader prefab) =>
+        {
+            shader = prefab;
+            Debug.Log(shader.name);
+        });
     }
 
     public void LoadScene()
     {
         Debug.Log("loading");
-        LoadTip.text = "Loading...";
-        ResourceManager.LoadLevelAsync("test/cube", "LGS", true, () =>
-        {
-            Debug.Log("Finish");
-            LoadTip.text = "Finish!!";
-        });
+        //ResourceManager.LoadLevelAsync("test/cube", "LGS", true, () =>
+        //{
+        //    Debug.Log("Finish");
+        //    LoadTip.text = "Finish!!";
+        //});
+
+
+        ResourceManager.LoadAssetAsync("lgu/s0101", "s0101", (GameObject prefab) =>
+          {
+              var go = GameObject.Instantiate(prefab);
+              go.transform.SetParent(transform);
+              go.transform.localScale = Vector3.one;
+              go.transform.localPosition = Vector3.zero;
+              go.transform.localRotation = Quaternion.identity;
+
+              //ReLoadShader(go);
+          });
     }
 
-}
-
-class Solution2
-{
-    public class TreeNode
+    private void ReLoadShader(GameObject obj)
     {
-        public TreeNode(int val)
+        Renderer[] meshSkinRenderer = obj.GetComponentsInChildren<Renderer>(true);
+        for (int i = 0; i < meshSkinRenderer.Length; i++)
         {
+            meshSkinRenderer[i].material.shader = Shader.Find(meshSkinRenderer[i].material.shader.name);
 
+            Debug.Log("~~~~~~" + meshSkinRenderer[i].gameObject.name + " = " + meshSkinRenderer[i].material.shader.name);
+
+            //if (meshSkinRenderer[i].materials.Length > 1)
+            //{
+            //    for (int j = 0; j < meshSkinRenderer[i].materials.Length; j++)
+            //    {
+            //        meshSkinRenderer[i].materials[j].shader = Shader.Find(meshSkinRenderer[i].materials[j].shader.name);
+            //    }
+            //}
         }
-        public int val;
-        public TreeNode left;
-        public TreeNode right;
-    }
-    public TreeNode constructFromPrePost(int[] pre, int[] post)
-    {
-        return helper(pre, post, 0, pre.Length - 1, 0, post.Length - 1);
-    }
-    public TreeNode helper(int[] pre, int[] post, int prestart, int preend, int poststart, int postend)
-    {
-        if (prestart > preend || poststart > postend) return null;
-        TreeNode root = new TreeNode(pre[prestart]);
-        if (prestart == preend)
-            return root;
-        int index = 0; 
-        while (post[index] != pre[prestart + 1])
-        {
-            index++;
-        }
-        root.left = helper(pre, post, prestart + 1, prestart + 1 + index - poststart, poststart, index);
-        root.right = helper(pre, post, prestart + 2 + index - poststart, preend, index + 1, preend - 1);
-        return root;
-
-    }
-
-    public int[] ConstructRectangle(int area)
-    {
-        int mid = area / 2;
-        while(mid*(area-mid) != area)
-        {
-            mid--;
-        }
-        return new int[] { mid, area - mid };
     }
 
 }

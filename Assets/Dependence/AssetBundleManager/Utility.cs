@@ -23,7 +23,7 @@ namespace AssetBundles
 
         public static string GetAssetBundlesStreamingAssetsPath(string root)
         {
-            return Path.Combine(Application.streamingAssetsPath, Utility.GetPlatformName(), root);
+            return Path.Combine(Application.streamingAssetsPath/*, Utility.GetPlatformName()*/, root);
         }
 
 #if UNITY_EDITOR
