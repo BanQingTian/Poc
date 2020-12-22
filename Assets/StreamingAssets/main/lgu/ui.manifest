@@ -1,0 +1,39 @@
+ManifestFileVersion: 0
+CRC: 850442563
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 8af455cabb3d072b770c6b210e16d91c
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 8f81471f4cfc7bf93c7fa752ebb4eb40
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+- Class: 687078895
+  Script: {instanceID: 0}
+Assets:
+- Assets/UPlus_Icon/UI/3.png
+- Assets/UPlus_Icon/UI/1.png
+- Assets/UPlus_Icon/UI/model.png
+- Assets/UPlus_Icon/UI/bg1.png
+- Assets/UPlus_Icon/UI/mingame_press.png
+- Assets/UPlus_Icon/UI/bg2.png
+- Assets/UPlus_Icon/UI/rotate.png
+- Assets/UPlus_Icon/UI/touchscreen.png
+- Assets/UPlus_Icon/UI/3_press.png
+- Assets/UPlus_Icon/UI/minigame.png
+- Assets/UPlus_Icon/UI/logo.png
+- Assets/UPlus_Icon/UI/2_press.png
+- Assets/UPlus_Icon/UI/UICollection.spriteatlas
+- Assets/UPlus_Icon/UI/back.png
+- Assets/UPlus_Icon/UI/photo.png
+- Assets/UPlus_Icon/UI/photo_press.png
+- Assets/UPlus_Icon/UI/1_press.png
+- Assets/UPlus_Icon/UI/model_press.png
+- Assets/UPlus_Icon/UI/rotate_press.png
+- Assets/UPlus_Icon/UI/2.png
+Dependencies: []

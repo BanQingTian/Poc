@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.U2D;
 
 public class StartUp : MonoBehaviour
 {
     public Button LoadBtn;
     public Button LoadBtn2;
     public Button LoadBtn3;
+
+    public Image bg;
 
     private Shader shader;
 
@@ -42,10 +45,11 @@ public class StartUp : MonoBehaviour
 
     public void LoadScene3()
     {
-        ResourceManager.LoadAssetAsync("lgu/shader", "allshader", (ShaderVariantCollection prefab) =>
+        ResourceManager.LoadAssetAsync<SpriteAtlas>("lgu/ui", "UICollection", (SpriteAtlas sa) =>
         {
-            prefab.WarmUp();
-            Debug.Log("warmup success");
+            Sprite s = sa.GetSprite("bg2");
+            Debug.Log(sa.spriteCount);
+            bg.sprite = s;
         });
 
     }

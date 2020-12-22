@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 2858876525
+CRC: 1184522120
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 67dd7bdb180c10d12f498665beb9fd28
+    Hash: b8f7c0d21af916a07cef8936eacf6950
   TypeTreeHash:
     serializedVersion: 2
-    Hash: b5eb7db02dd5c0ae291963927b45833c
+    Hash: 51593f75d8e076336f8f885243b85aed
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -39,6 +39,22 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 111
   Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 1980459831, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+- Class: 114
+  Script: {fileID: 1741964061, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+- Class: 114
+  Script: {fileID: 1301386320, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+- Class: 114
+  Script: {fileID: -405508275, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+- Class: 114
+  Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+- Class: 114
+  Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 128
+  Script: {instanceID: 0}
 - Class: 136
   Script: {instanceID: 0}
 - Class: 137
@@ -46,6 +62,18 @@ ClassTypes:
 - Class: 198
   Script: {instanceID: 0}
 - Class: 199
+  Script: {instanceID: 0}
+- Class: 212
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+- Class: 222
+  Script: {instanceID: 0}
+- Class: 223
+  Script: {instanceID: 0}
+- Class: 224
+  Script: {instanceID: 0}
+- Class: 227
   Script: {instanceID: 0}
 Assets:
 - Assets/UPlus_PoC/Prefabs/S0102.prefab
