@@ -4,17 +4,15 @@ using UnityEngine;
 
 public class HintData 
 {
-    private const string ConnectingNetwork = "Connecting to the network...";
+    private const string ConnectingNetwork = "네트워크 연결 대기 중 ...";
 
-    private const string ScanMarker = "Please scan the marker on the table.";
+    private const string ScanMarker = "마커를 스캔하세요 ...";
 
-    private const string WaitingOthers = "Waiting for other people.";
+    private const string WaitingOthers = "플레이어 접속 대기 중...";
 
-    private const string Welcome = "Welcome to holeman's world!";
+    private const string WaitingCurator = "큐레이터 접속 대기 중...";
 
-    private const string Course1 = "Touch the smartphone controller button \n many times and give me the Power.";
-
-    private const string WaitingCurator = "Waiting for the curator.";
+    private const string Loading = "로드 중 ...";
 
     public string GetData(HintType t)
     {
@@ -33,11 +31,8 @@ public class HintData
             case HintType.WaitingOthers:
                 ret = WaitingOthers;
                 break;
-            case HintType.Welcome:
-                ret = Welcome;
-                break;
-            case HintType.Course1:
-                ret = Course1;
+            case HintType.Loading:
+                ret = Loading;
                 break;
             default:
                 break;
@@ -52,6 +47,5 @@ public enum HintType
     ScanMarker,
     WaitingCurator,
     WaitingOthers,
-    Welcome,
-    Course1
+    Loading,
 }

@@ -7,11 +7,13 @@ public class MinigameBehavior : BaseBehaviour
 {
     private static MinigameBehavior mb;
 
-    private const float waitTime = 3f; // 动画间隔时间
+    private const float clkRate = 10;
+    private float clkCount = 0;
+    private const float waitTime = 5f; // 动画间隔时间
     private float time = 0;
     private void Update()
     {
-        if(time < waitTime)
+        if (time < waitTime)
         {
             time += Time.deltaTime;
         }
@@ -25,7 +27,7 @@ public class MinigameBehavior : BaseBehaviour
     {
         yield return ResourceManager.Instance.Initialize();
         //InitResource<GameObject>(Processing);
-        GameManager.Instance.LoadAssetBundle_AllShader();
+        GameManager.Instance.LoadAssetBundle_UI();
     }
 
     public void InitResource<T>(Action<T> Finish) where T : UnityEngine.Object
@@ -51,7 +53,7 @@ public class MinigameBehavior : BaseBehaviour
     public string GetAnimPlayingName()
     {
         _freshTime += Time.deltaTime;
-        if(_freshTime > 1)
+        if (_freshTime > 1)
         {
             if (MGModelAnim != null)
             {
@@ -85,12 +87,18 @@ public class MinigameBehavior : BaseBehaviour
     }
     public void PlayNextAnim()
     {
+        if (clkCount++ < clkRate * GameManager.Instance.GetPlayerCount())
+        {
+            Debug.Log(clkCount);
+            return;
+        }
         if (time < waitTime) return;
         switch (GetAnimPlayingName())
         {
             case "Idle":
                 MGModelAnim.SetTrigger("Next");
                 time = 0;
+                clkCount = 0;
                 break;
             case "End":
                 //GameManager.Instance.LoadAssetBundle(ZGlobal.CurABStatus++);
@@ -100,7 +108,7 @@ public class MinigameBehavior : BaseBehaviour
             default:
                 break;
         }
-        
+
     }
 
 

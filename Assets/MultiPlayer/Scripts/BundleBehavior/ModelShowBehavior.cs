@@ -32,22 +32,11 @@ public class ModelShowBehavior : BaseBehaviour
         MGModelAnimStatusInfo = MGModelAnim.GetCurrentAnimatorStateInfo(0);
     }
 
-
-    private void OnEnable()
-    {
-        EventCenter.Instance.AddEventListener(ZConstant.Event__Rotate__, rotate);
-    }
-
-    private void OnDisable()
-    {
-        EventCenter.Instance.RemoveEventListener(ZConstant.Event__Rotate__, rotate);
-    }
-
     private void Update()
     {
         if (isRotate)
         {
-            MGModel.transform.Rotate(Vector3.up, 0.1f);
+            MGModel.transform.Rotate(Vector3.up, 0.2f);
         }
 
         if (time < waitTime)
@@ -98,7 +87,7 @@ public class ModelShowBehavior : BaseBehaviour
 
     }
 
-    private void rotate(object sender, EventCenter.Args args)
+    public void rotate()
     {
         isRotate = !isRotate;
     }

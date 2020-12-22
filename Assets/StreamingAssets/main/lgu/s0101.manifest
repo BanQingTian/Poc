@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 2914422815
+CRC: 2058483811
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 8486a7f3b9f0c135f79b56dcd67d5dd5
+    Hash: 9a9d02e09d93aa7fcb3483d138bf3f9e
   TypeTreeHash:
     serializedVersion: 2
-    Hash: dec7674b8ef97e0437e7fff0c2beb70d
+    Hash: 30a299a989fcd0e3fccb512d2a394feb
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -66,8 +66,6 @@ ClassTypes:
 - Class: 223
   Script: {instanceID: 0}
 - Class: 224
-  Script: {instanceID: 0}
-- Class: 227
   Script: {instanceID: 0}
 Assets:
 - Assets/UPlus_PoC/Prefabs/S0101.prefab

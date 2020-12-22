@@ -10,6 +10,7 @@ using System.Linq;
 public class S2CFuncName
 {
     public static string Fire = "Fire";
+    public static string Rotate = "Rotate";
     public static string ImprisonMonster = "Imprison";
     public static string CreateMonster = "CreateMonster";
     public static string DamageMonster = "DamageMonster";
@@ -97,6 +98,15 @@ public class MessageManager
         client.SendMsg(MsgId.Commond, Target.All, commond);
     }
 
+    public void SendRotate()
+    {
+        CommondInfo commond = new CommondInfo()
+        {
+            func = S2CFuncName.Rotate,
+            param = "shelter"
+        };
+        client.SendMsg(MsgId.Commond, Target.All, commond);
+    }
 
     public void SendLeaveRoomMsg()
     {

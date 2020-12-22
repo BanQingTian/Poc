@@ -59,22 +59,6 @@ public class ZMain : MonoBehaviour
     {
         string ip = IPAddressDict[sm];
         ip = ZUtils.GetIPAdress(ip);
-        Debug.Log("IP --- : " + ip);
         MessageManager.Instance.SendConnectServerMsg(ip, "443");
     }
-}
-
-
-
-public static class ZConstant
-{
-    public const string Event__Capture__ = "event_capture";
-    public const string Event__MiniGame__ = "event_minigame";
-    public const string Event__ModelShow__ = "event_modelshow";
-    public const string Event__Rotate__ = "event_rotate";
-
-    public const string DefaultDir = "lgu";
-
-    public static string DefaultScheme = "ws";
-    public static string ReplaceScheme = "http";
 }

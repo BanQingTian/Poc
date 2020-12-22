@@ -11,6 +11,9 @@ public class GameManager : MonoBehaviour
 
     public PlayerNetObj PlayerPrefab;
 
+    // 如果30s以后有人成为curator
+    public bool CanBecomeCurator = true;
+
     public bool JoinRoom = false;
     public bool BeginGame = false;
 
@@ -43,6 +46,7 @@ public class GameManager : MonoBehaviour
         S2CFuncTable.Add(S2CFuncName.Fire, S2C_Fire);
         S2CFuncTable.Add(S2CFuncName.PlayMiniGame, S2C_PlayMiniGame);
         S2CFuncTable.Add(S2CFuncName.PlayShowModels, S2C_PlayShowModels);
+        S2CFuncTable.Add(S2CFuncName.Rotate, S2C_Rotate);
     }
 
     private void Update()
@@ -84,7 +88,7 @@ public class GameManager : MonoBehaviour
                 _hoverTime = 0;
             }
         }
-        if(NRInput.GetButtonUp(ControllerButton.TRIGGER))
+        if (NRInput.GetButtonUp(ControllerButton.TRIGGER))
         {
             _hoverTime = 0;
         }
@@ -199,6 +203,11 @@ public class GameManager : MonoBehaviour
         RefreshPlayerStatusUI();
     }
 
+    public int GetPlayerCount()
+    {
+        return m_PlayerMe.PlayerCount;
+    }
+
     #endregion
 
 
@@ -233,6 +242,11 @@ public class GameManager : MonoBehaviour
         ShowHint(HintType.WaitingOthers, false);
         ChangeGameStatuTip(ZCurGameStatusMode.MODELS_SHOW_STATUS);
         LoadAssetBundle((ZCurAssetBundleStatus)int.Parse(param));
+    }
+
+    public void S2C_Rotate(string param)
+    {
+        m_ShowModelBehavoir.rotate();
     }
 
     #endregion
@@ -320,15 +334,11 @@ public class GameManager : MonoBehaviour
 
     #region AssetBundle 
 
-    public void LoadAssetBundle_AllShader()
+    public void LoadAssetBundle_UI()
     {
-        //ResourceManager.LoadAssetAsync("lgu/shader", "MatCap_TextureAdd", typeof(Shader));
-        //ResourceManager.LoadAssetAsync<ShaderVariantCollection>("lgu/shader", "AllShader", (ShaderVariantCollection svc) =>
-        //{
-        //    svc.WarmUp();
-        //    Debug.Log(svc.shaderCount);
-        //});
+        
     }
+
 
     public void LoadAssetBundle(ZCurAssetBundleStatus abs)
     {
@@ -344,8 +354,12 @@ public class GameManager : MonoBehaviour
         var abgo = m_PlayerMe.GetAssetBundleGO(curABS);
         if (abgo == null)
         {
+            if (abs > ZCurAssetBundleStatus.S0101)
+                ShowHint(HintType.Loading, true);
             ResourceManager.LoadAssetAsync<GameObject>(string.Format("{0}/{1}", ZConstant.DefaultDir, curABS.ToLower()), curABS, (GameObject prefab) =>
              {
+                 if (abs > ZCurAssetBundleStatus.S0101)
+                     ShowHint(HintType.Loading, false);
                  loading = false;
                  ChangeABStatusTip(abs);
                  var go = GameObject.Instantiate(prefab);
@@ -363,8 +377,8 @@ public class GameManager : MonoBehaviour
 
                  //ReLoadShader(go);
                  go.transform.position = Vector3.zero;
-                 go.transform.rotation = Quaternion.identity;
-                 go.transform.localScale = Vector3.one;
+                 //go.transform.rotation = Quaternion.identity;
+                 //go.transform.localScale = Vector3.one;
                  m_PlayerMe.AddAssetBundleGO(curABS, go);
              });
         }

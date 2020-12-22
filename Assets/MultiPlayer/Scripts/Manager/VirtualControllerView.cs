@@ -51,10 +51,10 @@ public class VirtualControllerView : MonoBehaviour
 
     int clkcount = 0;
     float timer = 0;
-    float penta_interval = 0.7f;
+    float penta_interval = 1.5f;
     private void pentaKill()
     {
-        if (clkcount >= 5)
+        if (clkcount >= 3)
         {
             //ZGlobal.ClientMode = ZGlobal.ClientMode == ZClientMode.Curator ? ZClientMode.Visitor : ZClientMode.Curator;
             ZGlobal.ClientMode = ZClientMode.Curator;
@@ -140,7 +140,7 @@ public class VirtualControllerView : MonoBehaviour
     }
     private void ModelRotate()
     {
-        EventCenter.Instance.DispatchEvent(ZConstant.Event__Rotate__);
+        MessageManager.Instance.SendRotate();
     }
 
 
