@@ -1193,6 +1193,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: HomeVirtualDisplayer
       objectReference: {fileID: 0}
+    - target: {fileID: 5918630330031971362, guid: eec1e6887065122468ac58b5bbcdc099,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5918630330031971361, guid: eec1e6887065122468ac58b5bbcdc099,
         type: 3}
       propertyPath: m_LocalPosition.x

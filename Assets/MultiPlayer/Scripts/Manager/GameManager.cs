@@ -360,6 +360,17 @@ public class GameManager : MonoBehaviour
 
     public void LoadAssetBundle_UI()
     {
+        var v = FindObjectOfType<VirtualControllerView>();
+        Debug.Log("loading UI");
+        if (v != null)
+        {
+            v.Loading();
+        }
+
+        return;
+
+
+
         ResourceManager.LoadAssetAsync<SpriteAtlas>("lgu/ui", "UICollection", (SpriteAtlas sa) =>
           {
               var vc = FindObjectOfType<VirtualControllerView>();

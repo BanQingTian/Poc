@@ -18,7 +18,7 @@ public class ModelShowBehavior : BaseBehaviour
         if (Initialized)
             return;
 
-        
+
 
 
 
@@ -36,7 +36,8 @@ public class ModelShowBehavior : BaseBehaviour
     {
         if (isRotate)
         {
-            MGModel.transform.Rotate(Vector3.up, 0.2f);
+            if (MGModel != null)
+                MGModel.transform.Rotate(Vector3.up, 0.2f);
         }
 
         if (time < waitTime)

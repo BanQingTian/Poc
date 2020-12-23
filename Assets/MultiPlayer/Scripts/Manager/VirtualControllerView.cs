@@ -60,9 +60,10 @@ public class VirtualControllerView : MonoBehaviour
     }
     #endregion
 
-    public void Loading(UnityEngine.U2D.SpriteAtlas sa)
+    public void Loading(UnityEngine.U2D.SpriteAtlas sa = null)
     {
-        SetABUI(sa);
+        if (sa != null)
+            SetABUI(sa);
         maskImage.gameObject.SetActive(false);
         LoadingImage.gameObject.SetActive(true);
         StartCoroutine(LoadingCor());
@@ -86,7 +87,7 @@ public class VirtualControllerView : MonoBehaviour
         CaptureBtn.spriteState = SetSpriteState(CaptureBtn.image.sprite, sa.GetSprite(ZConstant.PhotoPress));
 
         ModelRotateBtn.image.sprite = sa.GetSprite(ZConstant.Rotate);
-        ModelRotateBtn.spriteState = SetSpriteState(ModelRotateBtn.image.sprite, sa.GetSprite(ZConstant.Rotate));
+        ModelRotateBtn.spriteState = SetSpriteState(ModelRotateBtn.image.sprite, sa.GetSprite(ZConstant.RotatePress));
 
         FirstBtn.image.sprite = sa.GetSprite(ZConstant.First);
         FirstBtn.spriteState = SetSpriteState(FirstBtn.image.sprite, sa.GetSprite(ZConstant.FirstPress));
@@ -102,11 +103,12 @@ public class VirtualControllerView : MonoBehaviour
         CuratorBgSprite = sa.GetSprite(ZConstant.Bg1);
         VisitorBgSprite = sa.GetSprite(ZConstant.Bg2);
 
+        TriggerBtn.GetComponent<Image>().sprite = sa.GetSprite(ZConstant.TouchScreen);
         TriggerBtn.ImageNormal = sa.GetSprite(ZConstant.TouchScreen);
         TriggerBtn.ImageHover = sa.GetSprite(ZConstant.TouchScreen);
     }
 
-    private SpriteState SetSpriteState(Sprite h,Sprite p)
+    private SpriteState SetSpriteState(Sprite h, Sprite p)
     {
         SpriteState ss;
         ss.highlightedSprite = h;
