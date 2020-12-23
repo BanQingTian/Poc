@@ -1,20 +1,27 @@
-﻿using System.Collections;
+﻿using NRKernal;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class VirtualControllerView : MonoBehaviour
 {
-
+    public NRButton TriggerBtn;
     public Button LogoBtn;
     public Button MiniGameBtn;
     public Button ModelsBtn;
     public Button CaptureBtn;
     public Button ModelRotateBtn;
-    public Button FristBtn;
+    public Button FirstBtn;
     public Button SecondBtn;
     public Button ThirdBtn;
 
+    public Image BgImage;
+    public Sprite CuratorBgSprite;
+    public Sprite VisitorBgSprite;
+
+    public Image LoadingImage;
+    public Image maskImage;
 
     #region Unity_Internal
     private void OnEnable()
@@ -53,12 +60,67 @@ public class VirtualControllerView : MonoBehaviour
     }
     #endregion
 
+    public void Loading(UnityEngine.U2D.SpriteAtlas sa)
+    {
+        SetABUI(sa);
+        maskImage.gameObject.SetActive(false);
+        LoadingImage.gameObject.SetActive(true);
+        StartCoroutine(LoadingCor());
+    }
+    private IEnumerator LoadingCor()
+    {
+        yield return new WaitForSeconds(2);
+        LoadingImage.gameObject.SetActive(false);
+        SetMode(ZGlobal.ClientMode);
+    }
+
+    public void SetABUI(UnityEngine.U2D.SpriteAtlas sa)
+    {
+        MiniGameBtn.image.sprite = sa.GetSprite(ZConstant.Minigame);
+        MiniGameBtn.spriteState = SetSpriteState(MiniGameBtn.image.sprite, sa.GetSprite(ZConstant.MinigamePress));
+
+        ModelsBtn.image.sprite = sa.GetSprite(ZConstant.Model);
+        ModelsBtn.spriteState = SetSpriteState(ModelsBtn.image.sprite, sa.GetSprite(ZConstant.ModelPress));
+
+        CaptureBtn.image.sprite = sa.GetSprite(ZConstant.Photo);
+        CaptureBtn.spriteState = SetSpriteState(CaptureBtn.image.sprite, sa.GetSprite(ZConstant.PhotoPress));
+
+        ModelRotateBtn.image.sprite = sa.GetSprite(ZConstant.Rotate);
+        ModelRotateBtn.spriteState = SetSpriteState(ModelRotateBtn.image.sprite, sa.GetSprite(ZConstant.Rotate));
+
+        FirstBtn.image.sprite = sa.GetSprite(ZConstant.First);
+        FirstBtn.spriteState = SetSpriteState(FirstBtn.image.sprite, sa.GetSprite(ZConstant.FirstPress));
+
+        SecondBtn.image.sprite = sa.GetSprite(ZConstant.Second);
+        SecondBtn.spriteState = SetSpriteState(SecondBtn.image.sprite, sa.GetSprite(ZConstant.SecondPress));
+
+        ThirdBtn.image.sprite = sa.GetSprite(ZConstant.Third);
+        ThirdBtn.spriteState = SetSpriteState(ThirdBtn.image.sprite, sa.GetSprite(ZConstant.ThirdPress));
+
+        LoadingImage.sprite = sa.GetSprite(ZConstant.Back);
+
+        CuratorBgSprite = sa.GetSprite(ZConstant.Bg1);
+        VisitorBgSprite = sa.GetSprite(ZConstant.Bg2);
+
+        TriggerBtn.ImageNormal = sa.GetSprite(ZConstant.TouchScreen);
+        TriggerBtn.ImageHover = sa.GetSprite(ZConstant.TouchScreen);
+    }
+
+    private SpriteState SetSpriteState(Sprite h,Sprite p)
+    {
+        SpriteState ss;
+        ss.highlightedSprite = h;
+        ss.pressedSprite = p;
+        return ss;
+    }
+
     int clkcount = 0;
     float timer = 0;
     float penta_interval = 1.5f;
+    int totalClkCount = 5;
     private void pentaKill()
     {
-        if (clkcount >= 3)
+        if (clkcount >= totalClkCount)
         {
             //ZGlobal.ClientMode = ZGlobal.ClientMode == ZClientMode.Curator ? ZClientMode.Visitor : ZClientMode.Curator;
             ZGlobal.ClientMode = ZClientMode.Curator;
@@ -89,6 +151,11 @@ public class VirtualControllerView : MonoBehaviour
                 ModelsBtn.gameObject.SetActive(true);
                 CaptureBtn.gameObject.SetActive(true);
                 ModelRotateBtn.gameObject.SetActive(true);
+                FirstBtn.gameObject.SetActive(true);
+                SecondBtn.gameObject.SetActive(true);
+                ThirdBtn.gameObject.SetActive(true);
+
+                BgImage.sprite = CuratorBgSprite;
 
                 break;
 
@@ -99,6 +166,11 @@ public class VirtualControllerView : MonoBehaviour
                 ModelsBtn.gameObject.SetActive(false);
                 CaptureBtn.gameObject.SetActive(true);
                 ModelRotateBtn.gameObject.SetActive(false);
+                FirstBtn.gameObject.SetActive(false);
+                SecondBtn.gameObject.SetActive(false);
+                ThirdBtn.gameObject.SetActive(false);
+
+                BgImage.sprite = VisitorBgSprite;
 
                 break;
 
@@ -111,9 +183,12 @@ public class VirtualControllerView : MonoBehaviour
     private void LogoBtnClk()
     {
         clkcount++;
+        Debug.Log(clkcount);
     }
     private void MiniBtnClk()
     {
+        if (!ZMarkerHelper.find) return;
+
         GameManager.Instance.ShowHint(HintType.WaitingOthers, false);
         GameManager.Instance.ShowPlayerCountUI(false);
 
@@ -127,6 +202,8 @@ public class VirtualControllerView : MonoBehaviour
     }
     private void ModelsBtnClk()
     {
+        if (!ZMarkerHelper.find) return;
+
         GameManager.Instance.ShowHint(HintType.WaitingOthers, false);
         GameManager.Instance.ShowPlayerCountUI(false);
 

@@ -19,7 +19,7 @@ public class ZMarkerHelper : MonoBehaviour
     public TrackingImageVisualizer TrackingImageVisualizerPrefab;
 
     // 是否识别到marker
-    private bool find = false;
+    public static bool find = false;
 
     // 识别的次数 
     private int scanCount = 0;
@@ -82,7 +82,7 @@ public class ZMarkerHelper : MonoBehaviour
             nrCamera.transform.SetParent(nrCameraParent.transform);
 
             ResetToTarget(new Pose(new Vector3(0, -0.5f, 1), Quaternion.identity), nrCameraParent.transform);
-
+            find = true;
             return true;
         }
 #elif UNITY_ANDROID

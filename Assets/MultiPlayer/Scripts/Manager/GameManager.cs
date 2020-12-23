@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.U2D;
 
 public class GameManager : MonoBehaviour
 {
@@ -66,6 +67,7 @@ public class GameManager : MonoBehaviour
 
         AnimatornProcessing();
         RecenterCOntroller();
+        UILookAtOwner();
     }
 
 
@@ -153,8 +155,6 @@ public class GameManager : MonoBehaviour
                             break;
                         case ZCurAssetBundleStatus.S0106:
 
-                            Debug.Log("~~~~end!!!!!#*&^#&$&$        ");
-
                             break;
                         default:
                             Debug.LogError("Cur Game Status Mode != ZCurAssetBundleStatus ^%^$^$%#@@$%");
@@ -165,6 +165,20 @@ public class GameManager : MonoBehaviour
                 break;
             default:
                 break;
+        }
+    }
+
+    private void UILookAtOwner()
+    {
+        if (UIHint != null)
+        {
+            var owner = m_PlayerMe.GetOwnerPlayerNetObj.transform;
+            foreach (Transform item in UIHint.transform)
+            {
+                item.rotation = Quaternion.identity;
+                //item.localScale = new Vector3(0, 0, -1);
+                //item.LookAt(owner);
+            }
         }
     }
 
@@ -346,10 +360,18 @@ public class GameManager : MonoBehaviour
 
     public void LoadAssetBundle_UI()
     {
-        
+        ResourceManager.LoadAssetAsync<SpriteAtlas>("lgu/ui", "UICollection", (SpriteAtlas sa) =>
+          {
+              var vc = FindObjectOfType<VirtualControllerView>();
+              Debug.Log("loading UI");
+              if (vc != null)
+              {
+                  vc.Loading(sa);
+              }
+          });
     }
 
-
+    private Transform UIHint;
     public void LoadAssetBundle(ZCurAssetBundleStatus abs)
     {
         // 删除上一个bundle的资源和数据
@@ -374,6 +396,8 @@ public class GameManager : MonoBehaviour
                  ChangeABStatusTip(abs);
                  var go = GameObject.Instantiate(prefab);
 
+                 UIHint = null;
+
                  if (ZGlobal.CurABStatus <= ZCurAssetBundleStatus.S0102)
                  {
                      go.transform.SetParent(m_MinigameBehavior.transform);
@@ -383,6 +407,20 @@ public class GameManager : MonoBehaviour
                  {
                      go.transform.SetParent(m_ShowModelBehavoir.transform);
                      m_ShowModelBehavoir.Processing(go);
+
+                     if (ZGlobal.CurABStatus == ZCurAssetBundleStatus.S0105)
+                     {
+                         Debug.Log("update ui pose");
+                         UIHint = GameObject.Find("Dialog").transform;
+                     }
+
+                     if(ZGlobal.CurABStatus == ZCurAssetBundleStatus.S0106)
+                     {
+                         ZCoroutiner.StartCoroutine(() => 
+                         {
+                             NRDevice.QuitApp();
+                         }, 30);
+                     }
                  }
 
                  //ReLoadShader(go);
@@ -419,9 +457,9 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    #endregion
+#endregion
 
-    #region Status
+#region Status
 
     public void ChangeGameStatuTip(ZCurGameStatusMode gs)
     {
@@ -435,10 +473,12 @@ public class GameManager : MonoBehaviour
         ZGlobal.CurABStatus = abs;
     }
 
-    #endregion
+
+#endregion
 
 
-    #region UI 
+
+#region UI 
 
     public void ShowPlayerCountUI(bool show = true)
     {
@@ -462,7 +502,7 @@ public class GameManager : MonoBehaviour
         m_MarkerHelper.ScanSuccessEvent = OnScanSuccess;
     }
 
-    #endregion
+#endregion
 
 
 }

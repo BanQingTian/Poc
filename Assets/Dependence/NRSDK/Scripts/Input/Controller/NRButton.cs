@@ -14,7 +14,7 @@ namespace NRKernal
     using UnityEngine.UI;
     using UnityEngine.EventSystems;
 
-    internal class NRButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
+    public class NRButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         public Sprite ImageNormal;
         public Sprite ImageHover;
