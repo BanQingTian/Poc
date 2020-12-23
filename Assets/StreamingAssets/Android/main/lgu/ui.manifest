@@ -1,5 +1,5 @@
 ManifestFileVersion: 0
-CRC: 919783052
+CRC: 4008404618
 Hashes:
   AssetFileHash:
     serializedVersion: 2
@@ -16,24 +16,5 @@ ClassTypes:
 - Class: 687078895
   Script: {instanceID: 0}
 Assets:
-- Assets/UPlus_Icon/UI/3rd.png
-- Assets/UPlus_Icon/UI/2nd.png
-- Assets/UPlus_Icon/UI/2nd_press.png
-- Assets/UPlus_Icon/UI/1st.png
-- Assets/UPlus_Icon/UI/model.png
-- Assets/UPlus_Icon/UI/bg1.png
-- Assets/UPlus_Icon/UI/mingame_press.png
-- Assets/UPlus_Icon/UI/bg2.png
-- Assets/UPlus_Icon/UI/rotate.png
-- Assets/UPlus_Icon/UI/touchscreen.png
-- Assets/UPlus_Icon/UI/3rd_press.png
-- Assets/UPlus_Icon/UI/minigame.png
-- Assets/UPlus_Icon/UI/logo.png
 - Assets/UPlus_Icon/UI/UICollection.spriteatlas
-- Assets/UPlus_Icon/UI/back.png
-- Assets/UPlus_Icon/UI/photo.png
-- Assets/UPlus_Icon/UI/photo_press.png
-- Assets/UPlus_Icon/UI/1st_press.png
-- Assets/UPlus_Icon/UI/model_press.png
-- Assets/UPlus_Icon/UI/rotate_press.png
 Dependencies: []

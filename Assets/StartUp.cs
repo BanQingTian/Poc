@@ -47,7 +47,7 @@ public class StartUp : MonoBehaviour
     {
         ResourceManager.LoadAssetAsync<SpriteAtlas>("lgu/ui", "UICollection", (SpriteAtlas sa) =>
         {
-            Sprite s = sa.GetSprite("bg2");
+            Sprite s = sa.GetSprite("minigame");
             Debug.Log(sa.spriteCount);
             bg.sprite = s;
         });
