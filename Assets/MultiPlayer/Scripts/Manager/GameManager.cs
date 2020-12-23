@@ -255,6 +255,16 @@ public class GameManager : MonoBehaviour
 
     #region Net Relate
 
+    public void FirstPersonWaiting30s()
+    {
+
+    }
+
+    public void SendStartGame()
+    {
+        MessageManager.Instance.SendStartGame();
+    }
+
     public void SendPlayNextAnim(int type)
     {
         MessageManager.Instance.SendFireMsg(m_PlayerMe.GetOwnerPlayerNetObj.entityInfo.owner, type);

@@ -137,7 +137,7 @@ public class MessageManager
         client.JoinRoom(roomid, password, OnJoinARoomResp);
     }
 
-    public void SendPlayBattleMsg() // just house-owner send
+    public void SendStartGame() // just house-owner send
     {
         client.SendMsg(MsgId.StartGame, Target.All, null);
     }

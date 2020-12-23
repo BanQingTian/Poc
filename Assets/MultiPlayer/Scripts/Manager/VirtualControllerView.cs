@@ -11,6 +11,10 @@ public class VirtualControllerView : MonoBehaviour
     public Button ModelsBtn;
     public Button CaptureBtn;
     public Button ModelRotateBtn;
+    public Button FristBtn;
+    public Button SecondBtn;
+    public Button ThirdBtn;
+
 
     #region Unity_Internal
     private void OnEnable()
