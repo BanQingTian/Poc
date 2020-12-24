@@ -190,32 +190,14 @@ public class VirtualControllerView : MonoBehaviour
     private void MiniBtnClk()
     {
         if (!ZMarkerHelper.find) return;
-
-        GameManager.Instance.ShowHint(HintType.WaitingOthers, false);
-        GameManager.Instance.ShowPlayerCountUI(false);
-
-        if (ZGlobal.CurGameStatusMode == ZCurGameStatusMode.MINI_GAME_STATUS
-            || ZGlobal.CurGameStatusMode == ZCurGameStatusMode.MODELS_SHOW_STATUS)
-        {
-            return;
-        }
-
+       
         GameManager.Instance.SendPlayMiniGame();
     }
     private void ModelsBtnClk()
     {
         if (!ZMarkerHelper.find) return;
 
-        GameManager.Instance.ShowHint(HintType.WaitingOthers, false);
-        GameManager.Instance.ShowPlayerCountUI(false);
-
-        if (ZGlobal.CurGameStatusMode == ZCurGameStatusMode.MODELS_SHOW_STATUS)
-        {
-            return;
-        }
-
-        GameManager.Instance.ChangeGameStatuTip(ZCurGameStatusMode.MODELS_SHOW_STATUS);
-        GameManager.Instance.SendPlayShowModels(ZCurAssetBundleStatus.S0103);
+        GameManager.Instance.SendPlayShowModels();
     }
     private void CaptureBtnClk()
     {

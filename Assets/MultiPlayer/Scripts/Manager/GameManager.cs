@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
     public PlayerNetObj PlayerPrefab;
 
     // 如果30s以后有人成为curator
-    public bool CanBecomeCurator = true;
+    public bool ExistCurator = false;
 
     public bool JoinRoom = false;
     public bool BeginGame = false;
@@ -48,6 +48,8 @@ public class GameManager : MonoBehaviour
         S2CFuncTable.Add(S2CFuncName.PlayMiniGame, S2C_PlayMiniGame);
         S2CFuncTable.Add(S2CFuncName.PlayShowModels, S2C_PlayShowModels);
         S2CFuncTable.Add(S2CFuncName.Rotate, S2C_Rotate);
+        S2CFuncTable.Add(S2CFuncName.ExitCurator, S2C_ExistCurator);
+        S2CFuncTable.Add(S2CFuncName.ScanMaker, S2C_ScanMarkerFinish);
     }
 
     private void Update()
@@ -68,6 +70,7 @@ public class GameManager : MonoBehaviour
         AnimatornProcessing();
         RecenterCOntroller();
         UILookAtOwner();
+        FirstPersonWaiting30s();
     }
 
 
@@ -182,6 +185,36 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    float _waitingTime = 0;
+    private void FirstPersonWaiting30s()
+    {
+        if (ExistCurator) return;
+        _waitingTime += Time.deltaTime;
+        if(_waitingTime > ZConstant.WaitToCreateRoomTime)
+        {
+            Debug.Log("[CZLOG] Become Curator");
+            ExistCurator = true;
+            ZGlobal.ClientMode = ZClientMode.Curator;
+            SendExitCurator();
+            StartCoroutine(sendCloseJoinRoomPerission());
+        }
+    }
+
+    private IEnumerator sendCloseJoinRoomPerission()
+    {
+        yield return new WaitForSeconds(ZConstant.WaitToCloseJoinRoomPerissionTime);
+        SendStartGame();
+        while (true) // 等待所有人扫秒marker
+        {
+            if (m_PlayerMe.GetAllPlayerReadyStatus())
+            {
+                ZCoroutiner.StartCoroutine(SendPlayMiniGame, ZConstant.WaitToPlayMiniGameTime);
+                yield break;
+            }
+            yield return null;  
+        }
+    }
+
     public void Initialized()
     {
         m_HintData = new HintData();
@@ -227,6 +260,15 @@ public class GameManager : MonoBehaviour
 
     #region S2CFunc
 
+    public void  S2C_ExistCurator(string param)
+    {
+        ExistCurator = true;
+    }
+    public void S2C_ScanMarkerFinish(string param)
+    {
+        m_PlayerMe.SetPlayerReadyStatus(param);
+    }
+
     public void S2C_Fire(string param)
     {
         var arr = param.Split(',');
@@ -269,14 +311,22 @@ public class GameManager : MonoBehaviour
 
     #region Net Relate
 
-    public void FirstPersonWaiting30s()
+   
+    private void SendExitCurator()
     {
-
+        MessageManager.Instance.SendExitCurator();
     }
+
+
 
     public void SendStartGame()
     {
         MessageManager.Instance.SendStartGame();
+    }
+
+    public void SendScanMakerFinish(string playerid)
+    {
+        MessageManager.Instance.SendScanMakerFinish(playerid);
     }
 
     public void SendPlayNextAnim(int type)
@@ -289,17 +339,48 @@ public class GameManager : MonoBehaviour
         if (loading)
             return;
 
+        if (ZGlobal.CurGameStatusMode == ZCurGameStatusMode.MINI_GAME_STATUS
+           || ZGlobal.CurGameStatusMode == ZCurGameStatusMode.MODELS_SHOW_STATUS)
+        {
+            return;
+        }
+
         loading = true;
+        
+        ShowHint(HintType.WaitingOthers, false);
+        ShowPlayerCountUI(false);
+        ChangeGameStatuTip(ZCurGameStatusMode.MINI_GAME_STATUS);
 
         MessageManager.Instance.SendPlayMiniGame();
     }
 
+    public void SendPlayShowModels()
+    {
+        if (loading)
+            return;
+
+        if (ZGlobal.CurGameStatusMode == ZCurGameStatusMode.MODELS_SHOW_STATUS)
+        {
+            return;
+        }
+
+        loading = true;
+
+        ShowHint(HintType.WaitingOthers, false);
+        ShowPlayerCountUI(false);
+        ChangeGameStatuTip(ZCurGameStatusMode.MODELS_SHOW_STATUS);
+
+        MessageManager.Instance.SendPlayShowModels(ZCurAssetBundleStatus.S0103);
+    }
     public void SendPlayShowModels(ZCurAssetBundleStatus abs)
     {
         if (loading)
             return;
 
         loading = true;
+
+        ShowHint(HintType.WaitingOthers, false);
+        ShowPlayerCountUI(false);
 
         MessageManager.Instance.SendPlayShowModels(abs);
     }
@@ -343,15 +424,20 @@ public class GameManager : MonoBehaviour
         ShowHint(HintType.WaitingOthers);
         Debug.Log("[CZLOG] OnScanSuccess -> ready load waiting ab");
         LoadAssetBundle(ZGlobal.CurABStatus);
-
+        
         if (ZGlobal.ClientMode == ZClientMode.Visitor)
         {
 
         }
         else
         {
-
+            SendScanMakerFinish(m_PlayerMe.GetOwnerPlayerNetObj.entityInfo.owner);
         }
+    }
+    private IEnumerator ReadyToPlayMiniGame()
+    {
+        yield return new WaitForSeconds(ZConstant.WaitToPlayMiniGameTime);
+        
     }
 
     #endregion
@@ -367,19 +453,16 @@ public class GameManager : MonoBehaviour
             v.Loading();
         }
 
-        return;
 
-
-
-        ResourceManager.LoadAssetAsync<SpriteAtlas>("lgu/ui", "UICollection", (SpriteAtlas sa) =>
-          {
-              var vc = FindObjectOfType<VirtualControllerView>();
-              Debug.Log("loading UI");
-              if (vc != null)
-              {
-                  vc.Loading(sa);
-              }
-          });
+        //ResourceManager.LoadAssetAsync<SpriteAtlas>("lgu/ui", "UICollection", (SpriteAtlas sa) =>
+        //  {
+        //      var vc = FindObjectOfType<VirtualControllerView>();
+        //      Debug.Log("loading UI");
+        //      if (vc != null)
+        //      {
+        //          vc.Loading(sa);
+        //      }
+        //  });
     }
 
     private Transform UIHint;

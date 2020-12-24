@@ -4,11 +4,15 @@ using UnityEngine;
 using NetWorkToolkit;
 using NRKernal;
 
+/// <summary>
+/// 玩家的网络实体+数据
+/// </summary>
 public class PlayerNetObj : NetObjectEntity
 {
     public GameObject WeaponTarget;
     public Transform ShootPoint;
     public GameObject Bullet;
+    public bool FinishScanMarker = false;
 
     private int mScore;
     public int Score { get; set; }

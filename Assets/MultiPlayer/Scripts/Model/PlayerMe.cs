@@ -13,6 +13,10 @@ public class PlayerMe
 
     private int playerCount;
 
+    #region player data
+
+
+
     public int PlayerCount
     {
         get
@@ -79,6 +83,45 @@ public class PlayerMe
         playerCount = 0;
     }
 
+    public void SetPlayerReadyStatus(string playerid, bool ready = true)
+    {
+        foreach (var item in PlayerDict)
+        {
+            if (item.Key == playerid)
+            {
+                item.Value.FinishScanMarker = ready;
+            }
+        }
+    }
+
+    public bool GetPlayerReadyStatus(string playerid    )
+    {
+        foreach (var item in PlayerDict)
+        {
+            if(item.Key == playerid)
+            {
+                return item.Value.FinishScanMarker;
+            }
+        }
+
+        Debug.LogError("[CZLOG] Don't contain this playerid");
+        return false;
+    }
+
+    public bool GetAllPlayerReadyStatus()
+    {
+        foreach (var item in PlayerDict.Values)
+        {
+            if (!item.FinishScanMarker)
+                return false;
+        }
+        return true;
+    }
+
+    #endregion
+
+
+    #region bundle data 
 
     public GameObject GetAssetBundleGO(string abName)
     {
@@ -126,5 +169,5 @@ public class PlayerMe
             Debug.Log("{CZLOG] RemoveAssetBundleGO Failed !!!");
         }
     }
-
+    #endregion
 }
