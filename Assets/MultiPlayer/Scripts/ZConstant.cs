@@ -11,7 +11,7 @@ public static class ZConstant
     /// <summary>
     /// 创建房间后将在10s后关闭房间加入权限
     /// </summary>
-    public const float WaitToCloseJoinRoomPerissionTime = 10;
+    public const float WaitToTurnOffRoomPerissionTime = 10;
     /// <summary>
     /// 全部扫秒完maker，将在3s后开启minigame
     /// </summary>

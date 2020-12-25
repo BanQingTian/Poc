@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 2502416655
+CRC: 739707372
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: cbb47a0dcd86d19fbb806817ff925e93
+    Hash: 261a489e882c394d88c686c01fa9e901
   TypeTreeHash:
     serializedVersion: 2
     Hash: 8f81471f4cfc7bf93c7fa752ebb4eb40
@@ -17,4 +17,5 @@ ClassTypes:
   Script: {instanceID: 0}
 Assets:
 - Assets/UPlus_Icon/UI/UICollection.spriteatlas
+- Assets/UPlus_Icon/icon_1225/UICollection2.spriteatlas
 Dependencies: []

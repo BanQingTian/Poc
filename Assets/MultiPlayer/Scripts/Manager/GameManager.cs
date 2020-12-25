@@ -202,7 +202,7 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator sendCloseJoinRoomPerission()
     {
-        yield return new WaitForSeconds(ZConstant.WaitToCloseJoinRoomPerissionTime);
+        yield return new WaitForSeconds(ZConstant.WaitToTurnOffRoomPerissionTime);
         SendStartGame();
         while (true) // 等待所有人扫秒marker
         {
@@ -446,23 +446,23 @@ public class GameManager : MonoBehaviour
 
     public void LoadAssetBundle_UI()
     {
-        var v = FindObjectOfType<VirtualControllerView>();
-        Debug.Log("loading UI");
-        if (v != null)
-        {
-            v.Loading();
-        }
+        //var v = FindObjectOfType<VirtualControllerView>();
+        //Debug.Log("loading UI");
+        //if (v != null)
+        //{
+        //    v.Loading();
+        //}
 
 
-        //ResourceManager.LoadAssetAsync<SpriteAtlas>("lgu/ui", "UICollection", (SpriteAtlas sa) =>
-        //  {
-        //      var vc = FindObjectOfType<VirtualControllerView>();
-        //      Debug.Log("loading UI");
-        //      if (vc != null)
-        //      {
-        //          vc.Loading(sa);
-        //      }
-        //  });
+        ResourceManager.LoadAssetAsync<SpriteAtlas>("lgu/ui", "UICollection", (SpriteAtlas sa) =>
+          {
+              var vc = FindObjectOfType<VirtualControllerView>();
+              Debug.Log("loading UI");
+              if (vc != null)
+              {
+                  vc.Loading(sa);
+              }
+          });
     }
 
     private Transform UIHint;
