@@ -496,6 +496,15 @@ public class GameManager : MonoBehaviour
                  {
                      go.transform.SetParent(m_MinigameBehavior.transform);
                      m_MinigameBehavior.Processing(go);
+
+                     if(ZGlobal.CurABStatus == ZCurAssetBundleStatus.S0101)
+                     {
+                         var obj = GameObject.Find("UI_Canvas");
+                         if (obj != null)
+                         {
+                             obj.SetActive(false);
+                         }
+                     }
                  }
                  else
                  {
