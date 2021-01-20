@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Android;
 
 public class ZMain : MonoBehaviour
 {
@@ -19,13 +20,49 @@ public class ZMain : MonoBehaviour
 
     void Start()
     {
+        //StartCoroutine(AskPermission(Permission.Camera));
+        StartCoroutine(WaitingLoadRes());
+    }
+
+
+    // 等待资源加载
+    private IEnumerator WaitingLoadRes()
+    {
+
         ZGlobal.ClientMode = ClientMode;
         ZGlobal.ServiceMode = m_ServiceMode;
 
         Init();
-        ConnectServer(m_ServiceMode);
 
+        yield return new WaitForSeconds(1);
+
+        GameManager.Instance.LoadAssetBundle_Weapon_Bullet();
+
+        while (GameManager.Instance.finish < 2)  // 加载完新加的资源
+        {
+            yield return null;
+        }
+
+
+        ConnectServer(m_ServiceMode);
     }
+
+    private IEnumerator AskPermission(string permission)
+    {
+        while (true)
+        {
+            if (!Permission.HasUserAuthorizedPermission(Permission.Camera))
+            {
+                Permission.RequestUserPermission(Permission.Camera);
+            }
+            else
+            {
+                yield break;
+            }
+            yield return new WaitForSeconds(3);
+        }
+    }
+
 
     private void Init()
     {

@@ -15,8 +15,6 @@ public class PlayerMe
 
     #region player data
 
-
-
     public int PlayerCount
     {
         get
@@ -49,6 +47,17 @@ public class PlayerMe
         {
             Debug.LogError("ZLOG  ----  Dont contain playerid");
             return null;
+        }
+    }
+
+    public void SetAllPlayerWeaponStatus(bool show)
+    {
+        foreach (var item in PlayerDict.Values)
+        {
+            if (item.WeaponTarget != null)
+            {
+                item.WeaponTarget.SetActive(show);
+            }
         }
     }
 

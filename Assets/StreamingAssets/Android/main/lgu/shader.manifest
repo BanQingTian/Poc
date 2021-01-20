@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 2484167409
+CRC: 2970681457
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: bb2cea140851113234f3c29e6a2a0313
+    Hash: 9fed5bd3c81b754bb7fcc04ac2b248af
   TypeTreeHash:
     serializedVersion: 2
     Hash: 7e9ee104d6bb707fb2602b751e6f78b1
@@ -12,9 +12,9 @@ ClassTypes:
 - Class: 48
   Script: {instanceID: 0}
 Assets:
-- Assets/UPlus_PoC/Assets/Hovl Studio/Fantastic cartoon VFX/Shaders/Blend_CenterGlow.shader
-- Assets/UPlus_PoC/Assets/Hovl Studio/Fantastic cartoon VFX/Shaders/Add_CenterGlow.shader
-- Assets/UPlus_PoC/Shaders/Standard2side.shader
-- Assets/UPlus_PoC/Shaders/RimLight.shader
-- Assets/UPlus_PoC/Assets/JMO Assets/MatCap Shaders/Shaders/MatCap_TextureAdd.shader
+- Assets/S01/Shaders/Fantastic cartoon VFX/Blend_CenterGlow.shader
+- Assets/S01/Shaders/Fantastic cartoon VFX/Add_CenterGlow.shader
+- Assets/S01/Shaders/Standard2side.shader
+- Assets/S01/Shaders/RimLight.shader
+- Assets/S01/Shaders/MatCap Shaders/MatCap_TextureAdd.shader
 Dependencies: []

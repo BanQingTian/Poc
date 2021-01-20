@@ -4,14 +4,38 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    public Rigidbody m_Rig;
+    private Rigidbody rig;
+    public Rigidbody m_Rig
+    {
+        get
+        {
+            if(rig == null)
+            {
+                if (GetComponent<Rigidbody>() == null)
+                {
+                    rig = gameObject.AddComponent<Rigidbody>();
+                }
+                else
+                {
+                    rig = GetComponent<Rigidbody>();
+                }
+            }
+            return rig;
+        }
+    }
     public bool Invalid = false;
     public string BelongToPlayerID;
 
 
     private void OnEnable()
     {
-        Invoke("ReleaseObj", 1);
+        Invoke("ReleaseObj", 2);
+    }
+
+    public void OnTriggerEnter(Collider other)
+    {
+        GameManager.Instance.ShootTarget();
+        gameObject.transform.position = new Vector3(9999, 9999, 9999);
     }
 
     public void ResetBullet()

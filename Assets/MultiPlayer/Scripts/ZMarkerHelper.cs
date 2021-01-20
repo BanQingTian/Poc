@@ -41,6 +41,7 @@ public class ZMarkerHelper : MonoBehaviour
 
     private void Update()
     {
+
         if (OpenScan && (find || CheckingScan()))
         {
             OpenScan = false;
@@ -90,10 +91,8 @@ public class ZMarkerHelper : MonoBehaviour
         NRFrame.GetTrackables<NRTrackableImage>(m_TempTrackingImages, NRTrackableQueryFilter.All);
         foreach (var item in m_TempTrackingImages)
         {
-
             TrackingImageVisualizer visualizer = null;
             m_Visualizers.TryGetValue(item.GetDataBaseIndex(), out visualizer);
-
             if (item.GetTrackingState() == TrackingState.Tracking)
             {
 

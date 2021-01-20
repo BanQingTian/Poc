@@ -1976,9 +1976,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayerPrefab: {fileID: 2318769667353950577, guid: 4237a4295bc5171429571032ca2c9984,
     type: 3}
-  CanBecomeCurator: 1
+  ExistCurator: 0
   JoinRoom: 0
   BeginGame: 0
+  curType: 0
+  finish: 0
 --- !u!114 &1695143760
 MonoBehaviour:
   m_ObjectHideFlags: 0

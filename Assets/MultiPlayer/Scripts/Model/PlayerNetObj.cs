@@ -22,7 +22,11 @@ public class PlayerNetObj : NetObjectEntity
     private GameObject nrCamera;
     private GameObject ownerGO;
 
-
+    public void SetWeaponAndBullet(GameObject w, GameObject b)
+    {
+        WeaponTarget = w;
+        Bullet = b;
+    }
 
     [SerializeField]
     public struct ExtroInfo
@@ -55,10 +59,13 @@ public class PlayerNetObj : NetObjectEntity
         base.SerializeData();
 
         var ei = JsonUtility.FromJson<ExtroInfo>(entityInfo.extraInfo);
-        //WeaponTarget.transform.position = ei.controllerPosition;
+        WeaponTarget.transform.position = ei.controllerPosition;
         WeaponTarget.transform.rotation = ei.controlleRotation;
 
-        WeaponTarget.transform.position = Vector3.Lerp(WeaponTarget.transform.position, ei.controllerPosition, 0.35f);
+        ShootPoint.transform.position = WeaponTarget.transform.position + new Vector3(0, 0, 0.1f);
+        ShootPoint.transform.rotation = WeaponTarget.transform.rotation;
+
+        //WeaponTarget.transform.position = Vector3.Lerp(WeaponTarget.transform.position, ei.controllerPosition, 0.35f);
     }
 
     public override void DeSerializeData()
@@ -72,9 +79,13 @@ public class PlayerNetObj : NetObjectEntity
         ei.controllerPosition = NRInput.AnchorsHelper.GetAnchor(ControllerAnchorEnum.RightModelAnchor).position;
         ei.controlleRotation = NRInput.AnchorsHelper.GetAnchor(ControllerAnchorEnum.RightModelAnchor).rotation;
 
-        //WeaponTarget.transform.position = ei.controllerPosition;
+
+        WeaponTarget.transform.position = ei.controllerPosition;
         WeaponTarget.transform.rotation = ei.controlleRotation;
-        WeaponTarget.transform.position = Vector3.Lerp(WeaponTarget.transform.position, ei.controllerPosition, 0.35f);
+
+        ShootPoint.transform.position = WeaponTarget.transform.position + new Vector3(0, 0, 0.1f);
+        ShootPoint.transform.rotation = WeaponTarget.transform.rotation;
+        //WeaponTarget.transform.position = Vector3.Lerp(WeaponTarget.transform.position, ei.controllerPosition, 0.35f);
         this.entityInfo.extraInfo = JsonUtility.ToJson(ei);
     }
 
@@ -99,11 +110,26 @@ public class PlayerNetObj : NetObjectEntity
     {
         var b = PoolManager.Instance.Get(Bullet);
         b.SetActive(true);
-        b.GetComponent<Bullet>().ResetBullet();
-        b.transform.position = Bullet.transform.position;
-        b.transform.rotation = Bullet.transform.rotation;
+        if (b.GetComponent<Bullet>() == null)
+        {
+            b.AddComponent<Bullet>();
+        }
+        // b.GetComponent<Bullet>().ResetBullet();
+        b.transform.position = ShootPoint.transform.position;
+        b.transform.rotation = ShootPoint.transform.rotation;
         b.transform.localScale = Bullet.transform.lossyScale;
-        b.GetComponent<Rigidbody>().AddForce(b.transform.forward * 500);
+
+        b.GetComponent<Collider>().isTrigger = true;
+
+        var rig = b.GetComponent<Rigidbody>();
+        if (rig == null)
+        {
+            rig = b.AddComponent<Rigidbody>();
+        }
+        rig.useGravity = false;
+        rig.isKinematic = false;
+
+        rig.AddForce(b.transform.forward * 100);
     }
 
 
@@ -124,6 +150,7 @@ public class PlayerNetObj : NetObjectEntity
         {
             return;
         }
+
 
         // 游戏开始方可设计
         if (GameManager.Instance.BeginGame)

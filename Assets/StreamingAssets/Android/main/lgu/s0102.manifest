@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 503723567
+CRC: 2575030153
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 147e82525d358d972b161fe4b8bf8401
+    Hash: 880af030ce3e02c0cb1f657b8d4aeff6
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 51593f75d8e076336f8f885243b85aed
+    Hash: 60fe9eb00a47bf3892e0464a0ac00717
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -25,9 +25,11 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 48
   Script: {instanceID: 0}
-- Class: 65
-  Script: {instanceID: 0}
 - Class: 74
+  Script: {instanceID: 0}
+- Class: 82
+  Script: {instanceID: 0}
+- Class: 83
   Script: {instanceID: 0}
 - Class: 91
   Script: {instanceID: 0}
@@ -76,6 +78,6 @@ ClassTypes:
 - Class: 227
   Script: {instanceID: 0}
 Assets:
-- Assets/UPlus_PoC/Prefabs/S0102.prefab
+- Assets/S01/Prefabs/S0102.prefab
 Dependencies:
 - E:/Program/LGU_Poc_Copy/AssetBundles/Android/main/lgu/shader

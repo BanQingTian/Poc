@@ -103,7 +103,7 @@ namespace NRKernal.Record
         {
             while (!this.m_CaptureContext.GetFrameProvider().IsFrameReady())
             {
-                NRDebugger.LogFormat("Wait for the frame ready!");
+                //NRDebugger.LogFormat("Wait for the frame ready!");
                 yield return new WaitForEndOfFrame();
             }
             callback?.Invoke();

@@ -1,0 +1,34 @@
+ManifestFileVersion: 0
+CRC: 2896067319
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: c498a19a548c6b0298dbeddc67040c08
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 1da6d8c31103e9c885ed43ad22ce6574
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 65
+  Script: {instanceID: 0}
+- Class: 96
+  Script: {instanceID: 0}
+Assets:
+- Assets/S01/Prefabs/ChargerUser.prefab
+Dependencies: []

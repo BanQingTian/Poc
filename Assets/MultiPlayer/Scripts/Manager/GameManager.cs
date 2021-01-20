@@ -90,6 +90,7 @@ public class GameManager : MonoBehaviour
             if (_hoverTime >= _hoverInterval)
             {
                 NRInput.RecenterController();
+                Debug.Log("RecenterController");
                 _hoverTime = 0;
             }
         }
@@ -110,6 +111,7 @@ public class GameManager : MonoBehaviour
             case ZCurGameStatusMode.MINI_GAME_STATUS:
                 if (NRInput.GetButtonDown(ControllerButton.TRIGGER))
                 {
+                    Handheld.Vibrate();
                     SendPlayNextAnim(0);
                 }
                 if (ZGlobal.ClientMode == ZClientMode.Curator && m_MinigameBehavior.GetAnimPlayingName() == "End")
@@ -277,11 +279,25 @@ public class GameManager : MonoBehaviour
 
         Fire(pid, type);
     }
+
+    public int curType = 0;
     private void Fire(string pid, int type)
     {
         var obj = m_PlayerMe.GetPlayerNetObj(pid);
-        //obj.Shoot();
-        if (type == 0)
+
+        curType = type;
+
+        obj.Shoot();
+
+        //if (type == 0)
+        //    m_MinigameBehavior.PlayNextAnim();
+        //else
+        //    m_ShowModelBehavoir.PlayNextAnim();
+    }
+
+    public void ShootTarget()
+    {
+        if (curType == 0)
             m_MinigameBehavior.PlayNextAnim();
         else
             m_ShowModelBehavoir.PlayNextAnim();
@@ -420,7 +436,6 @@ public class GameManager : MonoBehaviour
     // 扫秒成功 开始等待房间创建
     public void OnScanSuccess()
     {
-
         ShowHint(HintType.WaitingOthers);
         Debug.Log("[CZLOG] OnScanSuccess -> ready load waiting ab");
         LoadAssetBundle(ZGlobal.CurABStatus);
@@ -446,14 +461,6 @@ public class GameManager : MonoBehaviour
 
     public void LoadAssetBundle_UI()
     {
-        //var v = FindObjectOfType<VirtualControllerView>();
-        //Debug.Log("loading UI");
-        //if (v != null)
-        //{
-        //    v.Loading();
-        //}
-
-
         ResourceManager.LoadAssetAsync<SpriteAtlas>("lgu/ui", "UICollection", (SpriteAtlas sa) =>
           {
               var vc = FindObjectOfType<VirtualControllerView>();
@@ -463,6 +470,30 @@ public class GameManager : MonoBehaviour
                   vc.Loading(sa);
               }
           });
+    }
+
+    public int finish = 0;
+    public void LoadAssetBundle_Weapon_Bullet()
+    {
+        ResourceManager.LoadAssetAsync<GameObject>("lgu/weapon", "ChargerUser", (GameObject go) =>
+        {
+            Debug.Log("load weapon");
+            PlayerPrefab.WeaponTarget = Instantiate(go);
+            PlayerPrefab.WeaponTarget.GetComponent<Collider>().enabled = false;
+            PlayerPrefab.WeaponTarget.SetActive(false);
+            PlayerPrefab.WeaponTarget.transform.localPosition = Vector3.zero;
+            //PlayerPrefab.ShootPoint.transform.SetParent(PlayerPrefab.WeaponTarget.transform);
+            PlayerPrefab.ShootPoint.transform.localPosition = new Vector3(0, 0, 0.12f);
+            finish++;
+        });
+
+        ResourceManager.LoadAssetAsync<GameObject>("lgu/bullet", "ChargeBullet", (GameObject go) => 
+        {
+            Debug.Log("load bullet");
+            PlayerPrefab.Bullet = Instantiate(go);
+            PlayerPrefab.Bullet.SetActive(false);
+            finish++;
+        });
     }
 
     private Transform UIHint;
@@ -505,9 +536,16 @@ public class GameManager : MonoBehaviour
                              obj.SetActive(false);
                          }
                      }
+                     else if(ZGlobal.CurABStatus == ZCurAssetBundleStatus.S0102)
+                     {
+                         m_PlayerMe.SetAllPlayerWeaponStatus(true);
+                     }
                  }
                  else
                  {
+                     m_PlayerMe.SetAllPlayerWeaponStatus(false);
+
+
                      go.transform.SetParent(m_ShowModelBehavoir.transform);
                      m_ShowModelBehavoir.Processing(go);
 
