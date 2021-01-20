@@ -69,6 +69,7 @@ public class GameManager : MonoBehaviour
 
         AnimatornProcessing();
         RecenterCOntroller();
+        //DoubleClkRecenter();
         UILookAtOwner();
         FirstPersonWaiting30s();
     }
@@ -78,6 +79,35 @@ public class GameManager : MonoBehaviour
 
     float _hoverTime = 0;
     float _hoverInterval = 1;
+
+    bool _clkReady = false;
+    float ttt = 0;
+    private void DoubleClkRecenter()
+    {
+        if (NRInput.GetButtonUp(ControllerButton.TRIGGER))
+        {
+            _clkReady = true;
+            ttt = 0;
+        }
+
+        if (ttt < 0.8f)
+            ttt += Time.fixedDeltaTime;
+
+        if (NRInput.GetButtonDown(ControllerButton.TRIGGER))
+        {
+            if (_clkReady && ttt < 0.7f)
+            {
+                Debug.Log("run");
+
+                NRInput.RecenterController();
+            }
+            else
+            {
+                _clkReady = false;
+                ttt = 0;
+            }
+        }
+    }
     private void RecenterCOntroller()
     {
         if (NRInput.GetButtonDown(ControllerButton.TRIGGER))
@@ -192,7 +222,7 @@ public class GameManager : MonoBehaviour
     {
         if (ExistCurator) return;
         _waitingTime += Time.deltaTime;
-        if(_waitingTime > ZConstant.WaitToCreateRoomTime)
+        if (_waitingTime > ZConstant.WaitToCreateRoomTime)
         {
             Debug.Log("[CZLOG] Become Curator");
             ExistCurator = true;
@@ -213,7 +243,7 @@ public class GameManager : MonoBehaviour
                 ZCoroutiner.StartCoroutine(SendPlayMiniGame, ZConstant.WaitToPlayMiniGameTime);
                 yield break;
             }
-            yield return null;  
+            yield return null;
         }
     }
 
@@ -262,7 +292,7 @@ public class GameManager : MonoBehaviour
 
     #region S2CFunc
 
-    public void  S2C_ExistCurator(string param)
+    public void S2C_ExistCurator(string param)
     {
         ExistCurator = true;
     }
@@ -277,7 +307,8 @@ public class GameManager : MonoBehaviour
         string pid = arr[0];
         int type = int.Parse(arr[1]);
 
-        Fire(pid, type);
+        if (ZGlobal.CurABStatus == ZCurAssetBundleStatus.S0102)
+            Fire(pid, type);
     }
 
     public int curType = 0;
@@ -327,7 +358,7 @@ public class GameManager : MonoBehaviour
 
     #region Net Relate
 
-   
+
     private void SendExitCurator()
     {
         MessageManager.Instance.SendExitCurator();
@@ -362,7 +393,7 @@ public class GameManager : MonoBehaviour
         }
 
         loading = true;
-        
+
         ShowHint(HintType.WaitingOthers, false);
         ShowPlayerCountUI(false);
         ChangeGameStatuTip(ZCurGameStatusMode.MINI_GAME_STATUS);
@@ -439,7 +470,7 @@ public class GameManager : MonoBehaviour
         ShowHint(HintType.WaitingOthers);
         Debug.Log("[CZLOG] OnScanSuccess -> ready load waiting ab");
         LoadAssetBundle(ZGlobal.CurABStatus);
-        
+
         if (ZGlobal.ClientMode == ZClientMode.Visitor)
         {
 
@@ -452,7 +483,7 @@ public class GameManager : MonoBehaviour
     private IEnumerator ReadyToPlayMiniGame()
     {
         yield return new WaitForSeconds(ZConstant.WaitToPlayMiniGameTime);
-        
+
     }
 
     #endregion
@@ -487,7 +518,7 @@ public class GameManager : MonoBehaviour
             finish++;
         });
 
-        ResourceManager.LoadAssetAsync<GameObject>("lgu/bullet", "ChargeBullet", (GameObject go) => 
+        ResourceManager.LoadAssetAsync<GameObject>("lgu/bullet", "ChargeBullet", (GameObject go) =>
         {
             Debug.Log("load bullet");
             PlayerPrefab.Bullet = Instantiate(go);
@@ -528,7 +559,7 @@ public class GameManager : MonoBehaviour
                      go.transform.SetParent(m_MinigameBehavior.transform);
                      m_MinigameBehavior.Processing(go);
 
-                     if(ZGlobal.CurABStatus == ZCurAssetBundleStatus.S0101)
+                     if (ZGlobal.CurABStatus == ZCurAssetBundleStatus.S0101)
                      {
                          var obj = GameObject.Find("UI_Canvas");
                          if (obj != null)
@@ -536,7 +567,7 @@ public class GameManager : MonoBehaviour
                              obj.SetActive(false);
                          }
                      }
-                     else if(ZGlobal.CurABStatus == ZCurAssetBundleStatus.S0102)
+                     else if (ZGlobal.CurABStatus == ZCurAssetBundleStatus.S0102)
                      {
                          m_PlayerMe.SetAllPlayerWeaponStatus(true);
                      }
@@ -555,9 +586,9 @@ public class GameManager : MonoBehaviour
                          UIHint = GameObject.Find("Dialog").transform;
                      }
 
-                     if(ZGlobal.CurABStatus == ZCurAssetBundleStatus.S0106)
+                     if (ZGlobal.CurABStatus == ZCurAssetBundleStatus.S0106)
                      {
-                         ZCoroutiner.StartCoroutine(() => 
+                         ZCoroutiner.StartCoroutine(() =>
                          {
                              NRDevice.QuitApp();
                          }, 30);
@@ -598,9 +629,9 @@ public class GameManager : MonoBehaviour
         }
     }
 
-#endregion
+    #endregion
 
-#region Status
+    #region Status
 
     public void ChangeGameStatuTip(ZCurGameStatusMode gs)
     {
@@ -615,11 +646,11 @@ public class GameManager : MonoBehaviour
     }
 
 
-#endregion
+    #endregion
 
 
 
-#region UI 
+    #region UI 
 
     public void ShowPlayerCountUI(bool show = true)
     {
@@ -643,7 +674,7 @@ public class GameManager : MonoBehaviour
         m_MarkerHelper.ScanSuccessEvent = OnScanSuccess;
     }
 
-#endregion
+    #endregion
 
 
 }

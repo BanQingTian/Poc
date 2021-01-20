@@ -82,7 +82,13 @@ public class ZMarkerHelper : MonoBehaviour
             nrCameraParent.transform.rotation = nrCamera.transform.rotation;
             nrCamera.transform.SetParent(nrCameraParent.transform);
 
+
+
             ResetToTarget(new Pose(new Vector3(0, -0.5f, 1), Quaternion.identity), nrCameraParent.transform);
+
+
+            NRInput.RecenterController();
+
             find = true;
             return true;
         }
@@ -118,6 +124,8 @@ public class ZMarkerHelper : MonoBehaviour
                     nrCamera.transform.SetParent(nrCameraParent.transform);
 
                     ResetToTarget(item.GetCenterPose(), nrCameraParent.transform);
+
+                    NRInput.RecenterController();
 
                     MapPose = new Pose(item.GetCenterPose().position, item.GetCenterPose().rotation);
                     m_Visualizers.Remove(item.GetDataBaseIndex());

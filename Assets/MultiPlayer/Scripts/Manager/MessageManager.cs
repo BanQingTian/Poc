@@ -412,8 +412,6 @@ public class MessageManager
 
     private void OnCommandResp(object obj)
     {
-        Debug.Log("[Server Response] OnCommandResp --- " + obj);
-
         CommondInfo commond = obj as CommondInfo;
         GameManager.Instance.S2CFuncTable[commond.func](commond.param);
     }

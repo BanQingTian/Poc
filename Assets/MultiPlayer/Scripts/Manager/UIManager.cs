@@ -15,10 +15,13 @@ public class UIManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        PlayerStatusParents.SetActive(false);
+
     }
 
     public void SetPlayerStatusUI(int playerCount)
     {
+        PlayerStatusParents.SetActive(true);
         for (int i = 0; i < PlayerStatus.Length; i++)
         {
             PlayerStatus[i].isOn = i < playerCount;
