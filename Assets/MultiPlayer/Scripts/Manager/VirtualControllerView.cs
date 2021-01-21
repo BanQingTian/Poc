@@ -72,7 +72,7 @@ public class VirtualControllerView : MonoBehaviour
     {
         yield return new WaitForSeconds(2);
         LoadingImage.gameObject.SetActive(false);
-        SetMode(ZGlobal.ClientMode);
+        SetMode(ZClientMode.Visitor);
     }
 
     public void SetABUI(UnityEngine.U2D.SpriteAtlas sa)
@@ -126,7 +126,8 @@ public class VirtualControllerView : MonoBehaviour
         {
             //ZGlobal.ClientMode = ZGlobal.ClientMode == ZClientMode.Curator ? ZClientMode.Visitor : ZClientMode.Curator;
             ZGlobal.ClientMode = ZClientMode.Curator;
-            SetMode(ZGlobal.ClientMode);
+            GameManager.Instance.PentaClkRun();
+            SetMode(ZClientMode.Curator);
             clkcount = 0;
             timer = 0;
             return;
@@ -189,13 +190,13 @@ public class VirtualControllerView : MonoBehaviour
     }
     private void MiniBtnClk()
     {
-        if (!ZMarkerHelper.find) return;
+        if (!ZMarkerHelper.find && GameManager.Instance.GetAllPlayerStart()) return;
        
         GameManager.Instance.SendPlayMiniGame();
     }
     private void ModelsBtnClk()
     {
-        if (!ZMarkerHelper.find) return;
+        if (!ZMarkerHelper.find && GameManager.Instance.GetAllPlayerStart()) return;
 
         GameManager.Instance.SendPlayShowModels();
     }

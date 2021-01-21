@@ -12,7 +12,7 @@ public class HintData
 
     private const string WaitingCurator = "접속 중입니다...";
 
-    private const string Loading = " ";//"로드 중 ...";
+    private const string Loading = "로드 중 ...";
 
     public string GetData(HintType t)
     {

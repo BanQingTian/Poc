@@ -8,6 +8,7 @@ using NRToolkit;
 /// </summary>
 public class PlayerMe
 {
+    private PlayerNetObj OwnerPlayerNetObj;
     private Dictionary<string, PlayerNetObj> PlayerDict = new Dictionary<string, PlayerNetObj>();
     private Dictionary<string, GameObject> AssetBundleGODict = new Dictionary<string, GameObject>();
 
@@ -27,13 +28,18 @@ public class PlayerMe
     {
         get
         {
-            foreach (var item in PlayerDict)
+            if (OwnerPlayerNetObj == null)
             {
-                if (item.Value.isOwner)
-                    return item.Value;
+                foreach (var item in PlayerDict)
+                {
+                    if (item.Value.isOwner)
+                    {
+                        OwnerPlayerNetObj = item.Value;
+                        break;
+                    }
+                }
             }
-            Debug.LogError("[CZLOG] GetOwnerPlayerNetObj Failed !!!");
-            return null;
+            return OwnerPlayerNetObj;
         }
     }
 
@@ -103,11 +109,11 @@ public class PlayerMe
         }
     }
 
-    public bool GetPlayerReadyStatus(string playerid    )
+    public bool GetPlayerReadyStatus(string playerid)
     {
         foreach (var item in PlayerDict)
         {
-            if(item.Key == playerid)
+            if (item.Key == playerid)
             {
                 return item.Value.FinishScanMarker;
             }

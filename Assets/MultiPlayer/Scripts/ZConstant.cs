@@ -5,17 +5,13 @@ using UnityEngine;
 public static class ZConstant
 {
     /// <summary>
-    /// 第一个进入房间的玩家将在25s后创建房间
+    /// 创建房间后将在xs后关闭房间加入权限
     /// </summary>
-    public const float WaitToCreateRoomTime = 20;
-    /// <summary>
-    /// 创建房间后将在10s后关闭房间加入权限
-    /// </summary>
-    public const float WaitToTurnOffRoomPerissionTime = 8;
+    public const int WaitToTurnOffRoomPerissionTime = 20;
     /// <summary>
     /// 全部扫秒完maker，将在3s后开启minigame
     /// </summary>
-    public const float WaitToPlayMiniGameTime = 2;
+    public const float AllScanReadyWaitTime = 5;
 
     public const string Event__Capture__ = "event_capture";
     public const string Event__MiniGame__ = "event_minigame";
@@ -27,6 +23,13 @@ public static class ZConstant
     public static string DefaultScheme = "ws";
     public static string ReplaceScheme = "http";
 
+
+    #region Follow_UI_Name
+
+    public const string Dialog = "Dialog";
+    public const string UICanvas = "UI_Canvas";
+
+    #endregion
 
     #region ui_name - bundle
 

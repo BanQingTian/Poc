@@ -19,7 +19,8 @@ public class S2CFuncName
     public static string GameOver = "GameOver";
     public static string AddScore = "AddScore";
 
-    public static string ExitCurator = "ExitCurator";
+    public static string Countdown = "Countdown";
+    public static string BeginScanMaker = "BeginScanMaker";
     public static string ScanMaker = "ScanMaker";
     public static string PlayMiniGame = "PlayMiniGame";
     public static string PlayShowModels = "PlayShowModels";
@@ -79,12 +80,22 @@ public class MessageManager
 
     }
 
-    public void SendExitCurator()
+    public void SendCurGameCountdownTime(int ct)
     {
         CommondInfo commond = new CommondInfo()
         {
-            func = S2CFuncName.ExitCurator,
-            param = "Shelter"
+            func = S2CFuncName.Countdown,
+            param = ct.ToString(),
+        };
+        client.SendMsg(MsgId.Commond, Target.All, commond);
+    }
+
+    public void SendStartScanMarker()
+    {
+        CommondInfo commond = new CommondInfo()
+        {
+            func = S2CFuncName.BeginScanMaker,
+            param = "shelter",
         };
         client.SendMsg(MsgId.Commond, Target.All, commond);
     }
@@ -273,11 +284,7 @@ public class MessageManager
         {
             Debug.Log("[OnConnectResp success]");
 
-            if (ZGlobal.ClientMode == ZClientMode.Curator)
-            {
-                GameManager.Instance.CreateRoom();
-            }
-            else if (ZGlobal.ClientMode == ZClientMode.Visitor)
+ if (ZGlobal.ClientMode == ZClientMode.Visitor)
             {
                 GameManager.Instance.VisitModeSearchRoom();
             }
@@ -297,9 +304,9 @@ public class MessageManager
 
     private void OnStartGameResp(object obj)
     {
-        // obj is null
         Debug.Log("[Server Response] OnStartGameResp --- " + obj);
 
+        Debug.Log("[CZLOG] StartGame , TurnOff Permission To Join Room");
     }
 
     private void OnJoinARoomResp(ColyseusClientResult result, object obj)
@@ -309,11 +316,11 @@ public class MessageManager
 
         if (result == ColyseusClientResult.Success)
         {
-            GameManager.Instance.OpenScan();
-            GameManager.Instance.JoinRoom = true;
+            Debug.Log("[CZLOG] Join Room Successfully");
         }
         else
         {
+            Debug.Log("[CZLOG] Join Room Failed");
         }
     }
 
@@ -337,19 +344,14 @@ public class MessageManager
         Debug.Log("[Server Response] OnCreateARoomResp --- " + obj);
         if (result == ColyseusClientResult.Success)
         {
-            if (ZGlobal.ClientMode == ZClientMode.Curator)
-            {
-                GameManager.Instance.OpenScan();
-                GameManager.Instance.JoinRoom = true;
-            }
+            Debug.Log("[CZLOG] Create a room successful");
+            ZGlobal.ClientMode = ZClientMode.Curator;
+
+            GameManager.Instance.BeginCountdown();
         }
         else
         {
-            Debug.Log("faild + " + (int)obj);
-            if ((int)obj != 1002)
-            {
-                //GameManager.Instance.CreateRoomFaild();
-            }
+            Debug.Log("Create Room failed + " + (int)obj);
         }
     }
 
@@ -400,13 +402,16 @@ public class MessageManager
                 if (roomState.state == 0)
                 {
                     SendJoinRoomByIdMsg(roomState.roomID);
-                    GameManager.Instance.JoinRoom = true;
                 }
+            }
+            else // 没有房间就创建房间进入，开始倒计时
+            {
+                GameManager.Instance.SendCreateRoom();
             }
         }
         else
         {
-            Debug.LogError("[Server Response] OnUpdateRoomInfoResp Faild !!!");
+            Debug.LogError("[Server Response] OnUpdateRoomInfoResp Failed !!!");
         }
     }
 

@@ -12,14 +12,13 @@ public class GameManager : MonoBehaviour
 
     public PlayerNetObj PlayerPrefab;
 
-    // 如果30s以后有人成为curator
-    public bool ExistCurator = false;
 
-    public bool JoinRoom = false;
-    public bool BeginGame = false;
 
     // 防止多次加载模型
     private bool loading = false;
+
+
+
 
 
     private HintData m_HintData;
@@ -48,7 +47,8 @@ public class GameManager : MonoBehaviour
         S2CFuncTable.Add(S2CFuncName.PlayMiniGame, S2C_PlayMiniGame);
         S2CFuncTable.Add(S2CFuncName.PlayShowModels, S2C_PlayShowModels);
         S2CFuncTable.Add(S2CFuncName.Rotate, S2C_Rotate);
-        S2CFuncTable.Add(S2CFuncName.ExitCurator, S2C_ExistCurator);
+        S2CFuncTable.Add(S2CFuncName.Countdown, S2C_CurGameCountdownTime);
+        S2CFuncTable.Add(S2CFuncName.BeginScanMaker, S2C_BeginScanMarker);
         S2CFuncTable.Add(S2CFuncName.ScanMaker, S2C_ScanMarkerFinish);
     }
 
@@ -67,13 +67,15 @@ public class GameManager : MonoBehaviour
 
 #endif
 
-        AnimatornProcessing();
+        AnimatorProcessing();
         RecenterCOntroller();
         //DoubleClkRecenter();
-        UILookAtOwner();
-        FirstPersonWaiting30s();
+        //FirstPersonWaiting30s();
     }
-
+    //private void LateUpdate()
+    //{
+    //    UILookAtOwner();
+    //}
 
     #endregion
 
@@ -130,7 +132,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void AnimatornProcessing()
+    private void AnimatorProcessing()
     {
         switch (ZGlobal.CurGameStatusMode)
         {
@@ -141,7 +143,13 @@ public class GameManager : MonoBehaviour
             case ZCurGameStatusMode.MINI_GAME_STATUS:
                 if (NRInput.GetButtonDown(ControllerButton.TRIGGER))
                 {
+
+#if UNITY_EDITOR
+                    Debug.Log("Phone Shake!!!!");
+#else
                     Handheld.Vibrate();
+#endif
+
                     SendPlayNextAnim(0);
                 }
                 if (ZGlobal.ClientMode == ZClientMode.Curator && m_MinigameBehavior.GetAnimPlayingName() == "End")
@@ -203,47 +211,31 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    Vector3 tmpOwner;
     private void UILookAtOwner()
     {
+
         if (UIHint != null)
         {
-            var owner = m_PlayerMe.GetOwnerPlayerNetObj.transform;
+            tmpOwner = m_PlayerMe.GetOwnerPlayerNetObj.transform.position;
+
             foreach (Transform item in UIHint.transform)
             {
                 item.rotation = Quaternion.identity;
                 //item.localScale = new Vector3(0, 0, -1);
                 //item.LookAt(owner);
             }
+            UIHint.LookAt(tmpOwner);
         }
-    }
-
-    float _waitingTime = 0;
-    private void FirstPersonWaiting30s()
-    {
-        if (ExistCurator) return;
-        _waitingTime += Time.deltaTime;
-        if (_waitingTime > ZConstant.WaitToCreateRoomTime)
+        if (UICanvas != null)
         {
-            Debug.Log("[CZLOG] Become Curator");
-            ExistCurator = true;
-            ZGlobal.ClientMode = ZClientMode.Curator;
-            SendExitCurator();
-            StartCoroutine(sendCloseJoinRoomPerission());
-        }
-    }
+            tmpOwner = m_PlayerMe.GetOwnerPlayerNetObj.transform.position;
 
-    private IEnumerator sendCloseJoinRoomPerission()
-    {
-        yield return new WaitForSeconds(ZConstant.WaitToTurnOffRoomPerissionTime);
-        SendStartGame();
-        while (true) // 等待所有人扫秒marker
-        {
-            if (m_PlayerMe.GetAllPlayerReadyStatus())
+            foreach (Transform item in UICanvas.transform)
             {
-                ZCoroutiner.StartCoroutine(SendPlayMiniGame, ZConstant.WaitToPlayMiniGameTime);
-                yield break;
+                item.rotation = Quaternion.identity;
             }
-            yield return null;
+            UICanvas.LookAt(tmpOwner);
         }
     }
 
@@ -263,6 +255,78 @@ public class GameManager : MonoBehaviour
         m_ShowModelBehavoir.Init();
     }
 
+    public bool GetAllPlayerStart()
+    {
+        return m_PlayerMe.GetAllPlayerReadyStatus();
+    }
+
+    public void WaitAllScanReady()
+    {
+        StartCoroutine(WaitAllScanReadyCor());
+    }
+
+    private IEnumerator WaitAllScanReadyCor()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(1);
+
+            if (m_PlayerMe.GetAllPlayerReadyStatus())
+            {
+                SendStartGame();
+
+                yield return new WaitForSeconds(ZConstant.AllScanReadyWaitTime);
+
+                SendPlayMiniGame();
+            }
+        }
+    }
+
+    public void PentaClkRun()
+    {
+        CloseCountdown();
+        SendStartScanMarker();
+    }
+
+    private void CloseCountdown()
+    {
+        StopCoroutine("BeginCountdownCor");
+
+        // hide countdown ui
+    }
+
+    // 创建房间后开始倒计时
+    public void BeginCountdown()
+    {
+        StartCoroutine("BeginCountdownCor");
+    }
+
+    private IEnumerator BeginCountdownCor()
+    {
+        int GameCountdown = ZConstant.WaitToTurnOffRoomPerissionTime;
+        SendCurGameCountdownTime(GameCountdown);
+        while (true)
+        {
+            yield return new WaitForSeconds(1);
+
+            GameCountdown -= 1;
+
+            SendCurGameCountdownTime(GameCountdown);
+
+            if (GameCountdown <= 1)
+            {
+                SendStartScanMarker();
+                WaitAllScanReady();
+                yield break;
+            }
+
+            yield return null;
+        }
+    }
+
+    
+
+
 
     #region Data opera
 
@@ -281,7 +345,6 @@ public class GameManager : MonoBehaviour
         m_PlayerMe.ClearPlayerData();
         RefreshPlayerStatusUI();
     }
-
     public int GetPlayerCount()
     {
         return m_PlayerMe.PlayerCount;
@@ -290,12 +353,26 @@ public class GameManager : MonoBehaviour
     #endregion
 
 
-    #region S2CFunc
+    #region S2CFunc 服务器转发消息
 
-    public void S2C_ExistCurator(string param)
+    public void S2C_CurGameCountdownTime(string param)
     {
-        ExistCurator = true;
+        // update time ui
+        Debug.Log("cur time param : " + param);
     }
+
+    bool openscanYet = false;
+    public void S2C_BeginScanMarker(string param)
+    {
+        if (!openscanYet)
+        {
+            openscanYet = true;
+            OpenScan();
+        }
+    }
+
+
+
     public void S2C_ScanMarkerFinish(string param)
     {
         m_PlayerMe.SetPlayerReadyStatus(param);
@@ -358,13 +435,21 @@ public class GameManager : MonoBehaviour
 
     #region Net Relate
 
-
-    private void SendExitCurator()
+    public void SendCreateRoom()
     {
-        MessageManager.Instance.SendExitCurator();
+        MessageManager.Instance.SendCreateRoomMsg();
+    }
+
+    public void SendCurGameCountdownTime(int curTime)
+    {
+        MessageManager.Instance.SendCurGameCountdownTime(curTime);
     }
 
 
+    public void SendStartScanMarker()
+    {
+        MessageManager.Instance.SendStartScanMarker();
+    }
 
     public void SendStartGame()
     {
@@ -443,25 +528,7 @@ public class GameManager : MonoBehaviour
     public void VisitModeSearchRoom()
     {
         ShowHint(HintType.WaitingCurator);
-        ZCoroutiner.StartCoroutine(CorSearchRoom());
-    }
-
-    private IEnumerator CorSearchRoom()
-    {
-        while (!JoinRoom)
-        {
-            yield return new WaitForSeconds(1f);
-            if (JoinRoom)
-                yield break;
-
-            Debug.Log("------ Search Room ------");
-            if (ZGlobal.ClientMode == ZClientMode.Curator)
-            {
-                CreateRoom();
-                yield break;
-            }
-            MessageManager.Instance.SendRefreshRoomList();
-        }
+        MessageManager.Instance.SendRefreshRoomList();
     }
 
     // 扫秒成功 开始等待房间创建
@@ -470,20 +537,7 @@ public class GameManager : MonoBehaviour
         ShowHint(HintType.WaitingOthers);
         Debug.Log("[CZLOG] OnScanSuccess -> ready load waiting ab");
         LoadAssetBundle(ZGlobal.CurABStatus);
-
-        if (ZGlobal.ClientMode == ZClientMode.Visitor)
-        {
-
-        }
-        else
-        {
-            SendScanMakerFinish(m_PlayerMe.GetOwnerPlayerNetObj.entityInfo.owner);
-        }
-    }
-    private IEnumerator ReadyToPlayMiniGame()
-    {
-        yield return new WaitForSeconds(ZConstant.WaitToPlayMiniGameTime);
-
+        SendScanMakerFinish(m_PlayerMe.GetOwnerPlayerNetObj.entityInfo.owner);
     }
 
     #endregion
@@ -528,6 +582,7 @@ public class GameManager : MonoBehaviour
     }
 
     private Transform UIHint;
+    private Transform UICanvas;
     public void LoadAssetBundle(ZCurAssetBundleStatus abs)
     {
         // 删除上一个bundle的资源和数据
@@ -543,11 +598,15 @@ public class GameManager : MonoBehaviour
         if (abgo == null)
         {
             if (abs > ZCurAssetBundleStatus.S0101)
+            {
                 ShowHint(HintType.Loading, true);
+            }
             ResourceManager.LoadAssetAsync<GameObject>(string.Format("{0}/{1}", ZConstant.DefaultDir, curABS.ToLower()), curABS, (GameObject prefab) =>
              {
                  if (abs > ZCurAssetBundleStatus.S0101)
+                 {
                      ShowHint(HintType.Loading, false);
+                 }
                  loading = false;
                  ChangeABStatusTip(abs);
                  var go = GameObject.Instantiate(prefab);
@@ -561,7 +620,7 @@ public class GameManager : MonoBehaviour
 
                      if (ZGlobal.CurABStatus == ZCurAssetBundleStatus.S0101)
                      {
-                         var obj = GameObject.Find("UI_Canvas");
+                         var obj = GameObject.Find("UI_Canvas"); // 这一块使用自己的UI，隐藏模型中带的UI
                          if (obj != null)
                          {
                              obj.SetActive(false);
@@ -570,6 +629,8 @@ public class GameManager : MonoBehaviour
                      else if (ZGlobal.CurABStatus == ZCurAssetBundleStatus.S0102)
                      {
                          m_PlayerMe.SetAllPlayerWeaponStatus(true);
+
+                         FindUIFollower();
                      }
                  }
                  else
@@ -580,12 +641,6 @@ public class GameManager : MonoBehaviour
                      go.transform.SetParent(m_ShowModelBehavoir.transform);
                      m_ShowModelBehavoir.Processing(go);
 
-                     if (ZGlobal.CurABStatus == ZCurAssetBundleStatus.S0105)
-                     {
-                         Debug.Log("update ui pose");
-                         UIHint = GameObject.Find("Dialog").transform;
-                     }
-
                      if (ZGlobal.CurABStatus == ZCurAssetBundleStatus.S0106)
                      {
                          ZCoroutiner.StartCoroutine(() =>
@@ -593,6 +648,8 @@ public class GameManager : MonoBehaviour
                              NRDevice.QuitApp();
                          }, 30);
                      }
+
+                     FindUIFollower();
                  }
 
                  //ReLoadShader(go);
@@ -608,6 +665,14 @@ public class GameManager : MonoBehaviour
             // 重置动画
             abgo.GetComponent<Animator>().Play(0);
         }
+    }
+
+    private void FindUIFollower()
+    {
+        var u1 = GameObject.Find("Dialog");
+        UIHint = u1 == null ? null : u1.transform;
+        var u2 = GameObject.Find("UI_Canvas");
+        UICanvas = u2 == null ? null : u2.transform;
     }
 
     private void ReLoadShader(GameObject obj)
