@@ -1,5 +1,5 @@
 ManifestFileVersion: 0
-CRC: 2131005091
+CRC: 316262012
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
@@ -13,6 +13,8 @@ AssetBundleManifest:
       Name: lgu/s0102
       Dependencies:
         Dependency_0: lgu/shader
+        Dependency_1: lgu/bullet
+        Dependency_2: lgu/weapon
     Info_3:
       Name: lgu/s0103
       Dependencies:
