@@ -11,15 +11,12 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
 
     public PlayerNetObj PlayerPrefab;
-
+    [HideInInspector] public Transform WeapoonPrefab;
+    [HideInInspector] public Transform BulletPrefab;
 
 
     // 防止多次加载模型
     private bool loading = false;
-
-
-
-
 
     private HintData m_HintData;
     private ZMarkerHelper m_MarkerHelper;
@@ -50,6 +47,8 @@ public class GameManager : MonoBehaviour
         S2CFuncTable.Add(S2CFuncName.Countdown, S2C_CurGameCountdownTime);
         S2CFuncTable.Add(S2CFuncName.BeginScanMaker, S2C_BeginScanMarker);
         S2CFuncTable.Add(S2CFuncName.ScanMaker, S2C_ScanMarkerFinish);
+        S2CFuncTable.Add(S2CFuncName.PlayNextAnim, S2C_PlayNectAnim);
+        S2CFuncTable.Add(S2CFuncName.ChargeOnce, S2C_ChargeOnce);
     }
 
     private void Update()
@@ -72,15 +71,14 @@ public class GameManager : MonoBehaviour
         //DoubleClkRecenter();
         //FirstPersonWaiting30s();
     }
-    //private void LateUpdate()
-    //{
-    //    UILookAtOwner();
-    //}
+    private void LateUpdate()
+    {
+        UILookAtOwner();
+    }
 
     #endregion
 
-    float _hoverTime = 0;
-    float _hoverInterval = 1;
+
 
     bool _clkReady = false;
     float ttt = 0;
@@ -110,6 +108,9 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+
+    float _hoverTime = 0;
+    float _hoverInterval = 1;
     private void RecenterCOntroller()
     {
         if (NRInput.GetButtonDown(ControllerButton.TRIGGER))
@@ -150,7 +151,7 @@ public class GameManager : MonoBehaviour
                     Handheld.Vibrate();
 #endif
 
-                    SendPlayNextAnim(0);
+                    SendShootFire(0);
                 }
                 if (ZGlobal.ClientMode == ZClientMode.Curator && m_MinigameBehavior.GetAnimPlayingName() == "End")
                 {
@@ -170,7 +171,7 @@ public class GameManager : MonoBehaviour
                 {
                     if (NRInput.GetButtonDown(ControllerButton.TRIGGER))
                     {
-                        SendPlayNextAnim(1);
+                        SendShootFire(1);
                     }
                 }
                 if (ZGlobal.ClientMode == ZClientMode.Curator && m_ShowModelBehavoir.GetAnimPlayingName() == "End")
@@ -211,31 +212,44 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    Vector3 tmpOwner;
+    Vector3 tmpOwner1;
+    Vector3 tmpOwner2;
     private void UILookAtOwner()
     {
-
         if (UIHint != null)
         {
-            tmpOwner = m_PlayerMe.GetOwnerPlayerNetObj.transform.position;
+            tmpOwner1 = m_PlayerMe.GetOwnerPlayerNetObj.transform.position;
 
-            foreach (Transform item in UIHint.transform)
-            {
-                item.rotation = Quaternion.identity;
-                //item.localScale = new Vector3(0, 0, -1);
-                //item.LookAt(owner);
-            }
-            UIHint.LookAt(tmpOwner);
+            UIHint.LookAt(tmpOwner1);
         }
         if (UICanvas != null)
         {
-            tmpOwner = m_PlayerMe.GetOwnerPlayerNetObj.transform.position;
+            tmpOwner2 = m_PlayerMe.GetOwnerPlayerNetObj.transform.position;
 
-            foreach (Transform item in UICanvas.transform)
+            //foreach (Transform item in UICanvas.transform)
+            //{
+            //    item.rotation = Quaternion.identity;
+            //}
+            UICanvas.LookAt(tmpOwner2);
+        }
+    }
+
+    private void ResetLookAt()
+    {
+        if (UIHint != null)
+        {
+            foreach (Transform item in UIHint.transform)
             {
-                item.rotation = Quaternion.identity;
+                item.localRotation = Quaternion.identity;
             }
-            UICanvas.LookAt(tmpOwner);
+
+            var sss = UIHint.transform.localScale;
+            UIHint.transform.localScale = new Vector3(-sss.x, sss.y, sss.z);
+        }
+        if(UICanvas != null)
+        {
+            var ssss = UICanvas.transform.localScale;
+            UICanvas.transform.localScale = new Vector3(-ssss.x, ssss.y, ssss.z);
         }
     }
 
@@ -278,6 +292,8 @@ public class GameManager : MonoBehaviour
                 yield return new WaitForSeconds(ZConstant.AllScanReadyWaitTime);
 
                 SendPlayMiniGame();
+
+                yield break;
             }
         }
     }
@@ -291,8 +307,6 @@ public class GameManager : MonoBehaviour
     private void CloseCountdown()
     {
         StopCoroutine("BeginCountdownCor");
-
-        // hide countdown ui
     }
 
     // 创建房间后开始倒计时
@@ -313,7 +327,7 @@ public class GameManager : MonoBehaviour
 
             SendCurGameCountdownTime(GameCountdown);
 
-            if (GameCountdown <= 1)
+            if (GameCountdown <= 0)
             {
                 SendStartScanMarker();
                 WaitAllScanReady();
@@ -324,12 +338,16 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    
+
 
 
 
     #region Data opera
 
+    public PlayerNetObj GetSelfPlayerData()
+    {
+        return m_PlayerMe.GetOwnerPlayerNetObj;
+    }
     public void AddPlayerData(string playerid, PlayerNetObj obj)
     {
         m_PlayerMe.AddPlayer(playerid, obj);
@@ -359,6 +377,8 @@ public class GameManager : MonoBehaviour
     {
         // update time ui
         Debug.Log("cur time param : " + param);
+
+        SetCountdown(param, true);
     }
 
     bool openscanYet = false;
@@ -369,9 +389,10 @@ public class GameManager : MonoBehaviour
             openscanYet = true;
             OpenScan();
         }
+
+        // hide countdown ui
+        SetCountdown("", false);
     }
-
-
 
     public void S2C_ScanMarkerFinish(string param)
     {
@@ -395,7 +416,7 @@ public class GameManager : MonoBehaviour
 
         curType = type;
 
-        obj.Shoot();
+        obj.Shoot(pid);
 
         //if (type == 0)
         //    m_MinigameBehavior.PlayNextAnim();
@@ -403,10 +424,29 @@ public class GameManager : MonoBehaviour
         //    m_ShowModelBehavoir.PlayNextAnim();
     }
 
+    public void S2C_PlayNectAnim(string param)
+    {
+        m_MinigameBehavior.PlayNextAnimResponce();
+    }
+
+    public void S2C_ChargeOnce(string param)
+    {
+        if (m_PlayerMe.GetOwnerPlayerNetObj.IsRoomOwner())
+        {
+            m_MinigameBehavior.ChargeCount++;
+            Debug.Log("Cur Charge Count : " + m_MinigameBehavior.ChargeCount);
+
+            if (m_MinigameBehavior.ChargeCount >= m_MinigameBehavior.ChargeRate * GetPlayerCount())
+            {
+                SendPlayNextAnim();
+            }
+        }
+    }
+
     public void ShootTarget()
     {
         if (curType == 0)
-            m_MinigameBehavior.PlayNextAnim();
+            m_MinigameBehavior.ShootedTarget();
         else
             m_ShowModelBehavoir.PlayNextAnim();
     }
@@ -414,12 +454,14 @@ public class GameManager : MonoBehaviour
     public void S2C_PlayMiniGame(string param)
     {
         ShowHint(HintType.WaitingOthers, false);
+        ShowPlayerCountUI(false);
         ChangeGameStatuTip(ZCurGameStatusMode.MINI_GAME_STATUS);
         LoadAssetBundle((ZCurAssetBundleStatus)int.Parse(param));
     }
     public void S2C_PlayShowModels(string param)
     {
         ShowHint(HintType.WaitingOthers, false);
+        ShowPlayerCountUI(false);
         ChangeGameStatuTip(ZCurGameStatusMode.MODELS_SHOW_STATUS);
         LoadAssetBundle((ZCurAssetBundleStatus)int.Parse(param));
     }
@@ -461,9 +503,19 @@ public class GameManager : MonoBehaviour
         MessageManager.Instance.SendScanMakerFinish(playerid);
     }
 
-    public void SendPlayNextAnim(int type)
+    public void SendPlayNextAnim()
+    {
+        MessageManager.Instance.SendPlayNextAnim();
+    }
+
+    public void SendShootFire(int type)
     {
         MessageManager.Instance.SendFireMsg(m_PlayerMe.GetOwnerPlayerNetObj.entityInfo.owner, type);
+    }
+
+    public void SendPlayAddChargeCount()
+    {
+        MessageManager.Instance.SendAddChargeCount();
     }
 
     public void SendPlayMiniGame()
@@ -480,7 +532,6 @@ public class GameManager : MonoBehaviour
         loading = true;
 
         ShowHint(HintType.WaitingOthers, false);
-        ShowPlayerCountUI(false);
         ChangeGameStatuTip(ZCurGameStatusMode.MINI_GAME_STATUS);
 
         MessageManager.Instance.SendPlayMiniGame();
@@ -515,14 +566,6 @@ public class GameManager : MonoBehaviour
         ShowPlayerCountUI(false);
 
         MessageManager.Instance.SendPlayShowModels(abs);
-    }
-
-    public void CreateRoom()
-    {
-        if (ZGlobal.ClientMode == ZClientMode.Curator)
-        {
-            MessageManager.Instance.SendCreateRoomMsg();
-        }
     }
 
     public void VisitModeSearchRoom()
@@ -563,18 +606,28 @@ public class GameManager : MonoBehaviour
         ResourceManager.LoadAssetAsync<GameObject>("lgu/weapon", "ChargerUser", (GameObject go) =>
         {
             Debug.Log("load weapon");
-            PlayerPrefab.WeaponTarget = Instantiate(go);
-            PlayerPrefab.WeaponTarget.GetComponent<Collider>().enabled = false;
-            PlayerPrefab.WeaponTarget.SetActive(false);
-            PlayerPrefab.WeaponTarget.transform.localPosition = Vector3.zero;
-            //PlayerPrefab.ShootPoint.transform.SetParent(PlayerPrefab.WeaponTarget.transform);
-            PlayerPrefab.ShootPoint.transform.localPosition = new Vector3(0, 0, 0.12f);
+            WeapoonPrefab = GameObject.Instantiate(go).transform;
+            WeapoonPrefab.GetComponent<Collider>().enabled = false;
+            WeapoonPrefab.name = "WeaponPrefab";
+            WeapoonPrefab.gameObject.SetActive(false);
+
+
+
+            //PlayerPrefab.WeaponTarget = Instantiate(go);
+            //PlayerPrefab.WeaponTarget.GetComponent<Collider>().enabled = false;
+            //PlayerPrefab.WeaponTarget.SetActive(false);
+            //PlayerPrefab.WeaponTarget.transform.localPosition = Vector3.zero;
+            ////PlayerPrefab.ShootPoint.transform.SetParent(PlayerPrefab.WeaponTarget.transform);
+            ////PlayerPrefab.ShootPoint.transform.localPosition = new Vector3(0, 0, 0.12f);
             finish++;
         });
 
         ResourceManager.LoadAssetAsync<GameObject>("lgu/bullet", "ChargeBullet", (GameObject go) =>
         {
             Debug.Log("load bullet");
+            //BulletPrefab = GameObject.Instantiate(go).transform;
+            //BulletPrefab.gameObject.SetActive(false);
+
             PlayerPrefab.Bullet = Instantiate(go);
             PlayerPrefab.Bullet.SetActive(false);
             finish++;
@@ -651,6 +704,8 @@ public class GameManager : MonoBehaviour
 
                      FindUIFollower();
                  }
+
+                 ResetLookAt();
 
                  //ReLoadShader(go);
                  go.transform.position = Vector3.zero;
@@ -730,6 +785,11 @@ public class GameManager : MonoBehaviour
     public void ShowHint(HintType t, bool show = true)
     {
         m_UIPanel.SetHintLabel(m_HintData.GetData(t), show);
+    }
+
+    public void SetCountdown(string content, bool show)
+    {
+        m_UIPanel.SetCountdown(content, show);
     }
 
     public void OpenScan()

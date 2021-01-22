@@ -5,13 +5,13 @@ using UnityEngine;
 public static class ZConstant
 {
     /// <summary>
-    /// 创建房间后将在xs后关闭房间加入权限
+    /// 创建房间成功后，将在xs后关闭房间加入权限
     /// </summary>
     public const int WaitToTurnOffRoomPerissionTime = 20;
     /// <summary>
-    /// 全部扫秒完maker，将在3s后开启minigame
+    /// 全部扫秒完maker，将在xs后开启minigame
     /// </summary>
-    public const float AllScanReadyWaitTime = 5;
+    public const float AllScanReadyWaitTime = 4;
 
     public const string Event__Capture__ = "event_capture";
     public const string Event__MiniGame__ = "event_minigame";

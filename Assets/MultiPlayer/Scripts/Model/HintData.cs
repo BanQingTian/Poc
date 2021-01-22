@@ -6,11 +6,11 @@ public class HintData
 {
     private const string ConnectingNetwork = " ";//"네트워크 연결 대기 중 ...";
 
-    private const string ScanMarker = "마커를 스캔하세요 ...";
+    private const string ScanMarker = "마커를 스캔하세요 ..."; // 扫秒marker
 
-    private const string WaitingOthers = "플레이어 접속 대기 중...";
+    private const string WaitingOthers = "플레이어 접속 대기 중..."; //等待玩家连入
 
-    private const string WaitingCurator = "접속 중입니다...";
+    private const string WaitingCurator = "접속 중입니다..."; // 正在连接中
 
     private const string Loading = "로드 중 ...";
 

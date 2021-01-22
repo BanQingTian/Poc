@@ -57,7 +57,7 @@ namespace NetWorkToolkit
         // is room creater
         public bool IsRoomOwner()
         {
-            if (entityInfo == null && ColyseusClient.instance.GetCurrentRoom() != null)
+            if (entityInfo != null && ColyseusClient.instance.GetCurrentRoom().State.owner == ColyseusClient.instance.SessionID)
                 return true;
             return false;
         }

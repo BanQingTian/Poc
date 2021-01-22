@@ -24,6 +24,8 @@ public class S2CFuncName
     public static string ScanMaker = "ScanMaker";
     public static string PlayMiniGame = "PlayMiniGame";
     public static string PlayShowModels = "PlayShowModels";
+    public static string PlayNextAnim = "PlayNextAnim";
+    public static string ChargeOnce = "ChargeOnce";
 
     public static string Test = "test";
 }
@@ -189,6 +191,26 @@ public class MessageManager
         client.SendMsg(MsgId.Commond, Target.All, commond);
     }
 
+    public void SendAddChargeCount()
+    {
+        CommondInfo commond = new CommondInfo()
+        {
+            func = S2CFuncName.ChargeOnce,
+            param = "charge"
+        };
+        client.SendMsg(MsgId.Commond, Target.All, commond);
+    }
+
+    public void SendPlayNextAnim()
+    {
+        CommondInfo commond = new CommondInfo()
+        {
+            func = S2CFuncName.PlayNextAnim,
+            param = "anim"
+        };
+        client.SendMsg(MsgId.Commond, Target.All, commond);
+    }
+
     public void SendCreateMonsterMsg() //just house-owner send
     {
         CommondInfo commond = new CommondInfo()
@@ -284,7 +306,7 @@ public class MessageManager
         {
             Debug.Log("[OnConnectResp success]");
 
- if (ZGlobal.ClientMode == ZClientMode.Visitor)
+            if (ZGlobal.ClientMode == ZClientMode.Visitor)
             {
                 GameManager.Instance.VisitModeSearchRoom();
             }
@@ -346,7 +368,7 @@ public class MessageManager
         {
             Debug.Log("[CZLOG] Create a room successful");
             ZGlobal.ClientMode = ZClientMode.Curator;
-
+            GameManager.Instance.ShowHint(HintType.WaitingOthers);
             GameManager.Instance.BeginCountdown();
         }
         else
@@ -361,7 +383,8 @@ public class MessageManager
 
         Entity entity = obj as Entity;
         var go = GameObject.Instantiate<PlayerNetObj>(GameManager.Instance.PlayerPrefab);
-
+        go.WeaponTarget = GameObject.Instantiate<GameObject>(GameManager.Instance.WeapoonPrefab.gameObject);
+        //go.Bullet = GameObject.Instantiate<GameObject>(GameManager.Instance.BulletPrefab.gameObject);
         go.Init(entity);
 
         GameManager.Instance.AddPlayerData(entity.owner, go);

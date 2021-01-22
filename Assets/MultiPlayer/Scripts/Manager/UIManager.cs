@@ -8,6 +8,7 @@ public class UIManager : MonoBehaviour
     public static UIManager Instance;
 
     public TMPro.TextMeshProUGUI HintLabel;
+    public TMPro.TextMeshProUGUI CountdownLabel;
 
     public GameObject PlayerStatusParents;
     public Toggle[] PlayerStatus;
@@ -41,7 +42,15 @@ public class UIManager : MonoBehaviour
         {
             HintLabel.text = content;
         }
-
     }
 
+    public void SetCountdown(string content, bool show = true)
+    {
+        CountdownLabel.gameObject.SetActive(show);
+
+        if (show)
+        {
+            CountdownLabel.text = content;
+        }
+    }
 }

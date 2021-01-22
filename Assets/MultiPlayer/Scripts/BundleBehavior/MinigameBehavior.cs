@@ -7,8 +7,8 @@ public class MinigameBehavior : BaseBehaviour
 {
     private static MinigameBehavior mb;
 
-    private const float clkRate = 10;
-    private float clkCount = 0;
+    public float ChargeRate = 10;
+    public float ChargeCount = 0;
     private const float waitTime = 5f; // 动画间隔时间
     private float time = 0;
     private void Update()
@@ -85,20 +85,34 @@ public class MinigameBehavior : BaseBehaviour
 
 
     }
-    public void PlayNextAnim()
+    public void ShootedTarget()
     {
-        if (clkCount++ < clkRate * GameManager.Instance.GetPlayerCount())
-        {
-            Debug.Log(clkCount);
-            return;
-        }
+        //if (ChargeCount+ < clkRate * GameManager.Instance.GetPlayerCount())
+        //{
+        //    Debug.Log(ChargeCount);
+        //    return;
+        //}
+       
+        GameManager.Instance.SendPlayAddChargeCount();
+
+    }
+
+    // 准备播放动画
+    public void PlayNextAnimResponce()
+    {
         if (time < waitTime) return;
+        time = 0;
+        ChargeCount = 0;
+        MGModelAnim.SetTrigger("Next");
+
+        return;
+
         switch (GetAnimPlayingName())
         {
             case "Idle":
                 MGModelAnim.SetTrigger("Next");
                 time = 0;
-                clkCount = 0;
+                ChargeCount = 0;
                 break;
             case "End":
                 //GameManager.Instance.LoadAssetBundle(ZGlobal.CurABStatus++);
@@ -108,7 +122,6 @@ public class MinigameBehavior : BaseBehaviour
             default:
                 break;
         }
-
     }
 
 

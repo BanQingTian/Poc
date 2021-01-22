@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using NetWorkToolkit;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,7 +10,7 @@ public class Bullet : MonoBehaviour
     {
         get
         {
-            if(rig == null)
+            if (rig == null)
             {
                 if (GetComponent<Rigidbody>() == null)
                 {
@@ -34,7 +35,9 @@ public class Bullet : MonoBehaviour
 
     public void OnTriggerEnter(Collider other)
     {
-        GameManager.Instance.ShootTarget();
+        // 这个子弹只有是自己射击的才算碰撞 ，触发分数
+        if (BelongToPlayerID == ColyseusClient.instance.SessionID)
+            GameManager.Instance.ShootTarget();
         gameObject.transform.position = new Vector3(9999, 9999, 9999);
     }
 

@@ -106,14 +106,17 @@ public class PlayerNetObj : NetObjectEntity
         attackTimer += Time.fixedDeltaTime;
     }
 
-    public void Shoot()
+    public void Shoot(string belongid)
     {
         var b = PoolManager.Instance.Get(Bullet);
         b.SetActive(true);
-        if (b.GetComponent<Bullet>() == null)
+
+        Bullet sb = b.GetComponent<Bullet>();
+        if (sb == null)
         {
-            b.AddComponent<Bullet>();
+            sb = b.AddComponent<Bullet>();
         }
+        sb.BelongToPlayerID = belongid;
         // b.GetComponent<Bullet>().ResetBullet();
         b.transform.position = ShootPoint.transform.position;
         b.transform.rotation = ShootPoint.transform.rotation;
@@ -142,11 +145,6 @@ public class PlayerNetObj : NetObjectEntity
             return;
         }
         if (!isOwner)
-        {
-            return;
-        }
-        // 创建房间者不参与游戏射击
-        if (IsRoomOwner())
         {
             return;
         }
