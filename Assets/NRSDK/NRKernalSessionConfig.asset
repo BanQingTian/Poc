@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlaneFindingMode: 0
   ImageTrackingMode: 1
-  TrackingImageDatabase: {fileID: 11400000, guid: 983b6981bd75b1f459173bc17a7da025,
+  TrackingImageDatabase: {fileID: 11400000, guid: 02938d48a90a34e489e75152642c7c1f,
     type: 2}
   EnableNotification: 0
   ErrorTipsPrefab: {fileID: 114446480136121918, guid: f3bd61487bccfc34abfc952ea78923be,
