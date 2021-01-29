@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 3604238208
+CRC: 2778256054
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: b8300ed274ff8910ba962f3222824a6f
+    Hash: b99b0fea14a290afcca49c2319ca3a5a
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 6d4f2032ab0acaac7472d242b851db8e
+    Hash: 60fe9eb00a47bf3892e0464a0ac00717
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -24,8 +24,6 @@ ClassTypes:
 - Class: 43
   Script: {instanceID: 0}
 - Class: 48
-  Script: {instanceID: 0}
-- Class: 65
   Script: {instanceID: 0}
 - Class: 74
   Script: {instanceID: 0}
@@ -59,8 +57,6 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 128
   Script: {instanceID: 0}
-- Class: 135
-  Script: {instanceID: 0}
 - Class: 136
   Script: {instanceID: 0}
 - Class: 137
@@ -85,5 +81,3 @@ Assets:
 - Assets/S01/Prefabs/S0102.prefab
 Dependencies:
 - E:/Program/LGU_Poc_Copy/AssetBundles/Android/main/lgu/shader
-- E:/Program/LGU_Poc_Copy/AssetBundles/Android/main/lgu/bullet
-- E:/Program/LGU_Poc_Copy/AssetBundles/Android/main/lgu/weapon

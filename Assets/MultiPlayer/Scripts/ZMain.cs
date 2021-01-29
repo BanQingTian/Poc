@@ -15,7 +15,7 @@ public class ZMain : MonoBehaviour
     {
         {ZServiceMode.LOCAL_HTTP,"192.168.68.187" },
         {ZServiceMode.LOCAL_HTTPS,"multiplay.nreal.ai" },
-        {ZServiceMode.CLOUD,"" }
+        {ZServiceMode.CLOUD,"3.36.119.56" }
     };
 
     void Start()

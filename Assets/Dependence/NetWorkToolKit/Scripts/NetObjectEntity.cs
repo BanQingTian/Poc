@@ -6,6 +6,7 @@ namespace NetWorkToolkit
     {
         public Entity entityInfo;
         public bool isOwner;
+        public bool isRoomOwner;
 
         public virtual void Init(Entity info)
         {
@@ -57,9 +58,12 @@ namespace NetWorkToolkit
         // is room creater
         public bool IsRoomOwner()
         {
+            isRoomOwner = false;
             if (entityInfo != null && ColyseusClient.instance.GetCurrentRoom().State.owner == ColyseusClient.instance.SessionID)
-                return true;
-            return false;
+            {
+                isRoomOwner = true;
+            }
+            return isRoomOwner;
         }
 
         private bool IsOwner()

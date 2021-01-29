@@ -153,7 +153,12 @@ public class GameManager : MonoBehaviour
 
                     SendShootFire(0);
                 }
-                if (ZGlobal.ClientMode == ZClientMode.Curator && m_MinigameBehavior.GetAnimPlayingName() == "End")
+                bool isRO1 = GetSelfPlayerData().IsRoomOwner();
+                if (isRO1)
+                {
+                    ZGlobal.ClientMode = ZClientMode.Curator;
+                }
+                if (isRO1 && m_MinigameBehavior.GetAnimPlayingName() == "End")
                 {
                     // 动画播放完
                     if (m_MinigameBehavior.MGModelAnimStatusInfo.normalizedTime >= 1)
@@ -174,7 +179,12 @@ public class GameManager : MonoBehaviour
                         SendShootFire(1);
                     }
                 }
-                if (ZGlobal.ClientMode == ZClientMode.Curator && m_ShowModelBehavoir.GetAnimPlayingName() == "End")
+                bool isRO = GetSelfPlayerData().IsRoomOwner();
+                if (isRO)
+                {
+                    ZGlobal.ClientMode = ZClientMode.Curator;
+                }
+                if (isRO && m_ShowModelBehavoir.GetAnimPlayingName() == "End")
                 {
                     switch (ZGlobal.CurABStatus)
                     {
@@ -220,7 +230,11 @@ public class GameManager : MonoBehaviour
         {
             tmpOwner1 = m_PlayerMe.GetOwnerPlayerNetObj.transform.position;
 
-            UIHint.LookAt(tmpOwner1);
+            //UIHint.LookAt(tmpOwner1);
+            foreach (Transform item in UIHint.transform)
+            {
+                item.LookAt(tmpOwner1);
+            }
         }
         if (UICanvas != null)
         {
@@ -240,16 +254,13 @@ public class GameManager : MonoBehaviour
         {
             foreach (Transform item in UIHint.transform)
             {
-                item.localRotation = Quaternion.identity;
+                //item.localRotation = Quaternion.identity;
+                item.transform.localScale = new Vector3(-item.transform.localScale.x, item.transform.localScale.y, item.transform.localScale.z);
             }
-
-            var sss = UIHint.transform.localScale;
-            UIHint.transform.localScale = new Vector3(-sss.x, sss.y, sss.z);
         }
-        if(UICanvas != null)
+        if (UICanvas != null)
         {
-            var ssss = UICanvas.transform.localScale;
-            UICanvas.transform.localScale = new Vector3(-ssss.x, ssss.y, ssss.z);
+            UICanvas.transform.localScale = new Vector3(-UICanvas.transform.localScale.x, UICanvas.transform.localScale.y, UICanvas.transform.localScale.z);
         }
     }
 
@@ -351,17 +362,19 @@ public class GameManager : MonoBehaviour
     public void AddPlayerData(string playerid, PlayerNetObj obj)
     {
         m_PlayerMe.AddPlayer(playerid, obj);
-        RefreshPlayerStatusUI();
+        RefreshPlayerStatusUI(true);
     }
     public void RemovePlayerData(string playerid)
     {
         m_PlayerMe.RemovePlayer(playerid);
-        RefreshPlayerStatusUI();
+        RefreshPlayerStatusUI(false);
+        // 刷新本地房主状态
+        GetSelfPlayerData().IsRoomOwner();
     }
     public void ClearPlayerData()
     {
         m_PlayerMe.ClearPlayerData();
-        RefreshPlayerStatusUI();
+        RefreshPlayerStatusUI(false);
     }
     public int GetPlayerCount()
     {
@@ -777,9 +790,9 @@ public class GameManager : MonoBehaviour
         m_UIPanel.PlayerStatusParents.SetActive(show);
     }
 
-    public void RefreshPlayerStatusUI()
+    public void RefreshPlayerStatusUI(bool show)
     {
-        m_UIPanel.SetPlayerStatusUI(m_PlayerMe.PlayerCount);
+        m_UIPanel.SetPlayerStatusUI(m_PlayerMe.PlayerCount, show);
     }
 
     public void ShowHint(HintType t, bool show = true)

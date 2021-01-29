@@ -237,6 +237,10 @@ namespace NetWorkToolkit
                     break;
                 case ZServiceMode.CLOUD:
                     // TODO
+                    m_ServerIP = host;
+                    ZConstant.DefaultScheme = "ws";
+                    ZConstant.ReplaceScheme = "http";
+                    endpoint = string.Format("ws://{0}:{1}", m_ServerIP, port);
                     break;
                 default:
                     break;

@@ -20,9 +20,9 @@ public class UIManager : MonoBehaviour
 
     }
 
-    public void SetPlayerStatusUI(int playerCount)
+    public void SetPlayerStatusUI(int playerCount,bool show)
     {
-        PlayerStatusParents.SetActive(true);
+        PlayerStatusParents.SetActive(show);
         for (int i = 0; i < PlayerStatus.Length; i++)
         {
             PlayerStatus[i].isOn = i < playerCount;
